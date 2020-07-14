@@ -1,3 +1,3 @@
 export const CLASS_NAME = {
-    DP_NONE: 'dp-none',
+  DP_NONE: 'dp-none',
 }
