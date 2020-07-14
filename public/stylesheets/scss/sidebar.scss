@@ -1,6 +1,6 @@
 @import '_definitions';
-@import 'base';
 #sidebar {
+    height: calc(100vh - 60px);
     position: absolute;
     flex-direction: column;
     width: $width-sidebar;
@@ -11,6 +11,7 @@
     border-right: solid 1px $color-gray-300;
     z-index: 1;
     right: 0px;
+    overflow-y: auto;
 }
 
 #menu,
