@@ -1,7 +1,7 @@
-@import '_definitions';
+@import 'definitions';
 #sidebar {
-    display: none;
     height: calc(100vh - 60px);
+    display: flex;
     position: absolute;
     flex-direction: column;
     width: $width-sidebar;
