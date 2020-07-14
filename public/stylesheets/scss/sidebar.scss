@@ -1,14 +1,18 @@
 @import '_definitions';
 #sidebar {
+    display: flex;
     height: calc(100vh - 60px);
     position: absolute;
     flex-direction: column;
     width: $width-sidebar;
     color: $color-black;
     background-color: $color-white;
-    border-top: solid 1px $color-gray-300;
-    border-left: solid 1px $color-gray-300;
-    border-right: solid 1px $color-gray-300;
+    $border-line: solid 1px $color-gray-300;
+    border: {
+        top: $border-line;
+        left: $border-line;
+        right: $border-line;
+    }
     z-index: 1;
     right: 0px;
     overflow-y: auto;
