@@ -12,6 +12,11 @@
     padding: 8px;
     border: 1px solid $color-gray-300;
     border-radius: 6px;
+    margin-right: 16px;
+
+    &:last-child {
+      margin-right: 0;
+    }
 
     .title-bar {
       display: flex;
