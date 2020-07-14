@@ -1,6 +1,6 @@
 @import '_definitions';
 #sidebar {
-    display: flex;
+    display: none;
     height: calc(100vh - 60px);
     position: absolute;
     flex-direction: column;
@@ -18,8 +18,8 @@
     overflow-y: auto;
 }
 
-#menu,
-#activity {
+.menu,
+.activity {
     display: flex;
     align-items: center;
     background-color: $color-gray-200;
