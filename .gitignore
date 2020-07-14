@@ -135,5 +135,8 @@ dist
 
 # custom ignore
 
+# DS_Store
+.DS_Store
+
 # css
 public/stylesheets/css
