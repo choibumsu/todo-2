@@ -1,11 +1,14 @@
 @import 'definitions';
 
 #column-container {
+  display: flex;
   height: calc(100vh - #{$height-nav});
-  padding: 16px;
+  padding: 16px 0;
+  margin: 0 16px;
+  overflow-x: scroll;
 
   .column {
-    width: $width-column;
+    min-width: $width-column;
     height: 100%;
     overflow-y: scroll;
     background-color: $color-gray-200;
@@ -79,81 +82,6 @@
           &.remove-btn {
             width: 17px;
             height: 17px;
-          }
-        }
-      }
-    }
-
-    .content-container {
-      .card-add-wrapper {
-        font-size: 0;
-        margin: {
-          top: 8px;
-          bottom: 11px;
-        }
-
-        .card-textarea {
-          min-width: 100%;
-          max-width: 100%;
-          min-height: 60px;
-          font-size: 14px;
-          border: 1px solid $color-gray-300;
-          border-radius: 6px;
-          padding: 8px 12px;
-          margin-bottom: 8px;
-        }
-
-        .button-row {
-          display: flex;
-          justify-content: space-between;
-
-          .btn-wrapper {
-            width: 50%;
-
-            &:first-child {
-              .btn {
-                margin-right: 5px;
-              }
-            }
-
-            &:last-child {
-              .btn {
-                margin-left: 5px;
-              }
-            }
-
-            .btn {
-              $color-btn-border: #1b1f0f;
-
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              height: 32px;
-              padding-top: 3px;
-              border-radius: 6px;
-              border: 1px solid unquote($color-btn-border + '26');
-              font: {
-                size: 14px;
-                weight: 500;
-              }
-              box-shadow: 0 1px 0 unquote($color-btn-border + '20'),
-                inset 0 1px 0 hsla(0, 0%, 100%, 0.03);
-
-              &.add-btn {
-                background-color: $color-green;
-                color: $color-white;
-
-                &.unactive {
-                  background-color: $color-light-green;
-                  border: 1px solid unquote($color-btn-border + '20');
-                }
-              }
-
-              &.cancel-btn {
-                background-color: $color-gray-100;
-                color: $color-gray-900;
-              }
-            }
           }
         }
       }
