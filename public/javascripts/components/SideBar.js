@@ -1,4 +1,4 @@
-import { CLASS_NAME } from './Constants.js'
+import { CLASS_NAME } from '../utils/Constants.js'
 
 const menu = document.querySelector('#menu')
 const sidebar = document.querySelector('#sidebar')
