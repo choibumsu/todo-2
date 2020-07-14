@@ -7,10 +7,4 @@ section.column
       img.add-btn(src='/static/images/plus-btn.svg')
       img.remove-btn(src='/static/images/remove-btn.svg')
   .content-container
-    .card-add-wrapper
-      textarea.card-textarea(placeholder='Enter a note')
-      .button-row
-        .btn-wrapper
-          .btn.add-btn.unactive Add
-        .btn-wrapper
-          .btn.cancel-btn Cancel
+    include ./CardForm.pug
