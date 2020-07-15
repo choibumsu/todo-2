@@ -13,12 +13,12 @@ export default class Column {
   }
 
   init() {
-    this.setTarget()
+    this.setElements()
     this.render()
     this.bindEvent()
   }
 
-  setTarget() {
+  setElements() {
     const template = `
       <section class='column'>
         <div class='title-bar'>
@@ -37,7 +37,6 @@ export default class Column {
     `
 
     this.$target = templateToElement(template)
-    console.log(this.$target)
   }
 
   render() {
