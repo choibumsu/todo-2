@@ -1,6 +1,6 @@
 @import '../common/definitions';
 
-#column-container {
+.column-container {
   display: flex;
   height: calc(100vh - #{$height-nav});
   padding: 16px 0;

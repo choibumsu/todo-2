@@ -1,10 +1,10 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import CardForm from './CardForm'
 import '../../stylesheets/components/column.scss'
+import { COLUMN_CLASS } from '../utils/Constants'
 
 export default class Column {
-  constructor({ parentSelector, columnTitle, cardCount }) {
-    this.parentSelector = parentSelector
+  constructor({ columnTitle, cardCount }) {
     this.columnTitle = columnTitle
     this.cardCount = cardCount
     this.$target = ''
@@ -40,26 +40,30 @@ export default class Column {
   }
 
   render() {
-    const parentElement = document.querySelector(this.parentSelector)
-    parentElement.appendChild(this.$target)
+    const $columnContainer = document.querySelector(
+      `.${COLUMN_CLASS.CONTAINER}`
+    )
+    $columnContainer.appendChild(this.$target)
   }
 
   bindEvent() {
-    const $cardAddBtn = this.$target.querySelector('.add-btn')
+    const $cardAddBtn = this.$target.querySelector(`.${COLUMN_CLASS.ADD_BTN}`)
     $cardAddBtn.addEventListener('click', () => {
       this.toggleCardForm()
     })
   }
 
   toggleCardForm() {
-    const cardFormSlot = this.$target.querySelector('.card-form-slot')
+    const $cardFormSlot = this.$target.querySelector(
+      `.${COLUMN_CLASS.CARD_FORM_SLOT}`
+    )
 
-    if (cardFormSlot.innerHTML) {
-      cardFormSlot.innerHTML = ''
+    if ($cardFormSlot.innerHTML) {
+      $cardFormSlot.innerHTML = ''
       return
     }
 
     const cardForm = new CardForm()
-    cardFormSlot.appendChild(cardForm.$target)
+    $cardFormSlot.appendChild(cardForm.$target)
   }
 }
