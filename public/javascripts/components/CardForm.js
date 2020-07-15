@@ -1,5 +1,5 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import { CLASS_NAME, CARD_FORM_CLASS } from '../utils/Constants'
+import { CLASS_NAME, CARD_FORM_CLASS, COLUMN_CLASS } from '../utils/Constants'
 import '../../stylesheets/components/cardForm.scss'
 
 export default class CardForm {
@@ -50,6 +50,10 @@ export default class CardForm {
     this.$cancelBtn.addEventListener('click', (e) => {
       this.removeCardForm()
     })
+
+    this.$addBtn.addEventListener('click', (e) => {
+      this.addCard()
+    })
   }
 
   setActiveAddbtn(e) {
@@ -63,5 +67,13 @@ export default class CardForm {
 
   removeCardForm() {
     this.$target.remove()
+  }
+
+  addCard() {
+    const $parentColumn = this.$target.closest('.column')
+    const $contentContainer = $parentColumn.querySelector(
+      `.${COLUMN_CLASS.CONTENT_CONTAINER}`
+    )
+    $contentContainer.innerHTML = `${this.$cardTextarea.value}`
   }
 }
