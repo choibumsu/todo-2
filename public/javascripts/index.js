@@ -11,19 +11,21 @@ import './components/LoginForm'
 import './components/SideBarCard'
 import '../stylesheets/common/base.scss'
 
+const columnContainerSelector = '#column-container'
+
 const tempColumns = [
   {
-    parentSelector: '#column-container',
+    parentSelector: columnContainerSelector,
     columnTitle: 'To Doooooo!',
     cardCount: 3,
   },
   {
-    parentSelector: '#column-container',
+    parentSelector: columnContainerSelector,
     columnTitle: 'In Progess~',
     cardCount: 3,
   },
   {
-    parentSelector: '#column-container',
+    parentSelector: columnContainerSelector,
     columnTitle: 'Done!!!',
     cardCount: 3,
   },
