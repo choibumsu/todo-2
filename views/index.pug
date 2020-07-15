@@ -3,6 +3,7 @@ html
     head
         meta(charset='UTF-8')
         link(rel='stylesheet' href='/static/stylesheets/css/common/base.css')
+        link(rel='stylesheet' href='/static/stylesheets/css/components/loginForm.css')
         link(rel='stylesheet' href='/static/stylesheets/css/components/header.css')
         link(rel='stylesheet' href='/static/stylesheets/css/components/sidebar.css')
         link(rel='stylesheet' href='/static/stylesheets/css/components/cardEditModal.css')
@@ -11,6 +12,7 @@ html
         link(rel='stylesheet' href='/static/stylesheets/css/components/card.css')
         title 메인페이지
     body
+        include ./LoginForm.pug
         include ./Header.pug
         include ./Sidebar.pug
         include ./CardEditModal.pug
