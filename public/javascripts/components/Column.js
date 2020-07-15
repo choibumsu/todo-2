@@ -1,9 +1,9 @@
 import '../../stylesheets/components/column.scss'
 
 export default class Column {
-  constructor({ parentSelector, cardTitle, cardCount }) {
+  constructor({ parentSelector, columnTitle, cardCount }) {
     this.parentSelector = parentSelector
-    this.cardTitle = cardTitle
+    this.columnTitle = columnTitle
     this.cardCount = cardCount
     this.$target = ''
 
@@ -21,7 +21,7 @@ export default class Column {
         <div class='title-bar'>
           <div class='title-wrapper'>
             <div class='card-count'>${this.cardCount}</div>
-            <div class='title'>${this.cardTitle}</div> 
+            <div class='title'>${this.columnTitle}</div> 
           </div>
           <div class='btn-wrapper'>
             <img class='add-btn' src='/static/images/plus-btn.svg' alt='add-btn' />
