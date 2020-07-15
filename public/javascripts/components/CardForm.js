@@ -1,11 +1,13 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import { CLASS_NAME } from '../utils/Constants'
+import { CLASS_NAME, CARD_FORM_CLASS } from '../utils/Constants'
 import '../../stylesheets/components/cardForm.scss'
 
 export default class CardForm {
   constructor() {
     this.$target = ''
     this.$cardTextarea = ''
+    this.$addBtn = ''
+    this.$cancelBtn = ''
 
     this.init()
   }
@@ -31,9 +33,13 @@ export default class CardForm {
     `
 
     this.$target = templateToElement(template)
-    this.$cardTextarea = this.$target.querySelector('textarea.card-textarea')
-    this.$addBtn = this.$target.querySelector('.add-btn')
-    this.$cancelBtn = this.$target.querySelector('.cancel-btn')
+    this.$cardTextarea = this.$target.querySelector(
+      `.${CARD_FORM_CLASS.TEXTAREA}`
+    )
+    this.$addBtn = this.$target.querySelector(`.${CARD_FORM_CLASS.ADD_BTN}`)
+    this.$cancelBtn = this.$target.querySelector(
+      `.${CARD_FORM_CLASS.CANCEL_BTN}`
+    )
   }
 
   bindEvent() {
