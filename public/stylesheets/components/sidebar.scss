@@ -9,14 +9,24 @@
   color: $color-black;
   background-color: $color-white;
   $border-line: solid 1px $color-gray-300;
+  z-index: 1;
+  right: 0px;
+  overflow-y: auto;
+  animation: show-sidebar .2s cubic-bezier(0,0,0,1);
   border: {
     top: $border-line;
     left: $border-line;
     right: $border-line;
   }
-  z-index: 1;
-  right: 0px;
-  overflow-y: auto;
+}
+
+@keyframes show-sidebar {
+  0% {
+    transform: translateX(360px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .menu,
