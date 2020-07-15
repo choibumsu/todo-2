@@ -39,8 +39,12 @@
     padding: 16px;
   }
 
-  img {
-    height: 10px;
+  img{
+    padding-right:16px;
+    cursor: pointer;
+    &:hover{
+      filter:saturate(10);
+    }
   }
 }
 
@@ -86,5 +90,6 @@
     border: none;
     color: white;
     font-weight: bold;
+    cursor: pointer;
   }
 }
