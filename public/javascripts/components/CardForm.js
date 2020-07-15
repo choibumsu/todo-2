@@ -33,11 +33,16 @@ export default class CardForm {
     this.$target = templateToElement(template)
     this.$cardTextarea = this.$target.querySelector('textarea.card-textarea')
     this.$addBtn = this.$target.querySelector('.add-btn')
+    this.$cancelBtn = this.$target.querySelector('.cancel-btn')
   }
 
   bindEvent() {
     this.$cardTextarea.addEventListener('input', (e) => {
       this.setActiveAddbtn(e)
+    })
+
+    this.$cancelBtn.addEventListener('click', (e) => {
+      this.removeCardForm()
     })
   }
 
@@ -48,5 +53,9 @@ export default class CardForm {
     }
 
     this.$addBtn.classList.add(CLASS_NAME.UNACTIVE)
+  }
+
+  removeCardForm() {
+    this.$target.remove()
   }
 }
