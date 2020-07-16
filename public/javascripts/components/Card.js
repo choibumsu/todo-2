@@ -1,12 +1,18 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/card.scss'
-import { CARD_CLASS } from '../utils/Constants'
+import { CARD_CLASS, EVENT } from '../utils/Constants'
 
 export default class Card {
+<<<<<<< HEAD
   constructor({ cardTitle, username }) {
+=======
+  constructor(emitter, cardId, cardTitle, username) {
+    this.id = cardId
+>>>>>>> [#27] feat(card) - 카드 삭제를 위해 id 추가
     this.cardTitle = cardTitle
     this.user = username
     this.$target = ''
+    this.emitter = emitter
 
     this.init()
   }
@@ -51,6 +57,9 @@ Card.prototype.bindEvent = function () {
 Card.prototype.removeCard = function () {
   const isRemove = confirm('정말 삭제하시겠습니까?')
 
-  if (isRemove) this.$target.remove()
+  if (!isRemove) return
+
+  this.$target.remove()
+  this.emitter.emit(EVENT.REMOVE_CARD, this.id)
 }
 

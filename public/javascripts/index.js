@@ -13,6 +13,7 @@ import '../stylesheets/common/base.scss'
 
 const tempColumns = [
   {
+    id: 1,
     columnTitle: 'To Doooooo!',
     cardDatas: [
       {
@@ -30,10 +31,12 @@ const tempColumns = [
     ],
   },
   {
+    id: 2,
     columnTitle: 'In Progess~',
     cardList: [],
   },
   {
+    id: 3,
     columnTitle: 'Done!!!',
     cardList: [],
   },
