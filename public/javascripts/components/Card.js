@@ -53,3 +53,4 @@ Card.prototype.removeCard = function () {
 
   if (isRemove) this.$target.remove()
 }
+
