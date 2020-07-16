@@ -70,8 +70,7 @@ Card.prototype.editCard = function () {
 }
 
 Card.prototype.removeCard = function () {
-  const modal = new DeleteCardModal(this.cardTitle, function deleted(isRemove) {
-    if (!isRemove) return
+  const modal = new DeleteCardModal(this.cardTitle, function deleted() {
     this.$target.remove()
     this.emitter.emit(EVENT.REMOVE_CARD, this.id)
   }.bind(this))
