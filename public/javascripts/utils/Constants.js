@@ -35,7 +35,7 @@ export const MODAL_ID = {
   DELETE_MODAL_BOX_CARD: 'deleteCard',
   EDIT_MODAL_BOX_CARD: 'editCard',
   EDIT_CARD_BTN: 'editCardButton',
-  EDIT_COLUMN_BTN: 'editColumnButton',
+  EDIT_COLUMN_BTN: 'editColumndButton',
   DELETE_CARD_BTN: 'deleteCardButton',
 }
 
