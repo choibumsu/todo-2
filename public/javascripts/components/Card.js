@@ -73,3 +73,4 @@ Card.prototype.removeCard = function () {
 Card.prototype.render = function () {
   this.$target.querySelector('.title').innerText = this.cardTitle
 }
+
