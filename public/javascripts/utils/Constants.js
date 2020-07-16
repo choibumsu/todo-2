@@ -5,7 +5,10 @@ export const CLASS_NAME = {
 
 export const COLUMN_CLASS = {
   CONTAINER: 'column-container',
+  COLUMN: 'column',
+  TITLE: 'title',
   ADD_BTN: 'add-btn',
+  REMOVE_BTN: 'remove-btn',
   CARD_COUNT: 'card-count',
   CARD_FORM_SLOT: 'card-form-slot',
   CONTENT_CONTAINER: 'content-container',
