@@ -65,8 +65,8 @@ Column.prototype.bindEvent = function () {
   this.emitter.on(EVENT.REMOVE_CARD, this.removeOneCard.bind(this))
 }
 
-Column.prototype.addCard = function ({ id, cardTitle, username }) {
-  const newCard = new Card(this.emitter, id, cardTitle, username)
+Column.prototype.addCard = function ({ id, cardTitle, username, columnIndex }) {
+  const newCard = new Card(this.emitter, id, cardTitle, username, columnIndex)
   this.cardList.push(newCard)
   this.$contentContainer.prepend(newCard.getTarget())
 }
@@ -75,6 +75,12 @@ Column.prototype.setCardCount = function () {
   const newCardCount = this.$target.querySelectorAll(`.${CARD_CLASS.CARD}`)
     .length
   this.$cardCount.innerHTML = newCardCount
+}
+
+Column.prototype.setCardSequence = function () {
+  this.cardList.forEach((card, index) => {
+    card.columnIndex = index + 1
+  })
 }
 
 Column.prototype.toggleCardForm = function () {
@@ -94,6 +100,7 @@ Column.prototype.toggleCardForm = function () {
 Column.prototype.insertOneCard = function (cardData) {
   //api 호출 후 id 받기
   cardData.id = 1
+  cardData.columnIndex = this.cardList.length + 1
   this.addCard(cardData)
   this.setCardCount()
 }
@@ -102,4 +109,5 @@ Column.prototype.removeOneCard = function (cardId) {
   const removeIndex = this.cardList.findIndex((card) => card.id === cardId)
   this.cardList.splice(removeIndex, 1)
   this.setCardCount()
+  this.setCardSequence()
 }

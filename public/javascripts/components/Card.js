@@ -3,12 +3,13 @@ import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, EVENT } from '../utils/Constants'
 
 export default class Card {
-  constructor(emitter, cardId, cardTitle, username) {
-    this.id = cardId
-    this.cardTitle = cardTitle
-    this.user = username
+  constructor(emitter, cardId, cardTitle, username, columnIndex) {
     this.$target = ''
     this.emitter = emitter
+    this.id = cardId
+    this.cardTitle = cardTitle
+    this.username = username
+    this.columnIndex = columnIndex
 
     this.init()
   }
@@ -28,7 +29,7 @@ Card.prototype.setElements = function () {
           <div class='title'>${this.cardTitle}</div>
           <div class='added-by'>
             <span>Added by </span>
-            <span class='strong'>${this.user}</span>
+            <span class='strong'>${this.username}</span>
           </div>
         </div>
         <img class='${CARD_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' />
