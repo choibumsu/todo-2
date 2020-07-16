@@ -29,13 +29,13 @@ CardForm.prototype.init = function () {
 CardForm.prototype.setElements = function () {
   const template = `
     <div class='card-form'>
-      <textarea class='card-textarea' placeholder='Enter a note' maxlength='500'></textarea>
+      <textarea class='${CARD_FORM_CLASS.TEXTAREA}' placeholder='Enter a note' maxlength='500'></textarea>
       <div class='button-row'>
         <div class='btn-wrapper'>
-          <div class='btn add-btn unactive'>Add</div>
+          <div class='btn ${CARD_FORM_CLASS.ADD_BTN} ${CLASS_NAME.UNACTIVE}'>Add</div>
         </div>
         <div class='btn-wrapper'>
-          <div class='btn cancel-btn'>Cancel</div>
+          <div class='btn ${CARD_FORM_CLASS.CANCEL_BTN}'>Cancel</div>
         </div>
       </div>
     </div>
@@ -83,7 +83,7 @@ CardForm.prototype.addCard = function () {
     return
   }
 
-  const $parentColumn = this.$target.closest('.column')
+  const $parentColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
   const $contentContainer = $parentColumn.querySelector(
     `.${COLUMN_CLASS.CONTENT_CONTAINER}`
   )

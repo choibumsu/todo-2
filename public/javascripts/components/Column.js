@@ -22,19 +22,19 @@ Column.prototype.init = function () {
 
 Column.prototype.setElements = function () {
   const template = `
-    <section class='column'>
+    <section class='${COLUMN_CLASS.COLUMN}'>
       <div class='title-bar'>
         <div class='title-wrapper'>
-          <div class='card-count'>${this.cardCount}</div>
-          <div class='title'>${this.columnTitle}</div> 
+          <div class='${COLUMN_CLASS.CARD_COUNT}'>${this.cardCount}</div>
+          <div class='${COLUMN_CLASS.TITLE}'>${this.columnTitle}</div> 
         </div>
         <div class='btn-wrapper'>
-          <img class='add-btn' src='/static/images/plus-btn.svg' alt='add-btn' />
-          <img class='remove-btn' src='/static/images/remove-btn.svg' alt='remove-btn' />
+          <img class='${COLUMN_CLASS.ADD_BTN}' src='/static/images/plus-btn.svg' alt='add-btn' />
+          <img class='${COLUMN_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' alt='remove-btn' />
         </div>
       </div>
-      <div class='card-form-slot'></div>
-      <div class='content-container'></div>
+      <div class='${COLUMN_CLASS.CARD_FORM_SLOT}'></div>
+      <div class='${COLUMN_CLASS.CONTENT_CONTAINER}'></div>
     </section>
   `
 
