@@ -28,3 +28,15 @@ export const CARD_CLASS = {
 export const EVENT = {
   CHANGE_CARD_COUNT: 'change-card-count',
 }
+
+export const MODAL_ID = {
+  EDIT_MODAL_BOX_COLUMN: 'editColumn',
+  DELETE_MODAL_BOX_CARD: 'deleteCard',
+  EDIT_MODAL_BOX_CARD: 'editCard',
+}
+
+export const MODAL_CLASS = {
+  MODAL: 'modal',
+  CLOSE: 'close',
+  BIGBOX: 'big-box',
+}
