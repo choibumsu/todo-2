@@ -1,15 +1,16 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import { COLUMN_CLASS, CARD_CLASS, EVENT } from '../utils/Constants'
-import { emitter } from '../utils/EventEmitter'
+import { Emitter } from '../utils/EventEmitter'
 import '../../stylesheets/components/column.scss'
 import CardForm from './CardForm'
 import Card from './Card'
 export default class Column {
   constructor({ columnTitle, cardDatas }) {
+    this.$target = ''
     this.columnTitle = columnTitle
     this.cardDatas = cardDatas
-    this.$target = ''
     this.cardList = []
+    this.emitter = new Emitter()
 
     this.init()
   }
@@ -45,12 +46,8 @@ Column.prototype.setElements = function () {
     `.${COLUMN_CLASS.CONTENT_CONTAINER}`
   )
 
-  this.cardDatas.forEach((cardData) => {
-    const card = new Card(cardData)
-
-    this.cardList.push(card)
-    this.$contentContainer.appendChild(card.getTarget())
-  })
+  this.cardDatas.forEach((cardData) => this.addCard(cardData))
+  this.setCardCount()
 }
 
 Column.prototype.render = function () {
@@ -64,9 +61,13 @@ Column.prototype.bindEvent = function () {
     this.toggleCardForm()
   })
 
-  emitter.on(EVENT.CHANGE_CARD_COUNT, () => {
-    this.setCardCount()
-  })
+  this.emitter.on(EVENT.ADD_CARD, this.insertOneCard.bind(this))
+}
+
+Column.prototype.addCard = function (cardData) {
+  const newCard = new Card(this.emitter, cardData.cardTitle, cardData.username)
+  this.cardList.push(newCard)
+  this.$contentContainer.prepend(newCard.getTarget())
 }
 
 Column.prototype.setCardCount = function () {
@@ -85,6 +86,11 @@ Column.prototype.toggleCardForm = function () {
     return
   }
 
-  const cardForm = new CardForm()
+  const cardForm = new CardForm(this.emitter)
   $cardFormSlot.appendChild(cardForm.$target)
+}
+
+Column.prototype.insertOneCard = function (cardData) {
+  this.addCard(cardData)
+  this.setCardCount()
 }

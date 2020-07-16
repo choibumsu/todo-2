@@ -26,5 +26,5 @@ export const CARD_CLASS = {
 }
 
 export const EVENT = {
-  CHANGE_CARD_COUNT: 'change-card-count',
+  ADD_CARD: 'add-card',
 }

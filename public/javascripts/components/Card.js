@@ -3,7 +3,7 @@ import '../../stylesheets/components/card.scss'
 import { CARD_CLASS } from '../utils/Constants'
 
 export default class Card {
-  constructor({ cardTitle, username }) {
+  constructor(emitter, cardTitle, username) {
     this.cardTitle = cardTitle
     this.user = username
     this.$target = ''
@@ -53,4 +53,3 @@ Card.prototype.removeCard = function () {
 
   if (isRemove) this.$target.remove()
 }
-
