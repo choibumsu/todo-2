@@ -103,6 +103,7 @@ Column.prototype.toggleCardForm = function () {
 
 Column.prototype.editColumn = function () {
   const column = new EditColumnModal(this.columnTitle,(edited)=>{
+    console.log(this.columnTitle)
     this.columnTitle=edited
     this.show()
   })
