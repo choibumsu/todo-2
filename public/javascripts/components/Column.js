@@ -4,6 +4,7 @@ import { Emitter } from '../utils/EventEmitter'
 import '../../stylesheets/components/column.scss'
 import CardForm from './CardForm'
 import Card from './Card'
+import EditColumnModal from './Modal/EditColumnModal'
 export default class Column {
   constructor({ columnTitle, cardDatas }) {
     this.$target = ''
@@ -60,6 +61,9 @@ Column.prototype.bindEvent = function () {
   $cardAddBtn.addEventListener('click', () => {
     this.toggleCardForm()
   })
+  this.$target.addEventListener('dblclick', () => {
+    this.editColumn()
+  })
 
   this.emitter.on(EVENT.ADD_CARD, this.insertOneCard.bind(this))
   this.emitter.on(EVENT.REMOVE_CARD, this.removeOneCard.bind(this))
@@ -95,6 +99,19 @@ Column.prototype.toggleCardForm = function () {
 
   const cardForm = new CardForm(this.emitter)
   $cardFormSlot.appendChild(cardForm.$target)
+}
+
+Column.prototype.editColumn = function () {
+  const column = new EditColumnModal(this.columnTitle,(edited)=>{
+    console.log(this.columnTitle)
+    this.columnTitle=edited
+    this.show()
+  })
+  column.showModal()
+}
+
+Column.prototype.show=function (){
+  this.$target.querySelector(`.${COLUMN_CLASS.TITLE}`).innerText=this.columnTitle
 }
 
 Column.prototype.insertOneCard = function (cardData) {
