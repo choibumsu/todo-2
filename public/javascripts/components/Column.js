@@ -62,10 +62,11 @@ Column.prototype.bindEvent = function () {
   })
 
   this.emitter.on(EVENT.ADD_CARD, this.insertOneCard.bind(this))
+  this.emitter.on(EVENT.REMOVE_CARD, this.removeOneCard.bind(this))
 }
 
-Column.prototype.addCard = function (cardData) {
-  const newCard = new Card(this.emitter, cardData.cardTitle, cardData.username)
+Column.prototype.addCard = function ({ id, cardTitle, username }) {
+  const newCard = new Card(this.emitter, id, cardTitle, username)
   this.cardList.push(newCard)
   this.$contentContainer.prepend(newCard.getTarget())
 }
@@ -91,6 +92,14 @@ Column.prototype.toggleCardForm = function () {
 }
 
 Column.prototype.insertOneCard = function (cardData) {
+  //api 호출 후 id 받기
+  cardData.id = 1
   this.addCard(cardData)
+  this.setCardCount()
+}
+
+Column.prototype.removeOneCard = function (cardId) {
+  const removeIndex = this.cardList.findIndex((card) => card.id === cardId)
+  this.cardList.splice(removeIndex, 1)
   this.setCardCount()
 }
