@@ -11,7 +11,7 @@ export default class Modal {
 
   bindEvent() {
     this.$close.addEventListener('click', this.close.bind(this))
-    this.$bigbox.addEventListener('click',this.close.bind(this))
+    this.$bigbox.addEventListener('click', this.close.bind(this))
   }
 
   show() {
