@@ -5,6 +5,7 @@ export default class Modal {
   constructor($modal) {
     this.$modal = $modal
     this.$close = this.$modal.querySelector('#close')
+    this.$bigbox=this.$modal.querySelector('.big-box')
     this.bindEvent()
   }
 
@@ -17,5 +18,6 @@ export default class Modal {
   }
   close() {
     this.$modal.classList.add(CLASS_NAME.DP_NONE)
+    this.$bigbox.classList.add(CLASS_NAME.DP_NONE)
   }
 }

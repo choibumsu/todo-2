@@ -5,7 +5,7 @@ import './components/CardForm'
 import Column from './components/Column'
 import DeleteCardModal from './components/Modal/DeleteCardModal'
 import EditCardModal from './components/Modal/EditCardModal'
-import './components/Modal/EditColumnModal'
+import EditColumnModal from './components/Modal/EditColumnModal'
 import './components/Header'
 import './components/LoginForm'
 import './components/SideBarCard'
@@ -29,5 +29,6 @@ tempColumns.forEach((column) => {
   new Column(column)
 })
 
-// new EditCardModal()
+new EditCardModal()
 new DeleteCardModal()
+new EditColumnModal()
