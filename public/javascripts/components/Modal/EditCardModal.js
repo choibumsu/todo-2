@@ -17,7 +17,7 @@ export default class EditCardModal extends Modal {
   }
 
   bindEvent() {
-    this.$editBtn.addEventListener('click', this.editCard.bind(this))
+    this.$editBtn.addEventListener('click', this.editCard.bind(this),{once:true})
   }
 
   editCard() {
