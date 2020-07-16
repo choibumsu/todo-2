@@ -104,11 +104,14 @@ Column.prototype.toggleCardForm = function () {
 Column.prototype.editColumn = function () {
   const column = new EditColumnModal(this.columnTitle,(edited)=>{
     this.columnTitle=edited
-    this.render()
+    this.show()
   })
   column.showModal()
 }
 
+Column.prototype.show=function (){
+  this.$target.querySelector(`.${COLUMN_CLASS.TITLE}`).innerText=this.columnTitle
+}
 
 Column.prototype.insertOneCard = function (cardData) {
   //api 호출 후 id 받기
