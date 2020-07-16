@@ -22,6 +22,7 @@ export const CARD_FORM_CLASS = {
 
 export const CARD_CLASS = {
   CARD: 'card',
+  REMOVE_BTN: 'remove-btn',
 }
 
 export const EVENT = {
