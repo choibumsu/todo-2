@@ -16,9 +16,7 @@ export default class EditColumnModal extends Modal {
     this.editCallback = editCallback
   }
   bindEvent() {
-    this.$editBtn.addEventListener('click', this.editColumn.bind(this), {
-      once: true,
-    })
+    this.$editBtn.onclick=this.editColumn.bind(this)
   }
   editColumn() {
     this.editCallback(this.$editContent.value)
