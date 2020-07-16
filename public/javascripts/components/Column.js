@@ -103,7 +103,6 @@ Column.prototype.insertOneCard = function (cardData) {
   cardData.columnIndex = this.cardList.length + 1
   this.addCard(cardData)
   this.setCardCount()
-  console.log(this.cardList)
 }
 
 Column.prototype.removeOneCard = function (cardId) {
