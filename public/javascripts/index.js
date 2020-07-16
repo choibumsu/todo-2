@@ -12,6 +12,7 @@ import './components/SideBarCard'
 import '../stylesheets/common/base.scss'
 const tempColumns = [
   {
+    id: 1,
     columnTitle: 'To Doooooo!',
     cardDatas: [
       {
@@ -29,10 +30,12 @@ const tempColumns = [
     ],
   },
   {
+    id: 2,
     columnTitle: 'In Progess~',
     cardDatas: [],
   },
   {
+    id: 3,
     columnTitle: 'Done!!!',
     cardDatas: [],
   },

@@ -27,6 +27,7 @@ export const CARD_CLASS = {
 
 export const EVENT = {
   ADD_CARD: 'add-card',
+  REMOVE_CARD: 'remove-card',
 }
 
 export const MODAL_ID = {
