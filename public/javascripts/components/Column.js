@@ -77,6 +77,12 @@ Column.prototype.setCardCount = function () {
   this.$cardCount.innerHTML = newCardCount
 }
 
+Column.prototype.setCardSequence = function () {
+  this.cardList.forEach((card, index) => {
+    card.columnIndex = index + 1
+  })
+}
+
 Column.prototype.toggleCardForm = function () {
   const $cardFormSlot = this.$target.querySelector(
     `.${COLUMN_CLASS.CARD_FORM_SLOT}`
@@ -104,4 +110,5 @@ Column.prototype.removeOneCard = function (cardId) {
   const removeIndex = this.cardList.findIndex((card) => card.id === cardId)
   this.cardList.splice(removeIndex, 1)
   this.setCardCount()
+  this.setCardSequence()
 }
