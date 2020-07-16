@@ -50,7 +50,11 @@ Card.prototype.bindEvent = function () {
   this.$removeBtn.addEventListener('click', () => {
     this.removeCard()
   })
-  this.$target.addEventListener('dblclick', this.editCard.bind(this))
+  // this.$target.addEventListener('dblclick', this.editCard.bind(this))
+  this.$target.ondblclick = (event)=>{
+    event.stopPropagation();
+    this.editCard()
+  }
 }
 
 Card.prototype.editCard = function () {
