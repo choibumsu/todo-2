@@ -1,5 +1,5 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import  EditCardModal from './Modal/EditCardModal'
+import EditCardModal from './Modal/EditCardModal'
 import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, EVENT } from '../utils/Constants'
 
@@ -54,8 +54,11 @@ Card.prototype.bindEvent = function () {
 }
 
 Card.prototype.editCard = function () {
-  const card = new EditCardModal()
-  card.showModal(this.cardTitle)
+  const card = new EditCardModal(this.cardTitle, (edited) => {
+    this.cardTitle = edited
+    this.render()
+  })
+  card.showModal()
 }
 
 Card.prototype.removeCard = function () {
@@ -65,4 +68,8 @@ Card.prototype.removeCard = function () {
 
   this.$target.remove()
   this.emitter.emit(EVENT.REMOVE_CARD, this.id)
+}
+
+Card.prototype.render = function () {
+  this.$target.querySelector('.title').innerText = this.cardTitle
 }

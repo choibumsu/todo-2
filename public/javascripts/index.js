@@ -45,6 +45,3 @@ tempColumns.forEach((column) => {
   new Column(column)
 })
 
-new EditCardModal()
-new DeleteCardModal()
-new EditColumnModal()
