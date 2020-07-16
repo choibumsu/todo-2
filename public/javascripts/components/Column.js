@@ -1,14 +1,15 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import CardForm from './CardForm'
 import { COLUMN_CLASS, CARD_CLASS, EVENT } from '../utils/Constants'
 import { emitter } from '../utils/EventEmitter'
 import '../../stylesheets/components/column.scss'
-
+import CardForm from './CardForm'
+import Card from './Card'
 export default class Column {
-  constructor({ columnTitle, cardCount }) {
+  constructor({ columnTitle, cardDatas }) {
     this.columnTitle = columnTitle
-    this.cardCount = cardCount
+    this.cardDatas = cardDatas
     this.$target = ''
+    this.cardList = []
 
     this.init()
   }
@@ -25,7 +26,7 @@ Column.prototype.setElements = function () {
     <section class='${COLUMN_CLASS.COLUMN}'>
       <div class='title-bar'>
         <div class='title-wrapper'>
-          <div class='${COLUMN_CLASS.CARD_COUNT}'>${this.cardCount}</div>
+          <div class='${COLUMN_CLASS.CARD_COUNT}'>${this.cardList.length}</div>
           <div class='${COLUMN_CLASS.TITLE}'>${this.columnTitle}</div> 
         </div>
         <div class='btn-wrapper'>
@@ -40,6 +41,16 @@ Column.prototype.setElements = function () {
 
   this.$target = templateToElement(template)
   this.$cardCount = this.$target.querySelector(`.${COLUMN_CLASS.CARD_COUNT}`)
+  this.$contentContainer = this.$target.querySelector(
+    `.${COLUMN_CLASS.CONTENT_CONTAINER}`
+  )
+
+  this.cardDatas.forEach((cardData) => {
+    const card = new Card(cardData)
+
+    this.cardList.push(card)
+    this.$contentContainer.appendChild(card.getTarget())
+  })
 }
 
 Column.prototype.render = function () {
