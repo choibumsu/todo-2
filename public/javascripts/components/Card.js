@@ -3,9 +3,9 @@ import '../../stylesheets/components/card.scss'
 import { CARD_CLASS } from '../utils/Constants'
 
 export default class Card {
-  constructor(cardTitle) {
+  constructor({ cardTitle, username }) {
     this.cardTitle = cardTitle
-    this.user = 'choibumsu'
+    this.user = username
     this.$target = ''
 
     this.init()
