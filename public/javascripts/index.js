@@ -3,14 +3,13 @@ import { toggleSidebar } from './components/SideBar'
 import './components/Card'
 import './components/CardForm'
 import Column from './components/Column'
-import './components/Modal/DeleteCardModal'
+import DeleteCardModal from './components/Modal/DeleteCardModal'
 import EditCardModal from './components/Modal/EditCardModal'
 import './components/Modal/EditColumnModal'
 import './components/Header'
 import './components/LoginForm'
 import './components/SideBarCard'
 import '../stylesheets/common/base.scss'
-
 const tempColumns = [
   {
     columnTitle: 'To Doooooo!',
@@ -30,4 +29,5 @@ tempColumns.forEach((column) => {
   new Column(column)
 })
 
-new EditCardModal()
+// new EditCardModal()
+new DeleteCardModal()
