@@ -4,15 +4,15 @@ import '../../../stylesheets/components/modal.scss'
 export default class Modal {
   constructor($modal_box) {
     this.$modal = $modal_box.querySelector(`.${MODAL_CLASS.MODAL}`)
-    this.$modal = $modal_box.querySelector(`#${MODAL_CLASS.CLOSE}`)
+    this.$close = $modal_box.querySelector(`#${MODAL_CLASS.CLOSE}`)
     this.$bigbox = $modal_box.querySelector(`.${MODAL_CLASS.BIGBOX}`)
 
     this.bindEvent()
   }
 
   bindEvent() {
-    this.$close.addEventListener('click', this.close.bind(this))
-    this.$bigbox.addEventListener('click', this.close.bind(this))
+    this.$close.addEventListener('click', this.closeModal.bind(this))
+    this.$bigbox.addEventListener('click', this.closeModal.bind(this))
   }
 
   showModal() {
