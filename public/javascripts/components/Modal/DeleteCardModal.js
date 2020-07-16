@@ -2,7 +2,7 @@ import Modal from './Modal'
 
 export default class DeleteCardModal extends Modal{
   constructor(){
-    let modal=document.querySelector('#deleteCard')
-    super(modal)
+    let $modal_box=document.querySelector('#deleteCard')
+    super($modal_box)
   }
 }

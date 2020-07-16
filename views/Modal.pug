@@ -1,10 +1,11 @@
 block variables
-.big-box
-.modal(id=modal_id)
-    .modal-header
-        block header
-        img(id='close',src='/static/images/remove-btn.svg')
-    .modal-content
-        block content
-        block button
+.modal-box(id=modal_id)
+    .big-box
+    .modal
+        .modal-header
+            block header
+            img(id='close',src='/static/images/remove-btn.svg')
+        .modal-content
+            block content
+            block button
 

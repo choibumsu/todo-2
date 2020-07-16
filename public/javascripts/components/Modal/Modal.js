@@ -2,10 +2,10 @@ import { CLASS_NAME } from '../../utils/Constants.js'
 import '../../../stylesheets/components/modal.scss'
 
 export default class Modal {
-  constructor($modal) {
-    this.$modal = $modal
-    this.$close = this.$modal.querySelector('#close')
-    this.$bigbox=this.$modal.querySelector('.big-box')
+  constructor($modal_box) {
+    this.$modal = $modal_box.querySelector('.modal')
+    this.$close = $modal_box.querySelector('#close')
+    this.$bigbox = $modal_box.querySelector('.big-box')
     this.bindEvent()
   }
 

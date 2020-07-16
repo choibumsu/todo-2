@@ -2,7 +2,7 @@ import Modal from './Modal'
 
 export default class EditColumnModal extends Modal{
   constructor(){
-    let modal=document.querySelector('#editColumn')
-    super(modal)
+    let $modal_box=document.querySelector('#editColumn')
+    super($modal_box)
   }
 }
