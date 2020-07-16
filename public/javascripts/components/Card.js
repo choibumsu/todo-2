@@ -3,12 +3,8 @@ import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, EVENT } from '../utils/Constants'
 
 export default class Card {
-<<<<<<< HEAD
-  constructor({ cardTitle, username }) {
-=======
   constructor(emitter, cardId, cardTitle, username) {
     this.id = cardId
->>>>>>> [#27] feat(card) - 카드 삭제를 위해 id 추가
     this.cardTitle = cardTitle
     this.user = username
     this.$target = ''
@@ -62,4 +58,3 @@ Card.prototype.removeCard = function () {
   this.$target.remove()
   this.emitter.emit(EVENT.REMOVE_CARD, this.id)
 }
-
