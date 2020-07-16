@@ -34,10 +34,14 @@ export const MODAL_ID = {
   EDIT_MODAL_BOX_COLUMN: 'editColumn',
   DELETE_MODAL_BOX_CARD: 'deleteCard',
   EDIT_MODAL_BOX_CARD: 'editCard',
+  EDIT_CARD_BTN: 'editCardButton',
+  EDIT_COLUMN_BTN: 'editColumnButton',
+  DELETE_CARD_BTN: 'deleteCardButton',
 }
 
 export const MODAL_CLASS = {
   MODAL: 'modal',
   CLOSE: 'close',
   BIGBOX: 'big-box',
+  MODAL_CONTENT: 'modal-content',
 }

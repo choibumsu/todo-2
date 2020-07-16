@@ -1,4 +1,4 @@
-// import { closeModal } from './components/Modal'
+import { closeModal } from './components/Modal/Modal'
 import { toggleSidebar } from './components/SideBar'
 import './components/Card'
 import './components/CardForm'
@@ -45,6 +45,3 @@ tempColumns.forEach((column) => {
   new Column(column)
 })
 
-new EditCardModal()
-new DeleteCardModal()
-new EditColumnModal()
