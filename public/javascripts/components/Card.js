@@ -1,4 +1,5 @@
 import { templateToElement } from '../utils/HtmlGenerator'
+import  EditCardModal from './Modal/EditCardModal'
 import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, EVENT } from '../utils/Constants'
 
@@ -49,6 +50,12 @@ Card.prototype.bindEvent = function () {
   this.$removeBtn.addEventListener('click', () => {
     this.removeCard()
   })
+  this.$target.addEventListener('dblclick', this.editCard.bind(this))
+}
+
+Card.prototype.editCard = function () {
+  const card = new EditCardModal()
+  card.showModal()
 }
 
 Card.prototype.removeCard = function () {

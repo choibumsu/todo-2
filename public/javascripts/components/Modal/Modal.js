@@ -3,7 +3,7 @@ import '../../../stylesheets/components/modal.scss'
 
 export default class Modal {
   constructor($modal_box) {
-    this.$modal_box = $modal_box.querySelector(`.${MODAL_CLASS.MODAL}`)
+    this.$modal_box = $modal_box
     this.$close = $modal_box.querySelector(`#${MODAL_CLASS.CLOSE}`)
     this.$bigbox = $modal_box.querySelector(`.${MODAL_CLASS.BIGBOX}`)
 
