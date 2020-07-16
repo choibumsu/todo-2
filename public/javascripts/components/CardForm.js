@@ -83,7 +83,7 @@ export default class CardForm {
       `.${COLUMN_CLASS.CONTENT_CONTAINER}`
     )
     const $newCard = new Card(this.$cardTextarea.value).getTarget()
-    $contentContainer.appendChild($newCard)
+    $contentContainer.prepend($newCard)
 
     this.$cardTextarea.value = ''
     this.setActive(false)
