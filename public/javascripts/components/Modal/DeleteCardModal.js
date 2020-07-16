@@ -16,7 +16,7 @@ export default class DeleteCardModal extends Modal {
     this.deleteCallback = deleteCallback
   }
   bindEvent(){
-    this.$deleteBtn.addEventListener('click',this.deleteCard.bind(this))
+    this.$deleteBtn.onclick=this.deleteCard.bind(this)
   }
   deleteCard(){
     this.deleteCallback()
