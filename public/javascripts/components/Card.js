@@ -55,7 +55,7 @@ Card.prototype.bindEvent = function () {
 
 Card.prototype.editCard = function () {
   const card = new EditCardModal()
-  card.showModal()
+  card.showModal(this.cardTitle)
 }
 
 Card.prototype.removeCard = function () {

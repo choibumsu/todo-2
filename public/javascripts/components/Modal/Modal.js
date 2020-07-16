@@ -6,7 +6,9 @@ export default class Modal {
     this.$modal_box = $modal_box
     this.$close = $modal_box.querySelector(`#${MODAL_CLASS.CLOSE}`)
     this.$bigbox = $modal_box.querySelector(`.${MODAL_CLASS.BIGBOX}`)
-
+    this.$editContent = $modal_box.querySelector(
+      `.${MODAL_CLASS.MODAL_CONTENT} > textarea`
+    )
     this.bindEvent()
   }
 
@@ -15,8 +17,9 @@ export default class Modal {
     this.$bigbox.addEventListener('click', this.closeModal.bind(this))
   }
 
-  showModal() {
+  showModal(cardTitle) {
     this.$modal_box.classList.remove(CLASS_NAME.DP_NONE)
+    this.$editContent.value=cardTitle
   }
   closeModal() {
     this.$modal_box.classList.add(CLASS_NAME.DP_NONE)

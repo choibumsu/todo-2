@@ -40,4 +40,5 @@ export const MODAL_CLASS = {
   MODAL: 'modal',
   CLOSE: 'close',
   BIGBOX: 'big-box',
+  MODAL_CONTENT: 'modal-content',
 }
