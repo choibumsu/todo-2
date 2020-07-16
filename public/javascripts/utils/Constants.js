@@ -33,3 +33,9 @@ export const MODAL_ID = {
   DELETE_MODAL_BOX_CARD: 'deleteCard',
   EDIT_MODAL_BOX_CARD: 'editCard',
 }
+
+export const MODAL_CLASS = {
+  MODAL: 'modal',
+  CLOSE: 'close',
+  BIGBOX: 'big-box',
+}

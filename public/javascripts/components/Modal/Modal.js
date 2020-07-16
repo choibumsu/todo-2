@@ -1,11 +1,12 @@
-import { CLASS_NAME } from '../../utils/Constants.js'
+import { CLASS_NAME, MODAL_CLASS } from '../../utils/Constants.js'
 import '../../../stylesheets/components/modal.scss'
 
 export default class Modal {
   constructor($modal_box) {
-    this.$modal = $modal_box.querySelector('.modal')
-    this.$close = $modal_box.querySelector('#close')
-    this.$bigbox = $modal_box.querySelector('.big-box')
+    this.$modal = $modal_box.querySelector(`.${MODAL_CLASS.MODAL}`)
+    this.$modal = $modal_box.querySelector(`#${MODAL_CLASS.CLOSE}`)
+    this.$bigbox = $modal_box.querySelector(`.${MODAL_CLASS.BIGBOX}`)
+
     this.bindEvent()
   }
 
@@ -14,10 +15,10 @@ export default class Modal {
     this.$bigbox.addEventListener('click', this.close.bind(this))
   }
 
-  show() {
+  showModal() {
     this.$modal.classList.remove(CLASS_NAME.DP_NONE)
   }
-  close() {
+  closeModal() {
     this.$modal.classList.add(CLASS_NAME.DP_NONE)
     this.$bigbox.classList.add(CLASS_NAME.DP_NONE)
   }
