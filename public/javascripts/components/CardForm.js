@@ -87,7 +87,10 @@ CardForm.prototype.addCard = function () {
   const $contentContainer = $parentColumn.querySelector(
     `.${COLUMN_CLASS.CONTENT_CONTAINER}`
   )
-  const $newCard = new Card(this.$cardTextarea.value).getTarget()
+  const $newCard = new Card({
+    cardTitle: this.$cardTextarea.value,
+    username: 'choibumsu',
+  }).getTarget()
   $contentContainer.prepend($newCard)
   emitter.emit(EVENT.CHANGE_CARD_COUNT)
 

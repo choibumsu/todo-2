@@ -14,15 +14,28 @@ import '../stylesheets/common/base.scss'
 const tempColumns = [
   {
     columnTitle: 'To Doooooo!',
-    cardCount: 3,
+    cardDatas: [
+      {
+        id: 2,
+        columnIndex: 1,
+        cardTitle: 'Hello',
+        username: 'choibumsu',
+      },
+      {
+        id: 1,
+        columnIndex: 2,
+        cardTitle: 'hihi!!',
+        username: 'bumsu',
+      },
+    ],
   },
   {
     columnTitle: 'In Progess~',
-    cardCount: 3,
+    cardList: [],
   },
   {
     columnTitle: 'Done!!!',
-    cardCount: 3,
+    cardList: [],
   },
 ]
 

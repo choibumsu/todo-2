@@ -2,9 +2,9 @@ import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/card.scss'
 
 export default class Card {
-  constructor(cardTitle) {
+  constructor({ cardTitle, username }) {
     this.cardTitle = cardTitle
-    this.user = 'choibumsu'
+    this.user = username
     this.$target = ''
 
     this.init()
