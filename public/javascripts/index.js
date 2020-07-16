@@ -1,10 +1,10 @@
-import { closeModal } from './components/Modal'
+// import { closeModal } from './components/Modal'
 import { toggleSidebar } from './components/SideBar'
 import './components/Card'
 import './components/CardForm'
 import Column from './components/Column'
 import './components/Modal/DeleteCardModal'
-import './components/Modal/EditCardModal'
+import EditCardModal from './components/Modal/EditCardModal'
 import './components/Modal/EditColumnModal'
 import './components/Header'
 import './components/LoginForm'
@@ -29,3 +29,5 @@ const tempColumns = [
 tempColumns.forEach((column) => {
   new Column(column)
 })
+
+new EditCardModal()
