@@ -49,5 +49,7 @@ Card.prototype.bindEvent = function () {
 }
 
 Card.prototype.removeCard = function () {
-  this.$target.remove()
+  const isRemove = confirm('정말 삭제하시겠습니까?')
+
+  if (isRemove) this.$target.remove()
 }
