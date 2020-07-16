@@ -13,18 +13,15 @@ import '../stylesheets/common/base.scss'
 
 const tempColumns = [
   {
-    parentSelector: '#column-container',
-    cardTitle: 'To Doooooo!',
+    columnTitle: 'To Doooooo!',
     cardCount: 3,
   },
   {
-    parentSelector: '#column-container',
-    cardTitle: 'In Progess~',
+    columnTitle: 'In Progess~',
     cardCount: 3,
   },
   {
-    parentSelector: '#column-container',
-    cardTitle: 'Done!!!',
+    columnTitle: 'Done!!!',
     cardCount: 3,
   },
 ]

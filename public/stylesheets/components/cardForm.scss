@@ -11,6 +11,7 @@
     min-width: 100%;
     max-width: 100%;
     min-height: 60px;
+    max-height: 500px;
     font-size: 14px;
     border: 1px solid $color-gray-300;
     border-radius: 6px;
@@ -53,6 +54,7 @@
         }
         box-shadow: 0 1px 0 unquote($color-btn-border + '20'),
           inset 0 1px 0 hsla(0, 0%, 100%, 0.03);
+        cursor: pointer;
 
         &.add-btn {
           background-color: $color-green;
