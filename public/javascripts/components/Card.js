@@ -54,10 +54,10 @@ Card.prototype.bindEvent = function () {
 }
 
 Card.prototype.editCard = function () {
-  const card = new EditCardModal(this.cardTitle, (edited) => {
-    this.cardTitle = edited
+  const card = new EditCardModal(this.cardTitle, function edited(text) {
+    this.cardTitle = text
     this.render()
-  })
+  }.bind(this))
   card.showModal()
 }
 
