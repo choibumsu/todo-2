@@ -1,5 +1,6 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/card.scss'
+import { CARD_CLASS } from '../utils/Constants'
 
 export default class Card {
   constructor(cardTitle) {
@@ -28,16 +29,28 @@ Card.prototype.setElements = function () {
             <span class='strong'>${this.user}</span>
           </div>
         </div>
-        <img class='remove-icon' src='/static/images/remove-btn.svg' />
+        <img class='${CARD_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' />
         </div>
     </div>
   `
 
   this.$target = templateToElement(template)
+  this.$removeBtn = this.$target.querySelector(`.${CARD_CLASS.REMOVE_BTN}`)
 }
 
 Card.prototype.getTarget = function () {
   return this.$target
 }
 
-Card.prototype.bindEvent = function () {}
+Card.prototype.bindEvent = function () {
+  this.$removeBtn.addEventListener('click', () => {
+    this.removeCard()
+  })
+}
+
+Card.prototype.removeCard = function () {
+  const isRemove = confirm('정말 삭제하시겠습니까?')
+
+  if (isRemove) this.$target.remove()
+}
+
