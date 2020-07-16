@@ -1,4 +1,4 @@
-class Emitter {
+export class Emitter {
   on(type, callback) {
     this['_on' + type] = this['_on' + type] || []
     this['_on' + type].push(callback)
@@ -11,5 +11,3 @@ class Emitter {
       })
   }
 }
-
-export const emitter = new Emitter()

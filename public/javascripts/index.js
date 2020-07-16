@@ -30,11 +30,11 @@ const tempColumns = [
   },
   {
     columnTitle: 'In Progess~',
-    cardList: [],
+    cardDatas: [],
   },
   {
     columnTitle: 'Done!!!',
-    cardList: [],
+    cardDatas: [],
   },
 ]
 

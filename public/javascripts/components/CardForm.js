@@ -6,16 +6,16 @@ import {
   COLUMN_CLASS,
   EVENT,
 } from '../utils/Constants'
-import { emitter } from '../utils/EventEmitter'
 import '../../stylesheets/components/cardForm.scss'
 
 export default class CardForm {
-  constructor() {
+  constructor(emitter) {
     this.$target = ''
     this.$cardTextarea = ''
     this.$addBtn = ''
     this.$cancelBtn = ''
     this.isActive = false
+    this.emitter = emitter
 
     this.init()
   }
@@ -83,16 +83,10 @@ CardForm.prototype.addCard = function () {
     return
   }
 
-  const $parentColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
-  const $contentContainer = $parentColumn.querySelector(
-    `.${COLUMN_CLASS.CONTENT_CONTAINER}`
-  )
-  const $newCard = new Card({
+  this.emitter.emit(EVENT.ADD_CARD, {
     cardTitle: this.$cardTextarea.value,
     username: 'choibumsu',
-  }).getTarget()
-  $contentContainer.prepend($newCard)
-  emitter.emit(EVENT.CHANGE_CARD_COUNT)
+  })
 
   this.$cardTextarea.value = ''
   this.setActive(false)
