@@ -1,6 +1,7 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import { CLASS_NAME, CARD_FORM_CLASS, COLUMN_CLASS } from '../utils/Constants'
 import '../../stylesheets/components/cardForm.scss'
+import Card from './Card'
 
 export default class CardForm {
   constructor() {
@@ -8,6 +9,7 @@ export default class CardForm {
     this.$cardTextarea = ''
     this.$addBtn = ''
     this.$cancelBtn = ''
+    this.isActive = false
 
     this.init()
   }
@@ -44,7 +46,7 @@ export default class CardForm {
 
   bindEvent() {
     this.$cardTextarea.addEventListener('input', (e) => {
-      this.setActiveAddbtn(e)
+      this.setActive(e.target.value)
     })
 
     this.$cancelBtn.addEventListener('click', (e) => {
@@ -56,8 +58,10 @@ export default class CardForm {
     })
   }
 
-  setActiveAddbtn(e) {
-    if (e.target.value) {
+  setActive(isActive) {
+    this.isActive = isActive
+
+    if (this.isActive) {
       this.$addBtn.classList.remove(CLASS_NAME.UNACTIVE)
       return
     }
@@ -70,10 +74,18 @@ export default class CardForm {
   }
 
   addCard() {
+    if (!this.isActive) {
+      return
+    }
+
     const $parentColumn = this.$target.closest('.column')
     const $contentContainer = $parentColumn.querySelector(
       `.${COLUMN_CLASS.CONTENT_CONTAINER}`
     )
-    $contentContainer.innerHTML = `${this.$cardTextarea.value}`
+    const $newCard = new Card(this.$cardTextarea.value).getTarget()
+    $contentContainer.appendChild($newCard)
+
+    this.$cardTextarea.value = ''
+    this.setActive(false)
   }
 }
