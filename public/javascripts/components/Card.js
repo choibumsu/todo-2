@@ -107,6 +107,13 @@ Card.prototype.render = function () {
 }
 
 Card.prototype.onDragStartHandler = function (e) {
+  if (
+    e.target.classList.contains(CARD_CLASS.TITLE) ||
+    e.target.classList.contains(CARD_CLASS.REMOVE_BTN)
+  ) {
+    return
+  }
+
   this.gapWidth = this.$target.offsetWidth / 2
   this.gapHeight = this.$target.offsetHeight / 2
   this.$copyTarget = this.$target.cloneNode(true)
