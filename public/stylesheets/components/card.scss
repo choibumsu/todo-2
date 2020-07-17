@@ -20,6 +20,11 @@
     box-shadow: 0 1px 3px rgba(106, 115, 125, 0.3);
   }
 
+  &.moving {
+    background-color: $color-gray-300;
+    opacity: 0.5;
+  }
+
   .document-icon {
     width: 16px;
     height: 16px;
@@ -43,6 +48,7 @@
         line-height: 1.5;
         word-break: break-all;
         margin-bottom: 10px;
+        cursor: pointer;
       }
 
       .added-by {

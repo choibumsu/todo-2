@@ -102,15 +102,17 @@ Column.prototype.toggleCardForm = function () {
 }
 
 Column.prototype.editColumn = function () {
-  const modal = new EditColumnModal(this.columnTitle,(edited)=>{
-    this.columnTitle=edited
+  const modal = new EditColumnModal(this.columnTitle, (edited) => {
+    this.columnTitle = edited
     this.show()
   })
   modal.showModal()
 }
 
-Column.prototype.show=function (){
-  this.$target.querySelector(`.${COLUMN_CLASS.TITLE}`).innerText=this.columnTitle
+Column.prototype.show = function () {
+  this.$target.querySelector(
+    `.${COLUMN_CLASS.TITLE}`
+  ).innerText = this.columnTitle
 }
 
 Column.prototype.insertOneCard = function (cardData) {

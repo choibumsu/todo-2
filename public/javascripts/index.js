@@ -13,44 +13,57 @@ import '../stylesheets/common/base.scss'
 const tempColumns = [
   {
     id: 1,
-    columnTitle: 'To Doooooo!',
+    columnTitle: 'To Do 📝',
     cardDatas: [
       {
-        id: 2,
+        id: 1,
         columnIndex: 1,
-        cardTitle: 'Hello',
+        cardTitle: '다이어트 하기',
         username: 'choibumsu',
       },
       {
-        id: 1,
+        id: 2,
         columnIndex: 2,
-        cardTitle: 'hihi!!',
-        username: 'bumsu',
+        cardTitle: '드래그&드랍 구현하기',
+        username: 'gijin',
       },
     ],
   },
   {
     id: 2,
-    columnTitle: 'In Progess~',
+    columnTitle: 'In Progess 🏃‍♂️',
     cardDatas: [
       {
         id: 3,
         columnIndex: 1,
-        cardTitle: 'Card',
+        cardTitle: 'To Do List 만들기',
         username: 'choibumsu',
       },
       {
         id: 4,
         columnIndex: 2,
-        cardTitle: 'new!!',
+        cardTitle: '코딩하기',
         username: 'bumsu',
+      },
+      {
+        id: 5,
+        columnIndex: 3,
+        cardTitle: '더블클릭 이벤트 구현하기',
+        username: 'gijin',
       },
     ],
   },
   {
     id: 3,
-    columnTitle: 'Done!!!',
-    cardDatas: [],
+    columnTitle: 'Done 👏',
+    cardDatas: [
+      {
+        id: 6,
+        columnIndex: 1,
+        cardTitle: '점심 식사',
+        username: 'choibumsu',
+      },
+    ],
   },
 ]
 
