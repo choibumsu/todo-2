@@ -90,6 +90,10 @@ Card.prototype.render = function () {
 }
 
 Card.prototype.onDragStartHandler = function (e) {
+  if (e.target.classList.contains(CARD_CLASS.TITLE)) {
+    return
+  }
+
   this.gapWidth = this.$target.offsetWidth / 2
   this.gapHeight = this.$target.offsetHeight / 2
   this.$copyTarget = this.$target.cloneNode(true)
@@ -102,19 +106,20 @@ Card.prototype.onDragStartHandler = function (e) {
   const $columns = Array.from(
     document.querySelectorAll(`.${COLUMN_CLASS.COLUMN}`)
   )
-  this.columnOffsetDatas = $columns.map(($column) => {
+
+  this.columnDatas = $columns.map(($column) => {
     const $cards = Array.from($column.querySelectorAll(`.${CARD_CLASS.CARD}`))
-    const cardOffsetDatas = $cards.map(($card) => {
+    const cardDatas = $cards.map(($card) => {
       return {
-        element: $card,
+        $element: $card,
         centerOffset: $card.offsetTop + $card.offsetHeight / 2,
       }
     })
 
     return {
-      element: $column,
+      $element: $column,
       centerOffset: $column.offsetLeft + $column.offsetWidth / 2,
-      cardOffsetDatas,
+      cardDatas,
     }
   })
 
@@ -122,8 +127,24 @@ Card.prototype.onDragStartHandler = function (e) {
 
   window.addEventListener('pointermove', pointermoveHandler)
 
-  this.$copyTarget.addEventListener('pointerup', () => {
+  this.$copyTarget.addEventListener('pointerup', (e) => {
     window.removeEventListener('pointermove', pointermoveHandler)
+
+    if (this.closestCardData.$element === undefined) {
+      this.columnDatas.$element.querySelector(``)
+    }
+
+    const $closestCard = this.closestCardData.$element
+    console.log($closestCard.parentNode)
+    if (this.closestCardData.centerOffset < e.clientY) {
+      $closestCard.parentNode.insertBefore(
+        this.$target,
+        $closestCard.nextElementSibling
+      )
+    } else {
+      $closestCard.parentNode.insertBefore(this.$target, $closestCard)
+    }
+    this.$copyTarget.remove()
   })
 
   // this.$target.classList.add(CLASS_NAME.DP_NONE)
@@ -138,47 +159,47 @@ Card.prototype.onPointerMoveHandler = function (e) {
 }
 
 Card.prototype.findClosestColumn = function (e) {
-  const [closestColumnOffsetData] = this.columnOffsetDatas.reduce(
-    ([closestColumnOffsetData, minGap], columnOffsetData) => {
-      const gap = Math.abs(columnOffsetData.centerOffset - e.clientX)
+  const [closestColumnData] = this.columnDatas.reduce(
+    ([closestColumnData, minGap], columnData) => {
+      const gap = Math.abs(columnData.centerOffset - e.clientX)
 
-      if (minGap === -1 || gap < minGap) {
-        minGap = gap
-        closestColumnOffsetData = columnOffsetData
+      if (minGap === -1) {
+        return [columnData, gap]
       }
 
-      return [closestColumnOffsetData, minGap]
+      if (gap < minGap) {
+        closestColumnData = columnData
+        minGap = gap
+      }
+
+      return [closestColumnData, minGap]
     },
-    ['', -1]
+    [, -1]
   )
 
   this.findClosestCard(
     e,
-    closestColumnOffsetData.element,
-    closestColumnOffsetData.cardOffsetDatas
+    closestColumnData.$element,
+    closestColumnData.cardDatas
   )
 }
 
-Card.prototype.findClosestCard = function (e, $column, cardOffsetDatas) {
-  const [closestCardOffsetData] = cardOffsetDatas.reduce(
-    ([closestCardOffsetData, minGap], cardOffsetData) => {
-      const gap = Math.abs(cardOffsetData.centerOffset - e.clientY)
+Card.prototype.findClosestCard = function (e, $column, cardDatas) {
+  ;[this.closestCardData] = cardDatas.reduce(
+    ([closestCardData, minGap], cardData) => {
+      const gap = Math.abs(cardData.centerOffset - e.clientY)
 
-      if (minGap === -1 || gap < minGap) {
-        minGap = gap
-        closestCardOffsetData = cardOffsetData
+      if (minGap === -1) {
+        return [cardData, gap]
       }
 
-      return [closestCardOffsetData, minGap]
-    },
-    ['', -1]
-  )
+      if (gap < minGap) {
+        closestCardData = cardData
+        minGap = gap
+      }
 
-  if (closestCardOffsetData.centerOffset < e.clientY) {
-    console.log('down')
-  } else {
-    console.log('up')
-  }
-  console.log(closestCardOffsetData)
-  console.log(closestCardOffsetData.element.querySelector('.title').innerHTML)
+      return [closestCardData, minGap]
+    },
+    [, -1]
+  )
 }
