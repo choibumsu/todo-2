@@ -52,15 +52,32 @@ Card.prototype.bindEvent = function () {
     this.removeCard()
   })
   // this.$target.addEventListener('dblclick', this.editCard.bind(this))
-  this.$target.ondblclick = (event) => {
-    event.stopPropagation()
-    this.editCard()
-  }
+  // this.$target.ondblclick = (event) => {
+  //   event.stopPropagation()
+  //   this.editCard()
+  // }
+  var clicks = 0
+  var delay = 400
+  this.$target.addEventListener('pointerdown', e2.bind(this))
 
-  this.$target.addEventListener(
-    'pointerdown',
-    this.onDragStartHandler.bind(this)
-  )
+  function e2(e) {
+    // event.stopPropagation()
+    clicks++
+
+    setTimeout(function () {
+      clicks = 0
+    }, delay)
+
+    if (clicks === 2) {
+      this.editCard()
+      console.log('더블클릭')
+      clicks = 0
+      return
+    } else {
+      this.onDragStartHandler(e)
+      console.log('포인터다운')
+    }
+  }
 }
 
 Card.prototype.editCard = function () {
