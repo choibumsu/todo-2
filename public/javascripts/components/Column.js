@@ -58,13 +58,8 @@ export default class Column {
   }
 
   bindEvent() {
-    const $cardAddBtn = this.$target.querySelector(`.${COLUMN_CLASS.ADD_BTN}`)
-    $cardAddBtn.addEventListener('click', () => {
-      this.toggleCardForm()
-    })
-    this.$target.addEventListener('dblclick', () => {
-      this.editColumn()
-    })
+    this.$target.addEventListener('click', this.toggleCardForm.bind(this))
+    this.$target.addEventListener('dblclick', this.editColumn.bind(this))
 
     this.emitter.on(EVENT.ADD_CARD, this.insertOneCard.bind(this))
     this.emitter.on(EVENT.REMOVE_CARD, this.removeOneCard.bind(this))
@@ -88,7 +83,9 @@ export default class Column {
     })
   }
 
-  toggleCardForm() {
+  toggleCardForm(e) {
+    if (!e.target.classList.contains(COLUMN_CLASS.ADD_BTN)) return
+
     const $cardFormSlot = this.$target.querySelector(
       `.${COLUMN_CLASS.CARD_FORM_SLOT}`
     )
@@ -102,7 +99,9 @@ export default class Column {
     $cardFormSlot.appendChild(cardForm.$target)
   }
 
-  editColumn() {
+  editColumn(e) {
+    if (!e.target.classList.contains(COLUMN_CLASS.TITLE)) return
+
     const modal = new EditColumnModal(this.columnTitle, (edited) => {
       this.columnTitle = edited
       this.show()
