@@ -32,7 +32,20 @@ const tempColumns = [
   {
     id: 2,
     columnTitle: 'In Progess~',
-    cardDatas: [],
+    cardDatas: [
+      {
+        id: 3,
+        columnIndex: 1,
+        cardTitle: 'Card',
+        username: 'choibumsu',
+      },
+      {
+        id: 4,
+        columnIndex: 2,
+        cardTitle: 'new!!',
+        username: 'bumsu',
+      },
+    ],
   },
   {
     id: 3,
@@ -44,4 +57,3 @@ const tempColumns = [
 tempColumns.forEach((column) => {
   new Column(column)
 })
-
