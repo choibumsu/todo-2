@@ -9,6 +9,7 @@
   box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04);
   padding: 8px;
   margin-bottom: 8px;
+  cursor: move;
 
   &:last-child {
     margin-bottom: 0;
@@ -55,6 +56,8 @@
     }
 
     .remove-btn {
+      width: 16px;
+      height: 16px;
       margin: 0;
       cursor: pointer;
 
