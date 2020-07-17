@@ -39,11 +39,11 @@
     padding: 16px;
   }
 
-  img{
-    padding-right:16px;
+  img {
+    padding-right: 16px;
     cursor: pointer;
-    &:hover{
-      filter:saturate(10);
+    &:hover {
+      filter: saturate(10);
     }
   }
 }
@@ -91,5 +91,9 @@
     color: white;
     font-weight: bold;
     cursor: pointer;
+    
+    @if (deleteCardButton) {
+      background-color: $color-danger;
+    }
   }
 }

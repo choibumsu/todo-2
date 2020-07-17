@@ -2,6 +2,7 @@ import { templateToElement } from '../utils/HtmlGenerator'
 import EditCardModal from './Modal/EditCardModal'
 import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, EVENT } from '../utils/Constants'
+import DeleteCardModal from './Modal/DeleteCardModal'
 
 export default class Card {
   constructor(emitter, cardId, cardTitle, username, columnIndex) {
@@ -51,30 +52,31 @@ Card.prototype.bindEvent = function () {
     this.removeCard()
   })
   // this.$target.addEventListener('dblclick', this.editCard.bind(this))
-  this.$target.ondblclick = (event)=>{
-    event.stopPropagation();
+  this.$target.ondblclick = (event) => {
+    event.stopPropagation()
     this.editCard()
   }
 }
 
 Card.prototype.editCard = function () {
-  const card = new EditCardModal(this.cardTitle, function edited(text) {
-    this.cardTitle = text
-    this.render()
-  }.bind(this))
-  card.showModal()
+  const modal = new EditCardModal(
+    this.cardTitle,
+    function edited(text) {
+      this.cardTitle = text
+      this.render()
+    }.bind(this)
+  )
+  modal.showModal()
 }
 
 Card.prototype.removeCard = function () {
-  const isRemove = confirm('정말 삭제하시겠습니까?')
-
-  if (!isRemove) return
-
-  this.$target.remove()
-  this.emitter.emit(EVENT.REMOVE_CARD, this.id)
+  const modal = new DeleteCardModal(this.cardTitle, function deleted() {
+    this.$target.remove()
+    this.emitter.emit(EVENT.REMOVE_CARD, this.id)
+  }.bind(this))
+  modal.showModal()
 }
 
 Card.prototype.render = function () {
   this.$target.querySelector('.title').innerText = this.cardTitle
 }
-

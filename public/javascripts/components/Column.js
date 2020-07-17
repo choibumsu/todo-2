@@ -102,12 +102,11 @@ Column.prototype.toggleCardForm = function () {
 }
 
 Column.prototype.editColumn = function () {
-  const column = new EditColumnModal(this.columnTitle,(edited)=>{
-    console.log(this.columnTitle)
+  const modal = new EditColumnModal(this.columnTitle,(edited)=>{
     this.columnTitle=edited
     this.show()
   })
-  column.showModal()
+  modal.showModal()
 }
 
 Column.prototype.show=function (){
