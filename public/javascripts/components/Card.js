@@ -90,7 +90,10 @@ Card.prototype.render = function () {
 }
 
 Card.prototype.onDragStartHandler = function (e) {
-  if (e.target.classList.contains(CARD_CLASS.TITLE)) {
+  if (
+    e.target.classList.contains(CARD_CLASS.TITLE) ||
+    e.target.classList.contains(CARD_CLASS.REMOVE_BTN)
+  ) {
     return
   }
 
