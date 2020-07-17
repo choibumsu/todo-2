@@ -91,8 +91,8 @@
     color: white;
     font-weight: bold;
     cursor: pointer;
-    
-    @if (deleteCardButton) {
+
+    &#delete-card-button {
       background-color: $color-danger;
     }
   }
