@@ -24,6 +24,7 @@ export const CARD_CLASS = {
   CARD: 'card',
   TITLE: 'title',
   REMOVE_BTN: 'remove-btn',
+  MOVING: 'moving',
 }
 
 export const EVENT = {
@@ -37,7 +38,7 @@ export const MODAL_ID = {
   EDIT_MODAL_BOX_CARD: 'editCard',
   EDIT_CARD_BTN: 'editCardButton',
   EDIT_COLUMN_BTN: 'editColumndButton',
-  DELETE_CARD_BTN: 'deleteCardButton',
+  DELETE_CARD_BTN: 'delete-card-button',
 }
 
 export const MODAL_CLASS = {

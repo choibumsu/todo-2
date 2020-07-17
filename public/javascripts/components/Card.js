@@ -133,12 +133,17 @@ Card.prototype.onDragStartHandler = function (e) {
   this.$copyTarget.addEventListener('pointerup', (e) => {
     window.removeEventListener('pointermove', pointermoveHandler)
 
-    if (this.closestCardData.$element === undefined) {
-      this.columnDatas.$element.querySelector(``)
+    if (this.closestCardData === undefined) {
+      this.closestColumnData.$element
+        .querySelector(`.${COLUMN_CLASS.CONTENT_CONTAINER}`)
+        .appendChild(this.$target)
+
+      this.$target.classList.remove(CARD_CLASS.MOVING)
+      this.$copyTarget.remove()
+      return
     }
 
     const $closestCard = this.closestCardData.$element
-    console.log($closestCard.parentNode)
     if (this.closestCardData.centerOffset < e.clientY) {
       $closestCard.parentNode.insertBefore(
         this.$target,
@@ -147,10 +152,12 @@ Card.prototype.onDragStartHandler = function (e) {
     } else {
       $closestCard.parentNode.insertBefore(this.$target, $closestCard)
     }
+
+    this.$target.classList.remove(CARD_CLASS.MOVING)
     this.$copyTarget.remove()
   })
 
-  // this.$target.classList.add(CLASS_NAME.DP_NONE)
+  this.$target.classList.add(CARD_CLASS.MOVING)
   document.body.append(this.$copyTarget)
 }
 
@@ -162,7 +169,7 @@ Card.prototype.onPointerMoveHandler = function (e) {
 }
 
 Card.prototype.findClosestColumn = function (e) {
-  const [closestColumnData] = this.columnDatas.reduce(
+  ;[this.closestColumnData] = this.columnDatas.reduce(
     ([closestColumnData, minGap], columnData) => {
       const gap = Math.abs(columnData.centerOffset - e.clientX)
 
@@ -180,14 +187,10 @@ Card.prototype.findClosestColumn = function (e) {
     [, -1]
   )
 
-  this.findClosestCard(
-    e,
-    closestColumnData.$element,
-    closestColumnData.cardDatas
-  )
+  this.findClosestCard(e, this.closestColumnData.cardDatas)
 }
 
-Card.prototype.findClosestCard = function (e, $column, cardDatas) {
+Card.prototype.findClosestCard = function (e, cardDatas) {
   ;[this.closestCardData] = cardDatas.reduce(
     ([closestCardData, minGap], cardData) => {
       const gap = Math.abs(cardData.centerOffset - e.clientY)
