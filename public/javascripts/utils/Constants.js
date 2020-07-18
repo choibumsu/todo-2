@@ -1,6 +1,7 @@
 export const CLASS_NAME = {
   DP_NONE: 'dp-none',
   UNACTIVE: 'unactive',
+  US_NONE: 'us-none',
 }
 
 export const COLUMN_CLASS = {
