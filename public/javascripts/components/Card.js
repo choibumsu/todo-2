@@ -38,7 +38,6 @@ export default class Card {
     `
 
     this.$target = templateToElement(this.template)
-    this.$removeBtn = this.$target.querySelector(`.${CARD_CLASS.REMOVE_BTN}`)
   }
 
   bindEvent() {
@@ -89,12 +88,20 @@ export default class Card {
     this.$target.querySelector('.title').innerText = this.cardTitle
   }
 
+  removeCard() {
+    this.$target.remove()
+  }
+
   getTarget() {
     return this.$target
   }
 
   getId() {
     return this.id
+  }
+
+  getTitle() {
+    return this.title
   }
 
   setNextCardId(nextCardId) {

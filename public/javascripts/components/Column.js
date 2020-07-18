@@ -142,13 +142,17 @@ export default class Column {
   }
 
   removeCard(e) {
-    const removedCard = e.target.closest(`.${CARD_CLASS.CARD}`)
+    const removedCardId = parseInt(
+      e.target.closest(`.${CARD_CLASS.CARD}`).dataset.id
+    )
+    const removedCard = this.cardList.find(
+      (card) => card.getId() === removedCardId
+    )
 
     const modal = new DeleteCardModal(
-      removedCard.querySelector(`.${CARD_CLASS.TITLE}`).innerText,
+      removedCard.getTitle(),
       function deleted() {
-        const removedCardId = +removedCard.dataset.id
-        removedCard.remove() //modal 사용
+        removedCard.removeCard()
 
         this.removeNextCardId(removedCardId)
 
