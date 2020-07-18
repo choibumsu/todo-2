@@ -5,29 +5,28 @@ import DeleteCardModal from './Modal/DeleteCardModal'
 import { CARD_CLASS, EVENT, COLUMN_CLASS } from '../utils/Constants'
 
 export default class Card {
-  constructor(emitter, cardId, cardTitle, username, columnIndex) {
+  constructor({ id, title, username, nextCardId }) {
     this.$target = ''
-    this.emitter = emitter
-    this.id = cardId
-    this.cardTitle = cardTitle
+    this.id = id
+    this.title = title
     this.username = username
-    this.columnIndex = columnIndex
+    this.nextCardId = nextCardId
 
     this.init()
   }
 
   init() {
     this.setElements()
-    this.bindEvent()
+    // this.bindEvent()
   }
 
   setElements() {
-    const template = `
+    this.template = `
       <div class='card'>
         <img class='document-icon' src='/static/images/document.svg') />
         <div class='content-container'>
           <div class='content-wrapper'>
-            <div class='title'>${this.cardTitle}</div>
+            <div class='${CARD_CLASS.TITLE}'>${this.cardTitle}</div>
             <div class='added-by'>
               <span>Added by </span>
               <span class='strong'>${this.username}</span>
@@ -38,7 +37,7 @@ export default class Card {
       </div>
     `
 
-    this.$target = templateToElement(template)
+    this.$target = templateToElement(this.template)
     this.$removeBtn = this.$target.querySelector(`.${CARD_CLASS.REMOVE_BTN}`)
   }
 
@@ -95,7 +94,7 @@ export default class Card {
       this.cardTitle,
       function deleted() {
         this.$target.remove()
-        this.emitter.emit(EVENT.REMOVE_CARD, this.id)
+        // this.emitter.emit(EVENT.REMOVE_CARD, this.id)
       }.bind(this)
     )
     modal.showModal()

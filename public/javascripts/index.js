@@ -1,7 +1,5 @@
 import { closeModal } from './components/Modal/Modal'
 import { toggleSidebar } from './components/SideBar'
-import './components/Card'
-import './components/CardForm'
 import Column from './components/Column'
 import DeleteCardModal from './components/Modal/DeleteCardModal'
 import EditCardModal from './components/Modal/EditCardModal'
@@ -17,14 +15,14 @@ const tempColumns = [
     cardDatas: [
       {
         id: 1,
-        columnIndex: 1,
-        cardTitle: '다이어트 하기',
+        nextCardId: 0,
+        title: '다이어트 하기',
         username: 'choibumsu',
       },
       {
         id: 2,
-        columnIndex: 2,
-        cardTitle: '드래그&드랍 구현하기',
+        nextCardId: 1,
+        title: '드래그&드랍 구현하기',
         username: 'gijin',
       },
     ],
@@ -35,20 +33,20 @@ const tempColumns = [
     cardDatas: [
       {
         id: 3,
-        columnIndex: 1,
-        cardTitle: 'To Do List 만들기',
+        nextCardId: 0,
+        title: 'To Do List 만들기',
         username: 'choibumsu',
       },
       {
         id: 4,
-        columnIndex: 2,
-        cardTitle: '코딩하기',
+        nextCardId: 3,
+        title: '코딩하기',
         username: 'bumsu',
       },
       {
         id: 5,
-        columnIndex: 3,
-        cardTitle: '더블클릭 이벤트 구현하기',
+        nextCardId: 4,
+        title: '더블클릭 이벤트 구현하기',
         username: 'gijin',
       },
     ],
@@ -59,8 +57,8 @@ const tempColumns = [
     cardDatas: [
       {
         id: 6,
-        columnIndex: 1,
-        cardTitle: '점심 식사',
+        nextCardId: 0,
+        title: '점심 식사',
         username: 'choibumsu',
       },
     ],
