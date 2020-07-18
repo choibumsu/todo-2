@@ -70,7 +70,7 @@ export default class Card {
         clicks = 0
         return
       }
-      this.choseCard(e)
+      this.chooseCard(e)
     }
     this.$target.addEventListener('pointermove', (e) => {
       this.moveCard(e)
@@ -123,7 +123,7 @@ export default class Card {
   }
 
   //옮길 카드 설정
-  choseCard(e) {
+  chooseCard(e) {
     this.flag = true
     this.setCardColor()
     this.preview = this.$target.cloneNode(true)
