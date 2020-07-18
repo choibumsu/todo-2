@@ -80,24 +80,6 @@ export default class Column {
   }
 
   bindEvent() {
-    // let clicks = 0
-    // const delay = 400
-
-    // function e2(e) {
-    //   clicks++
-
-    //   setTimeout(function () {
-    //     clicks = 0
-    //   }, delay)
-
-    //   if (clicks === 2) {
-    //     clicks = 0
-    //     return
-    //   } else {
-    //     console.log('pointerdown')
-    //   }
-    // }
-    // e2.bind(this)
     this.$target.addEventListener(
       'pointerdown',
       this.onPointerDownHandler.bind(this)
@@ -264,8 +246,4 @@ export default class Column {
     )
     movedCard.moveStart(e)
   }
-
-  onPointerMoveHandler(e) {}
-
-  onPointerMoveHandler(e) {}
 }
