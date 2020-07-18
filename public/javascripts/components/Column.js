@@ -99,6 +99,11 @@ export default class Column {
       this.addCard()
       return
     }
+
+    if (e.target.classList.contains(CARD_FORM_CLASS.CANCEL_BTN)) {
+      this.cardForm.toggleCardForm()
+      return
+    }
   }
 
   onDoubleClickHandler(e) {
@@ -147,7 +152,6 @@ export default class Column {
     )
 
     this.setCardCount()
-    console.log(this.cardList)
   }
 
   removeNextCardId(removedCardId) {
