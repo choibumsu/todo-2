@@ -45,6 +45,10 @@ export default class Card {
     return this.$target
   }
 
+  getId() {
+    return this.id
+  }
+
   bindEvent() {
     this.$removeBtn.addEventListener('click', () => {
       this.removeCard()

@@ -1,6 +1,10 @@
-import { templateToElement } from '../utils/HtmlGenerator'
-import { COLUMN_CLASS, CARD_CLASS, EVENT } from '../utils/Constants'
-import { Emitter } from '../utils/EventEmitter'
+import { templateToElement, elementToTemplate } from '../utils/HtmlGenerator'
+import {
+  COLUMN_CLASS,
+  CARD_CLASS,
+  EVENT,
+  CARD_FORM_CLASS,
+} from '../utils/Constants'
 import '../../stylesheets/components/column.scss'
 import CardForm from './CardForm'
 import Card from './Card'
@@ -11,15 +15,21 @@ export default class Column {
     this.columnTitle = columnTitle
     this.cardDatas = cardDatas
     this.cardList = []
-    this.emitter = new Emitter()
 
-    this.init()
+    this.init(cardDatas)
   }
 
-  init() {
+  init(cardDatas) {
+    this.setCardList(cardDatas)
     this.setElements()
     this.render()
     this.bindEvent()
+  }
+
+  setCardList(cardDatas) {
+    this.cardList = cardDatas.map((cardData) => {
+      return new Card(cardData)
+    })
   }
 
   setElements() {
@@ -27,16 +37,26 @@ export default class Column {
       <section class='${COLUMN_CLASS.COLUMN}'>
         <div class='title-bar'>
           <div class='title-wrapper'>
-            <div class='${COLUMN_CLASS.CARD_COUNT}'>${this.cardList.length}</div>
+            <div class='${COLUMN_CLASS.CARD_COUNT}'>
+              ${this.cardList.length}
+            </div>
             <div class='${COLUMN_CLASS.TITLE}'>${this.columnTitle}</div> 
           </div>
           <div class='btn-wrapper'>
-            <img class='${COLUMN_CLASS.ADD_BTN}' src='/static/images/plus-btn.svg' alt='add-btn' />
-            <img class='${COLUMN_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' alt='remove-btn' />
+            <img class='${
+              COLUMN_CLASS.ADD_BTN
+            }' src='/static/images/plus-btn.svg' alt='add-btn' />
+            <img class='${
+              COLUMN_CLASS.REMOVE_BTN
+            }' src='/static/images/remove-btn.svg' alt='remove-btn' />
           </div>
         </div>
         <div class='${COLUMN_CLASS.CARD_FORM_SLOT}'></div>
-        <div class='${COLUMN_CLASS.CONTENT_CONTAINER}'></div>
+        <div class='${COLUMN_CLASS.CONTENT_CONTAINER}'>
+          ${this.cardList
+            .map((card) => elementToTemplate(card.getTarget()))
+            .join('')}
+        </div>
       </section>
     `
 
@@ -45,9 +65,6 @@ export default class Column {
     this.$contentContainer = this.$target.querySelector(
       `.${COLUMN_CLASS.CONTENT_CONTAINER}`
     )
-
-    this.cardDatas.forEach((cardData) => this.addCard(cardData))
-    this.setCardCount()
   }
 
   render() {
@@ -58,17 +75,65 @@ export default class Column {
   }
 
   bindEvent() {
-    this.$target.addEventListener('click', this.toggleCardForm.bind(this))
-    this.$target.addEventListener('dblclick', this.editColumn.bind(this))
-
-    this.emitter.on(EVENT.ADD_CARD, this.insertOneCard.bind(this))
-    this.emitter.on(EVENT.REMOVE_CARD, this.removeOneCard.bind(this))
+    this.$target.addEventListener('click', this.onClickHandler.bind(this))
+    this.$target.addEventListener(
+      'dblclick',
+      this.onDoubleClickHandler.bind(this)
+    )
   }
 
-  addCard({ id, cardTitle, username, columnIndex }) {
-    const newCard = new Card(this.emitter, id, cardTitle, username, columnIndex)
+  onClickHandler(e) {
+    if (e.target.classList.contains(COLUMN_CLASS.ADD_BTN)) {
+      this.toggleCardForm(e)
+      return
+    }
+
+    if (e.target.classList.contains(CARD_CLASS.REMOVE_BTN)) {
+      this.removeCard(e)
+      return
+    }
+  }
+
+  onDoubleClickHandler(e) {
+    if (e.target.classList.contains(COLUMN_CLASS.TITLE)) {
+      this.editColumn(e)
+      return
+    }
+  }
+
+  addCard(cardTitle) {
+    // api 호출 후 id 받기
+    const cardData = {
+      id: 1,
+      title: cardTitle,
+      username: 'choibumsu',
+      nextCardId: this.getNewNextCardId(),
+    }
+
+    const newCard = new Card(cardData)
     this.cardList.push(newCard)
     this.$contentContainer.prepend(newCard.getTarget())
+
+    this.setCardCount()
+  }
+
+  removeCard(e) {
+    const removedCard = e.target.closest(`.${CARD_CLASS.CARD}`)
+    const removedCardId = removedCard.dataset.id
+    removedCard.remove() //modal 사용
+
+    this.cardList = this.cardList.filter(
+      (card) => card.getId() !== removedCardId
+    )
+    this.setCardCount()
+  }
+
+  getNewNextCardId() {
+    if (this.cardList.length === 0) {
+      return 0
+    }
+
+    return this.cardList[this.cardList.length - 1].getId()
   }
 
   setCardCount() {
@@ -77,15 +142,7 @@ export default class Column {
     this.$cardCount.innerHTML = newCardCount
   }
 
-  setCardSequence() {
-    this.cardList.forEach((card, index) => {
-      card.columnIndex = index + 1
-    })
-  }
-
   toggleCardForm(e) {
-    if (!e.target.classList.contains(COLUMN_CLASS.ADD_BTN)) return
-
     const $cardFormSlot = this.$target.querySelector(
       `.${COLUMN_CLASS.CARD_FORM_SLOT}`
     )
@@ -95,13 +152,11 @@ export default class Column {
       return
     }
 
-    const cardForm = new CardForm(this.emitter)
+    const cardForm = new CardForm()
     $cardFormSlot.appendChild(cardForm.$target)
   }
 
   editColumn(e) {
-    if (!e.target.classList.contains(COLUMN_CLASS.TITLE)) return
-
     const modal = new EditColumnModal(this.columnTitle, (edited) => {
       this.columnTitle = edited
       this.show()
@@ -113,20 +168,5 @@ export default class Column {
     this.$target.querySelector(
       `.${COLUMN_CLASS.TITLE}`
     ).innerText = this.columnTitle
-  }
-
-  insertOneCard(cardData) {
-    //api 호출 후 id 받기
-    cardData.id = 1
-    cardData.columnIndex = this.cardList.length + 1
-    this.addCard(cardData)
-    this.setCardCount()
-  }
-
-  removeOneCard(cardId) {
-    const removeIndex = this.cardList.findIndex((card) => card.id === cardId)
-    this.cardList.splice(removeIndex, 1)
-    this.setCardCount()
-    this.setCardSequence()
   }
 }
