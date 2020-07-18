@@ -1,4 +1,4 @@
-import { templateToElement, elementToTemplate } from '../utils/HtmlGenerator'
+import { templateToElement } from '../utils/HtmlGenerator'
 import {
   COLUMN_CLASS,
   CARD_CLASS,
@@ -9,6 +9,7 @@ import '../../stylesheets/components/column.scss'
 import CardForm from './CardForm'
 import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
+import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
 export default class Column {
   constructor({ columnTitle, cardDatas }) {
@@ -113,6 +114,12 @@ export default class Column {
       this.showColumnEditModal()
       return
     }
+
+    const targetCard = e.target.closest(`.${CARD_CLASS.CARD}`)
+    if (targetCard) {
+      this.showCardEditModal(targetCard)
+      return
+    }
   }
 
   addCard() {
@@ -203,5 +210,16 @@ export default class Column {
   setColumnTitle(editedTitle) {
     this.columnTitle = editedTitle
     this.$columnTitle.innerText = this.columnTitle
+  }
+
+  showCardEditModal(targetCard) {
+    const editedCard = this.cardList.find(
+      (card) => card.getId() === +targetCard.dataset.id
+    )
+
+    const modal = new EditCardModal(editedCard.getTitle(), (editedTitle) => {
+      editedCard.setTitle(editedTitle)
+    })
+    modal.showModal()
   }
 }

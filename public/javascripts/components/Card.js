@@ -1,8 +1,6 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import EditCardModal from './Modal/EditCardModal'
 import '../../stylesheets/components/card.scss'
-import DeleteCardModal from './Modal/DeleteCardModal'
-import { CARD_CLASS, EVENT, COLUMN_CLASS } from '../utils/Constants'
+import { CARD_CLASS } from '../utils/Constants'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -17,7 +15,7 @@ export default class Card {
 
   init() {
     this.setElements()
-    this.bindEvent()
+    // this.bindEvent()
   }
 
   setElements() {
@@ -38,6 +36,7 @@ export default class Card {
     `
 
     this.$target = templateToElement(this.template)
+    this.$title = this.$target.querySelector(`.${CARD_CLASS.TITLE}`)
   }
 
   bindEvent() {
@@ -62,21 +61,6 @@ export default class Card {
     }
   }
 
-  editCard() {
-    const modal = new EditCardModal(
-      this.cardTitle,
-      function edited(text) {
-        this.cardTitle = text
-        this.render()
-      }.bind(this)
-    )
-    modal.showModal()
-  }
-
-  render() {
-    this.$target.querySelector('.title').innerText = this.cardTitle
-  }
-
   removeTarget() {
     this.$target.remove()
   }
@@ -91,6 +75,11 @@ export default class Card {
 
   getTitle() {
     return this.title
+  }
+
+  setTitle(editedTitle) {
+    this.title = editedTitle
+    this.$title.innerText = this.title
   }
 
   setNextCardId(nextCardId) {
