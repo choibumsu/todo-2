@@ -52,7 +52,7 @@
           margin-right: 8px;
         }
 
-        > .title {
+        > .column-title {
           font: {
             size: 14px;
             weight: 600;
@@ -74,13 +74,13 @@
             filter: saturate(10);
           }
 
-          &.add-btn {
+          &.column-add-btn {
             width: 16px;
             height: 16px;
             margin-right: 13px;
           }
 
-          &.remove-btn {
+          &.column-remove-btn {
             width: 17px;
             height: 17px;
           }
