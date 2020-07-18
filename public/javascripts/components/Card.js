@@ -88,7 +88,7 @@ export default class Card {
     this.$target.querySelector('.title').innerText = this.cardTitle
   }
 
-  removeCard() {
+  removeTarget() {
     this.$target.remove()
   }
 

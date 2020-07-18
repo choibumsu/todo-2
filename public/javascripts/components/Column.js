@@ -92,7 +92,7 @@ export default class Column {
     }
 
     if (e.target.classList.contains(CARD_CLASS.REMOVE_BTN)) {
-      this.removeCard(e)
+      this.showCardDeleteModal(e)
       return
     }
 
@@ -141,7 +141,7 @@ export default class Column {
     return this.cardList[this.cardList.length - 1].getId()
   }
 
-  removeCard(e) {
+  showCardDeleteModal(e) {
     const removedCardId = parseInt(
       e.target.closest(`.${CARD_CLASS.CARD}`).dataset.id
     )
@@ -149,21 +149,23 @@ export default class Column {
       (card) => card.getId() === removedCardId
     )
 
-    const modal = new DeleteCardModal(
-      removedCard.getTitle(),
-      function deleted() {
-        removedCard.removeCard()
-
-        this.removeNextCardId(removedCardId)
-
-        this.cardList = this.cardList.filter(
-          (card) => card.getId() !== removedCardId
-        )
-
-        this.setCardCount()
-      }.bind(this)
-    )
+    const modal = new DeleteCardModal(removedCard.getTitle(), () => {
+      this.removeCard(removedCard)
+    })
     modal.showModal()
+  }
+
+  removeCard(removedCard) {
+    const removedCardId = removedCard.getId()
+
+    this.removeNextCardId(removedCardId)
+
+    this.cardList = this.cardList.filter(
+      (card) => card.getId() !== removedCardId
+    )
+
+    removedCard.removeTarget()
+    this.setCardCount()
   }
 
   removeNextCardId(removedCardId) {
