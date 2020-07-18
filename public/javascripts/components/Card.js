@@ -22,7 +22,7 @@ export default class Card {
 
   setElements() {
     this.template = `
-      <div class='card'>
+      <div class='card' data-id='${this.id}'>
         <img class='document-icon' src='/static/images/document.svg') />
         <div class='content-container'>
           <div class='content-wrapper'>
@@ -47,6 +47,10 @@ export default class Card {
 
   getId() {
     return this.id
+  }
+
+  setNextCardId(nextCardId) {
+    this.nextCardId = nextCardId
   }
 
   bindEvent() {

@@ -110,7 +110,6 @@ export default class Column {
 
   addCard() {
     const cardTitle = this.cardForm.getCardTitle()
-    console.log(cardTitle)
     if (cardTitle === '') return
 
     // api 호출 후 id 받기
@@ -128,23 +127,45 @@ export default class Column {
     this.setCardCount()
   }
 
-  removeCard(e) {
-    const removedCard = e.target.closest(`.${CARD_CLASS.CARD}`)
-    const removedCardId = removedCard.dataset.id
-    removedCard.remove() //modal 사용
-
-    this.cardList = this.cardList.filter(
-      (card) => card.getId() !== removedCardId
-    )
-    this.setCardCount()
-  }
-
   getNewNextCardId() {
     if (this.cardList.length === 0) {
       return 0
     }
 
     return this.cardList[this.cardList.length - 1].getId()
+  }
+
+  removeCard(e) {
+    const removedCard = e.target.closest(`.${CARD_CLASS.CARD}`)
+    const removedCardId = +removedCard.dataset.id
+    removedCard.remove() //modal 사용
+
+    this.removeNextCardId(removedCardId)
+
+    this.cardList = this.cardList.filter(
+      (card) => card.getId() !== removedCardId
+    )
+
+    this.setCardCount()
+    console.log(this.cardList)
+  }
+
+  removeNextCardId(removedCardId) {
+    const removedIndex = this.cardList.findIndex(
+      (card) => card.getId() === removedCardId
+    )
+
+    if (removedIndex === this.cardList.length - 1) return
+
+    const prevCard = this.cardList[removedIndex + 1]
+
+    if (removedIndex === 0) {
+      prevCard.setNextCardId(0)
+      return
+    }
+
+    const nextCard = this.cardList[removedIndex - 1]
+    prevCard.setNextCardId(nextCard.getId())
   }
 
   setCardCount() {
