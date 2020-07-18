@@ -26,7 +26,7 @@ export default class Card {
         <img class='document-icon' src='/static/images/document.svg') />
         <div class='content-container'>
           <div class='content-wrapper'>
-            <div class='${CARD_CLASS.TITLE}'>${this.cardTitle}</div>
+            <div class='${CARD_CLASS.TITLE}'>${this.title}</div>
             <div class='added-by'>
               <span>Added by </span>
               <span class='strong'>${this.username}</span>
