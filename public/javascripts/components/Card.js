@@ -12,6 +12,10 @@ export default class Card {
     this.cardTitle = cardTitle
     this.username = username
     this.columnIndex = columnIndex
+    //드래그 시 쓰일 변수
+    this.flag = false
+    this.offsetx
+    this.offsety
 
     this.init()
   }
@@ -50,26 +54,124 @@ export default class Card {
     this.$removeBtn.addEventListener('click', () => {
       this.removeCard()
     })
-    let clicks = 0
-    const delay = 400
+
     this.$target.addEventListener('pointerdown', checkClick.bind(this))
 
+    let clicks = 0
+    const delay = 400
     function checkClick(e) {
       clicks++
       setTimeout(function () {
         clicks = 0
       }, delay)
+
       if (clicks === 2) {
         this.editCard()
         clicks = 0
         return
-      } else {
-        this.onDragStartHandler(e)
       }
+      this.choseCard(e)
+    }
+    this.$target.addEventListener('pointermove', (e) => {
+      this.moveCard(e)
+    })
+    this.$target.addEventListener('pointerup', (e) => {
+      this.fixCard(e)
+    })
+  }
+
+  //카드 색깔 초기화
+  setCardColor() {
+    let allCard = document.querySelectorAll('.card')
+    allCard.forEach((card) => {
+      card.style.borderColor = 'rgba(209, 213, 218, 0.5)'
+    })
+  }
+
+  insertCard(e, cardObj) {
+    let coulmnElement = this.closetElement.closest('.column')
+
+    //아동한 곳이 컬럼이 아닌 경우
+    if (!coulmnElement) return
+
+    //카드중에 선택한 카드는 제외
+    let allCard = coulmnElement.querySelectorAll('.card:not(.target)')
+
+    //컬럼 내에 카드 없을 경우 바로 넣기
+    if (!allCard.length) {
+      coulmnElement = coulmnElement.querySelector('.content-container')
+      coulmnElement.append(cardObj)
+      return
+    }
+
+    //카드가 있을 경우 유효범위 계산하기
+    let nextCard = null
+
+    for (let i = 0; i < allCard.length; i++) {
+      let card = allCard[i]
+      if (e.pageY < card.offsetTop + card.offsetHeight / 2) {
+        nextCard = card
+        break
+      }
+    }
+
+    //맨 마지막 카드로 들어갈 경우
+    if (!nextCard) {
+      nextCard = allCard[allCard.length - 1]
+      nextCard.insertAdjacentElement('afterend', cardObj)
+    } else nextCard.insertAdjacentElement('beforebegin', cardObj)
+  }
+
+  //옮길 카드 설정
+  choseCard(e) {
+    this.flag = true
+    this.setCardColor()
+    this.preview = this.$target.cloneNode(true)
+    this.$target.classList.add('target')
+
+    let width = this.$target.offsetWidth
+    this.offsetx = e.offsetX
+    this.offsety = e.offsetY
+    this.$target.insertAdjacentElement('afterend', this.preview)
+    this.$target.style.position = 'absolute'
+    this.$target.style.width = width + 'px'
+  }
+
+  //카드 이동
+  moveCard(e) {
+    if (this.flag === true) {
+      this.$target.style.borderColor = 'blue'
+      this.preview.style.opacity = '0.5'
+      this.$target.style.left = e.pageX - this.offsetx + 'px'
+      this.$target.style.top = e.pageY - this.offsety + 'px'
+      this.$target.style.zIndex = 1
+
+      this.$target.style.display = 'none'
+      this.closetElement = document.elementFromPoint(e.pageX, e.pageY)
+      this.$target.style.display = ''
+      this.insertCard(e, this.preview)
     }
   }
 
-  editCard() {
+  //카드 고정
+  fixCard(e) {
+    if (this.flag === true) {
+      this.flag = false
+    }
+    this.preview.remove()
+    this.$target.classList.remove('target')
+    this.$target.style.position = ''
+    this.$target.style.width = ''
+    this.$target.style.left = ''
+    this.$target.style.top = ''
+    this.$target.style.zIndex = ''
+
+    this.closetElement = document.elementFromPoint(e.pageX, e.pageY)
+    this.insertCard(e, this.$target)
+    this.$target.style.borderColor = 'blue'
+  }
+
+  editCard(e) {
     const modal = new EditCardModal(
       this.cardTitle,
       function edited(text) {
@@ -93,126 +195,5 @@ export default class Card {
 
   render() {
     this.$target.querySelector('.title').innerText = this.cardTitle
-  }
-
-  onDragStartHandler(e) {
-    if (
-      e.target.classList.contains(CARD_CLASS.TITLE) ||
-      e.target.classList.contains(CARD_CLASS.REMOVE_BTN)
-    ) {
-      return
-    }
-
-    this.gapWidth = this.$target.offsetWidth / 2
-    this.gapHeight = this.$target.offsetHeight / 2
-    this.$copyTarget = this.$target.cloneNode(true)
-
-    this.$copyTarget.style.position = 'absolute'
-    this.$copyTarget.style.top = `${e.clientY - this.gapHeight}px`
-    this.$copyTarget.style.left = `${e.clientX - this.gapWidth}px`
-    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
-
-    const $columns = Array.from(
-      document.querySelectorAll(`.${COLUMN_CLASS.COLUMN}`)
-    )
-
-    this.columnDatas = $columns.map(($column) => {
-      const $cards = Array.from($column.querySelectorAll(`.${CARD_CLASS.CARD}`))
-      const cardDatas = $cards.map(($card) => {
-        return {
-          $element: $card,
-          centerOffset: $card.offsetTop + $card.offsetHeight / 2,
-        }
-      })
-
-      return {
-        $element: $column,
-        centerOffset: $column.offsetLeft + $column.offsetWidth / 2,
-        cardDatas,
-      }
-    })
-
-    const pointermoveHandler = this.onPointerMoveHandler.bind(this)
-
-    window.addEventListener('pointermove', pointermoveHandler)
-
-    this.$copyTarget.addEventListener('pointerup', (e) => {
-      window.removeEventListener('pointermove', pointermoveHandler)
-
-      if (this.closestCardData === undefined) {
-        this.closestColumnData.$element
-          .querySelector(`.${COLUMN_CLASS.CONTENT_CONTAINER}`)
-          .appendChild(this.$target)
-
-        this.$target.classList.remove(CARD_CLASS.MOVING)
-        this.$copyTarget.remove()
-        return
-      }
-
-      const $closestCard = this.closestCardData.$element
-      if (this.closestCardData.centerOffset < e.clientY) {
-        $closestCard.parentNode.insertBefore(
-          this.$target,
-          $closestCard.nextElementSibling
-        )
-      } else {
-        $closestCard.parentNode.insertBefore(this.$target, $closestCard)
-      }
-
-      this.$target.classList.remove(CARD_CLASS.MOVING)
-      this.$copyTarget.remove()
-    })
-
-    this.$target.classList.add(CARD_CLASS.MOVING)
-    document.body.append(this.$copyTarget)
-  }
-
-  onPointerMoveHandler(e) {
-    this.$copyTarget.style.top = `${e.clientY - this.gapHeight}px`
-    this.$copyTarget.style.left = `${e.clientX - this.gapWidth}px`
-
-    this.findClosestColumn(e)
-  }
-
-  findClosestColumn(e) {
-    ;[this.closestColumnData] = this.columnDatas.reduce(
-      ([closestColumnData, minGap], columnData) => {
-        const gap = Math.abs(columnData.centerOffset - e.clientX)
-
-        if (minGap === -1) {
-          return [columnData, gap]
-        }
-
-        if (gap < minGap) {
-          closestColumnData = columnData
-          minGap = gap
-        }
-
-        return [closestColumnData, minGap]
-      },
-      [, -1]
-    )
-
-    this.findClosestCard(e, this.closestColumnData.cardDatas)
-  }
-
-  findClosestCard(e, cardDatas) {
-    ;[this.closestCardData] = cardDatas.reduce(
-      ([closestCardData, minGap], cardData) => {
-        const gap = Math.abs(cardData.centerOffset - e.clientY)
-
-        if (minGap === -1) {
-          return [cardData, gap]
-        }
-
-        if (gap < minGap) {
-          closestCardData = cardData
-          minGap = gap
-        }
-
-        return [closestCardData, minGap]
-      },
-      [, -1]
-    )
   }
 }
