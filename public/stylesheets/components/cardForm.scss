@@ -9,7 +9,6 @@
 
   .card-form-textarea {
     min-width: 100%;
-    max-width: 100%;
     min-height: 60px;
     max-height: 500px;
     font-size: 14px;
@@ -17,6 +16,7 @@
     border-radius: 6px;
     padding: 8px 12px;
     margin-bottom: 8px;
+    resize: vertical;
   }
 
   .button-row {
