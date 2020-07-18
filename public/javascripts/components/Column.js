@@ -9,6 +9,7 @@ import '../../stylesheets/components/column.scss'
 import CardForm from './CardForm'
 import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
+import DeleteCardModal from './Modal/DeleteCardModal'
 export default class Column {
   constructor({ columnTitle, cardDatas }) {
     this.$target = ''
@@ -142,16 +143,23 @@ export default class Column {
 
   removeCard(e) {
     const removedCard = e.target.closest(`.${CARD_CLASS.CARD}`)
-    const removedCardId = +removedCard.dataset.id
-    removedCard.remove() //modal 사용
 
-    this.removeNextCardId(removedCardId)
+    const modal = new DeleteCardModal(
+      removedCard.querySelector(`.${CARD_CLASS.TITLE}`).innerText,
+      function deleted() {
+        const removedCardId = +removedCard.dataset.id
+        removedCard.remove() //modal 사용
 
-    this.cardList = this.cardList.filter(
-      (card) => card.getId() !== removedCardId
+        this.removeNextCardId(removedCardId)
+
+        this.cardList = this.cardList.filter(
+          (card) => card.getId() !== removedCardId
+        )
+
+        this.setCardCount()
+      }.bind(this)
     )
-
-    this.setCardCount()
+    modal.showModal()
   }
 
   removeNextCardId(removedCardId) {
