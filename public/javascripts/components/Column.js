@@ -239,8 +239,6 @@ export default class Column {
   }
 
   dragStart(e, targetCard) {
-    document.body.classList.add(CLASS_NAME.US_NONE)
-
     const movedCard = this.cardList.find(
       (card) => card.getId() === +targetCard.dataset.id
     )

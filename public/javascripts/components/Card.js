@@ -45,12 +45,15 @@ export default class Card {
   }
 
   moveStart(e) {
+    document.body.classList.add(CLASS_NAME.US_NONE)
+    this.$target.classList.add(CARD_CLASS.MOVING)
+
     this.setContainerHalfGap()
     this.setCardHalfGap()
     this.copyTarget(e)
+
     this.moveNodesFunc = this.moveNodes.bind(this)
     this.moveStopFunc = this.moveStop.bind(this)
-
     window.addEventListener('pointermove', this.moveNodesFunc)
     window.addEventListener('pointerup', this.moveStopFunc)
   }
@@ -61,10 +64,13 @@ export default class Card {
     )
     if (!$firstContainer) return
 
-    const $secondContainer = $firstContainer
-      .closest(`.${COLUMN_CLASS.COLUMN}`)
-      .nextElementSibling.querySelector(`.${COLUMN_CLASS.CONTENT_CONTAINER}`)
-    if (!$secondContainer) return
+    const $secondColumn = $firstContainer.closest(`.${COLUMN_CLASS.COLUMN}`)
+      .nextElementSibling
+    if (!$secondColumn) return
+
+    const $secondContainer = $secondColumn.querySelector(
+      `.${COLUMN_CLASS.CONTENT_CONTAINER}`
+    )
 
     this.columnHalfGap =
       ($secondContainer.offsetLeft -
@@ -105,7 +111,6 @@ export default class Card {
       left: e.pageX - this.$target.offsetLeft,
     }
 
-    this.$target.classList.add(CARD_CLASS.MOVING)
     document.body.appendChild(this.$copyTarget)
   }
 
@@ -180,10 +185,11 @@ export default class Card {
     this.$copyTarget.style.left = `${e.pageX - this.offsetDiff.left}px`
   }
 
-  moveStop(e) {
-    this.$copyTarget.remove()
-    this.$target.classList.remove(CARD_CLASS.MOVING)
+  moveStop() {
     document.body.classList.remove(CLASS_NAME.US_NONE)
+    this.$target.classList.remove(CARD_CLASS.MOVING)
+    this.$copyTarget.remove()
+
     window.removeEventListener('pointermove', this.moveNodesFunc)
     window.removeEventListener('pointerup', this.moveStopFunc)
   }
