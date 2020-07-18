@@ -80,11 +80,41 @@ export default class Column {
   }
 
   bindEvent() {
+    // let clicks = 0
+    // const delay = 400
+
+    // function e2(e) {
+    //   clicks++
+
+    //   setTimeout(function () {
+    //     clicks = 0
+    //   }, delay)
+
+    //   if (clicks === 2) {
+    //     clicks = 0
+    //     return
+    //   } else {
+    //     console.log('pointerdown')
+    //   }
+    // }
+    // e2.bind(this)
+    this.$target.addEventListener(
+      'pointerdown',
+      this.onPointerDownHandler.bind(this)
+    )
     this.$target.addEventListener('click', this.onClickHandler.bind(this))
     this.$target.addEventListener(
       'dblclick',
       this.onDoubleClickHandler.bind(this)
     )
+  }
+
+  onPointerDownHandler(e) {
+    const targetCard = e.target.closest(`.${CARD_CLASS.CARD}`)
+    if (targetCard) {
+      this.dragStart(e, targetCard)
+      return
+    }
   }
 
   onClickHandler(e) {
@@ -201,10 +231,13 @@ export default class Column {
   }
 
   showColumnEditModal() {
+    this.$columnTitle.classList.add(CLASS_NAME.US_NONE)
+
     const modal = new EditColumnModal(this.columnTitle, (editedTitle) => {
       this.setColumnTitle(editedTitle)
     })
     modal.showModal()
+    this.$columnTitle.classList.remove(CLASS_NAME.US_NONE)
   }
 
   setColumnTitle(editedTitle) {
@@ -222,4 +255,21 @@ export default class Column {
     })
     modal.showModal()
   }
+
+  dragStart(e, targetCard) {
+    document.body.classList.add(CLASS_NAME.US_NONE)
+
+    const movedCard = this.cardList.find(
+      (card) => card.getId() === +targetCard.dataset.id
+    )
+    movedCard.moveStart(e)
+
+    window.addEventListener('pointerup', (e) => {
+      this.dragEnd(e, movedCard)
+    })
+  }
+
+  onPointerMoveHandler(e) {}
+
+  onPointerMoveHandler(e) {}
 }

@@ -1,6 +1,6 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/card.scss'
-import { CARD_CLASS } from '../utils/Constants'
+import { CARD_CLASS, CLASS_NAME } from '../utils/Constants'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -15,7 +15,6 @@ export default class Card {
 
   init() {
     this.setElements()
-    // this.bindEvent()
   }
 
   setElements() {
@@ -39,30 +38,40 @@ export default class Card {
     this.$title = this.$target.querySelector(`.${CARD_CLASS.TITLE}`)
   }
 
-  bindEvent() {
-    let clicks = 0
-    const delay = 400
-    this.$target.addEventListener('pointerdown', e2.bind(this))
-
-    function e2(e) {
-      clicks++
-
-      setTimeout(function () {
-        clicks = 0
-      }, delay)
-
-      if (clicks === 2) {
-        this.editCard()
-        clicks = 0
-        return
-      } else {
-        console.log('pointerdown')
-      }
-    }
-  }
-
   removeTarget() {
     this.$target.remove()
+  }
+
+  moveStart(e) {
+    this.copyTarget(e)
+    window.addEventListener('pointermove', this.moveCopy.bind(this))
+    window.addEventListener('pointerup', this.moveStop.bind(this))
+  }
+
+  copyTarget(e) {
+    this.$copyTarget = this.$target.cloneNode(true)
+    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
+    this.$copyTarget.style.position = 'absolute'
+    this.$copyTarget.style.top = `${this.$target.offsetTop}px`
+    this.$copyTarget.style.left = `${this.$target.offsetLeft}px`
+    this.offsetDiff = {
+      top: e.pageY - this.$target.offsetTop,
+      left: e.pageX - this.$target.offsetLeft,
+    }
+
+    this.$target.classList.add(CARD_CLASS.MOVING)
+    document.body.appendChild(this.$copyTarget)
+  }
+
+  moveCopy(e) {
+    this.$copyTarget.style.top = `${e.pageY - this.offsetDiff.top}px`
+    this.$copyTarget.style.left = `${e.pageX - this.offsetDiff.left}px`
+  }
+
+  moveStop(e) {
+    this.$copyTarget.remove()
+    this.$target.classList.remove(CARD_CLASS.MOVING)
+    document.body.classList.remove(CLASS_NAME.US_NONE)
   }
 
   getTarget() {
