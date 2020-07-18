@@ -2,8 +2,8 @@ import { templateToElement, elementToTemplate } from '../utils/HtmlGenerator'
 import {
   COLUMN_CLASS,
   CARD_CLASS,
-  EVENT,
   CARD_FORM_CLASS,
+  CLASS_NAME,
 } from '../utils/Constants'
 import '../../stylesheets/components/column.scss'
 import CardForm from './CardForm'
@@ -13,23 +13,18 @@ export default class Column {
   constructor({ columnTitle, cardDatas }) {
     this.$target = ''
     this.columnTitle = columnTitle
-    this.cardDatas = cardDatas
-    this.cardList = []
+    this.cardList = Array(cardDatas.length)
+    this.cardForm = new CardForm()
 
     this.init(cardDatas)
   }
 
   init(cardDatas) {
-    this.setCardList(cardDatas)
     this.setElements()
+    this.setCardList(cardDatas)
+    this.setCardForm()
     this.render()
     this.bindEvent()
-  }
-
-  setCardList(cardDatas) {
-    this.cardList = cardDatas.map((cardData) => {
-      return new Card(cardData)
-    })
   }
 
   setElements() {
@@ -43,20 +38,12 @@ export default class Column {
             <div class='${COLUMN_CLASS.TITLE}'>${this.columnTitle}</div> 
           </div>
           <div class='btn-wrapper'>
-            <img class='${
-              COLUMN_CLASS.ADD_BTN
-            }' src='/static/images/plus-btn.svg' alt='add-btn' />
-            <img class='${
-              COLUMN_CLASS.REMOVE_BTN
-            }' src='/static/images/remove-btn.svg' alt='remove-btn' />
+            <img class='${COLUMN_CLASS.ADD_BTN}' src='/static/images/plus-btn.svg' alt='add-btn' />
+            <img class='${COLUMN_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' alt='remove-btn' />
           </div>
         </div>
         <div class='${COLUMN_CLASS.CARD_FORM_SLOT}'></div>
-        <div class='${COLUMN_CLASS.CONTENT_CONTAINER}'>
-          ${this.cardList
-            .map((card) => elementToTemplate(card.getTarget()))
-            .join('')}
-        </div>
+        <div class='${COLUMN_CLASS.CONTENT_CONTAINER}'></div>
       </section>
     `
 
@@ -65,6 +52,21 @@ export default class Column {
     this.$contentContainer = this.$target.querySelector(
       `.${COLUMN_CLASS.CONTENT_CONTAINER}`
     )
+  }
+
+  setCardList(cardDatas) {
+    this.cardList = cardDatas.map((cardData) => {
+      const card = new Card(cardData)
+      this.$contentContainer.prepend(card.getTarget())
+      return card
+    })
+  }
+
+  setCardForm() {
+    const $cardFormSlot = this.$target.querySelector(
+      `.${COLUMN_CLASS.CARD_FORM_SLOT}`
+    )
+    $cardFormSlot.appendChild(this.cardForm.getTarget())
   }
 
   render() {
@@ -84,12 +86,17 @@ export default class Column {
 
   onClickHandler(e) {
     if (e.target.classList.contains(COLUMN_CLASS.ADD_BTN)) {
-      this.toggleCardForm(e)
+      this.cardForm.toggleCardForm()
       return
     }
 
     if (e.target.classList.contains(CARD_CLASS.REMOVE_BTN)) {
       this.removeCard(e)
+      return
+    }
+
+    if (e.target.classList.contains(CARD_FORM_CLASS.ADD_BTN)) {
+      this.addCard()
       return
     }
   }
@@ -101,7 +108,11 @@ export default class Column {
     }
   }
 
-  addCard(cardTitle) {
+  addCard() {
+    const cardTitle = this.cardForm.getCardTitle()
+    console.log(cardTitle)
+    if (cardTitle === '') return
+
     // api 호출 후 id 받기
     const cardData = {
       id: 1,
@@ -140,20 +151,6 @@ export default class Column {
     const newCardCount = this.$target.querySelectorAll(`.${CARD_CLASS.CARD}`)
       .length
     this.$cardCount.innerHTML = newCardCount
-  }
-
-  toggleCardForm(e) {
-    const $cardFormSlot = this.$target.querySelector(
-      `.${COLUMN_CLASS.CARD_FORM_SLOT}`
-    )
-
-    if ($cardFormSlot.innerHTML) {
-      $cardFormSlot.innerHTML = ''
-      return
-    }
-
-    const cardForm = new CardForm()
-    $cardFormSlot.appendChild(cardForm.$target)
   }
 
   editColumn(e) {
