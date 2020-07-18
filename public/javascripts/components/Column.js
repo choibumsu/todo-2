@@ -263,10 +263,6 @@ export default class Column {
       (card) => card.getId() === +targetCard.dataset.id
     )
     movedCard.moveStart(e)
-
-    window.addEventListener('pointerup', (e) => {
-      this.dragEnd(e, movedCard)
-    })
   }
 
   onPointerMoveHandler(e) {}

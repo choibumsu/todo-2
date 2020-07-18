@@ -44,8 +44,11 @@ export default class Card {
 
   moveStart(e) {
     this.copyTarget(e)
-    window.addEventListener('pointermove', this.moveCopy.bind(this))
-    window.addEventListener('pointerup', this.moveStop.bind(this))
+    this.moveCopyFunc = this.moveCopy.bind(this)
+    this.moveStopFunc = this.moveStop.bind(this)
+
+    window.addEventListener('pointermove', this.moveCopyFunc)
+    window.addEventListener('pointerup', this.moveStopFunc)
   }
 
   copyTarget(e) {
@@ -72,6 +75,8 @@ export default class Card {
     this.$copyTarget.remove()
     this.$target.classList.remove(CARD_CLASS.MOVING)
     document.body.classList.remove(CLASS_NAME.US_NONE)
+    window.removeEventListener('pointermove', this.moveCopyFunc)
+    window.removeEventListener('pointerup', this.moveStopFunc)
   }
 
   getTarget() {
