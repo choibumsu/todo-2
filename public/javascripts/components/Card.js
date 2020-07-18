@@ -17,7 +17,7 @@ export default class Card {
 
   init() {
     this.setElements()
-    // this.bindEvent()
+    this.bindEvent()
   }
 
   setElements() {
@@ -57,7 +57,7 @@ export default class Card {
         clicks = 0
         return
       } else {
-        this.onDragStartHandler(e)
+        console.log('pointerdown')
       }
     }
   }
@@ -68,17 +68,6 @@ export default class Card {
       function edited(text) {
         this.cardTitle = text
         this.render()
-      }.bind(this)
-    )
-    modal.showModal()
-  }
-
-  removeCard() {
-    const modal = new DeleteCardModal(
-      this.cardTitle,
-      function deleted() {
-        this.$target.remove()
-        // this.emitter.emit(EVENT.REMOVE_CARD, this.id)
       }.bind(this)
     )
     modal.showModal()
