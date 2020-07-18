@@ -49,6 +49,7 @@ export default class Column {
     `
 
     this.$target = templateToElement(template)
+    this.$columnTitle = this.$target.querySelector(`.${COLUMN_CLASS.TITLE}`)
     this.$cardCount = this.$target.querySelector(`.${COLUMN_CLASS.CARD_COUNT}`)
     this.$contentContainer = this.$target.querySelector(
       `.${COLUMN_CLASS.CONTENT_CONTAINER}`
@@ -109,7 +110,7 @@ export default class Column {
 
   onDoubleClickHandler(e) {
     if (e.target.classList.contains(COLUMN_CLASS.TITLE)) {
-      this.editColumn(e)
+      this.showColumnEditModal()
       return
     }
   }
@@ -192,17 +193,15 @@ export default class Column {
     this.$cardCount.innerHTML = newCardCount
   }
 
-  editColumn(e) {
-    const modal = new EditColumnModal(this.columnTitle, (edited) => {
-      this.columnTitle = edited
-      this.show()
+  showColumnEditModal() {
+    const modal = new EditColumnModal(this.columnTitle, (editedTitle) => {
+      this.setColumnTitle(editedTitle)
     })
     modal.showModal()
   }
 
-  show() {
-    this.$target.querySelector(
-      `.${COLUMN_CLASS.TITLE}`
-    ).innerText = this.columnTitle
+  setColumnTitle(editedTitle) {
+    this.columnTitle = editedTitle
+    this.$columnTitle.innerText = this.columnTitle
   }
 }
