@@ -43,16 +43,12 @@ export default class CardForm {
     this.$cardTextarea.addEventListener('input', this.onInputHandler.bind(this))
   }
 
-  getTarget() {
-    return this.$target
-  }
-
   onInputHandler(e) {
     const isActive = e.target.value !== ''
-    this.setActive(isActive)
+    this.updateActive(isActive)
   }
 
-  setActive(isActive) {
+  updateActive(isActive) {
     this.isActive = isActive
 
     if (this.isActive) {
@@ -71,6 +67,10 @@ export default class CardForm {
     this.$target.classList.add(CLASS_NAME.DP_NONE)
   }
 
+  getTarget() {
+    return this.$target
+  }
+
   getCardTitle() {
     if (!this.isActive) {
       return ''
@@ -78,7 +78,7 @@ export default class CardForm {
 
     const cardTitle = this.$cardTextarea.value
     this.$cardTextarea.value = ''
-    this.setActive(false)
+    this.updateActive(false)
 
     return cardTitle
   }
