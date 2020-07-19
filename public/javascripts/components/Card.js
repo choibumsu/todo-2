@@ -40,17 +40,11 @@ export default class Card {
     this.$title = this.$target.querySelector(`.${CARD_CLASS.TITLE}`)
   }
 
-  removeTarget() {
-    this.$target.remove()
-  }
-
   moveStart(e) {
-    document.body.classList.add(CLASS_NAME.US_NONE)
-    this.$target.classList.add(CARD_CLASS.MOVING)
-
     this.setContainerHalfGap()
     this.setCardHalfGap()
     this.copyTarget(e)
+    this.toggleMovingStyle()
 
     this.moveNodesFunc = this.moveNodes.bind(this)
     this.moveStopFunc = this.moveStop.bind(this)
@@ -79,6 +73,9 @@ export default class Card {
       2
   }
 
+  //아이디어 -> closet column data-id을 포함한 이벤트 에밋터. 카드 자체를 인자로 줌 (this)
+  // 오리진 컬럼 아이디에는 카드 삭제 이벤트, pointerup 이벤트에는 신규 컬럼에 카드 추가 이벤트
+
   setCardHalfGap() {
     const $containers = Array.from(
       document.querySelectorAll(`.${COLUMN_CLASS.CONTENT_CONTAINER}`)
@@ -104,14 +101,36 @@ export default class Card {
     this.$copyTarget.style.pointerEvents = 'none'
     this.$copyTarget.style.opacity = '0.8'
     this.$copyTarget.style.position = 'absolute'
-    this.$copyTarget.style.top = `${this.$target.offsetTop}px`
     this.$copyTarget.style.left = `${this.$target.offsetLeft}px`
+    this.$copyTarget.style.top = `${this.$target.offsetTop}px`
+
     this.offsetDiff = {
-      top: e.pageY - this.$target.offsetTop,
       left: e.pageX - this.$target.offsetLeft,
+      top: e.pageY - this.$target.offsetTop,
     }
+    this.pointOffsetDiffs = [
+      {
+        x: this.$target.offsetWidth / 2 - this.containerHalfGap,
+        y: this.$target.offsetHeight / 2 - this.cardHalfGap,
+      },
+      {
+        x: this.$target.offsetWidth / 2 + this.containerHalfGap,
+        y: this.$target.offsetHeight / 2 + this.cardHalfGap,
+      },
+    ]
 
     document.body.appendChild(this.$copyTarget)
+  }
+
+  toggleMovingStyle() {
+    if (this.$target.classList.contains(CARD_CLASS.MOVING)) {
+      document.body.classList.remove(CLASS_NAME.US_NONE)
+      this.$target.classList.remove(CARD_CLASS.MOVING)
+      return
+    }
+
+    document.body.classList.add(CLASS_NAME.US_NONE)
+    this.$target.classList.add(CARD_CLASS.MOVING)
   }
 
   moveNodes(e) {
@@ -122,21 +141,13 @@ export default class Card {
 
   setPoints() {
     const $firstPoint = document.elementFromPoint(
-      this.$copyTarget.offsetLeft +
-        this.$copyTarget.offsetWidth / 2 -
-        this.containerHalfGap,
-      this.$copyTarget.offsetTop +
-        this.$copyTarget.offsetHeight / 2 -
-        this.cardHalfGap
+      this.$copyTarget.offsetLeft + this.pointOffsetDiffs[0].x,
+      this.$copyTarget.offsetTop + this.pointOffsetDiffs[0].y
     )
 
     const $secondPoint = document.elementFromPoint(
-      this.$copyTarget.offsetLeft +
-        this.$copyTarget.offsetWidth / 2 +
-        this.containerHalfGap,
-      this.$copyTarget.offsetTop +
-        this.$copyTarget.offsetHeight / 2 +
-        this.cardHalfGap
+      this.$copyTarget.offsetLeft + this.pointOffsetDiffs[1].x,
+      this.$copyTarget.offsetTop + this.pointOffsetDiffs[1].y
     )
 
     return [$firstPoint, $secondPoint]
@@ -181,14 +192,13 @@ export default class Card {
   }
 
   moveCopy(e) {
-    this.$copyTarget.style.top = `${e.pageY - this.offsetDiff.top}px`
     this.$copyTarget.style.left = `${e.pageX - this.offsetDiff.left}px`
+    this.$copyTarget.style.top = `${e.pageY - this.offsetDiff.top}px`
   }
 
   moveStop() {
-    document.body.classList.remove(CLASS_NAME.US_NONE)
-    this.$target.classList.remove(CARD_CLASS.MOVING)
     this.$copyTarget.remove()
+    this.toggleMovingStyle()
 
     window.removeEventListener('pointermove', this.moveNodesFunc)
     window.removeEventListener('pointerup', this.moveStopFunc)
@@ -213,5 +223,9 @@ export default class Card {
 
   setNextCardId(nextCardId) {
     this.nextCardId = nextCardId
+  }
+
+  removeTarget() {
+    this.$target.remove()
   }
 }
