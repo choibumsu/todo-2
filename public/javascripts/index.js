@@ -11,7 +11,7 @@ import '../stylesheets/common/base.scss'
 const tempColumns = [
   {
     id: 1,
-    columnTitle: 'To Do 📝',
+    title: 'To Do 📝',
     cardDatas: [
       {
         id: 1,
@@ -29,7 +29,7 @@ const tempColumns = [
   },
   {
     id: 2,
-    columnTitle: 'In Progess 🏃‍♂️',
+    title: 'In Progess 🏃‍♂️',
     cardDatas: [
       {
         id: 3,
@@ -53,7 +53,7 @@ const tempColumns = [
   },
   {
     id: 3,
-    columnTitle: 'Done 👏',
+    title: 'Done 👏',
     cardDatas: [
       {
         id: 6,

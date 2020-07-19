@@ -5,16 +5,19 @@ import {
   CARD_FORM_CLASS,
   CLASS_NAME,
 } from '../utils/Constants'
+import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/column.scss'
 import CardForm from './CardForm'
 import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
+
 export default class Column {
-  constructor({ columnTitle, cardDatas }) {
+  constructor({ id, title, cardDatas }) {
     this.$target = ''
-    this.columnTitle = columnTitle
+    this.id = id
+    this.title = title
     this.cardList = Array(cardDatas.length)
     this.cardForm = new CardForm()
 
@@ -37,7 +40,7 @@ export default class Column {
             <div class='${COLUMN_CLASS.CARD_COUNT}'>
               ${this.cardList.length}
             </div>
-            <div class='${COLUMN_CLASS.TITLE}'>${this.columnTitle}</div> 
+            <div class='${COLUMN_CLASS.TITLE}'>${this.title}</div> 
           </div>
           <div class='btn-wrapper'>
             <img class='${COLUMN_CLASS.ADD_BTN}' src='/static/images/plus-btn.svg' alt='add-btn' />
@@ -50,7 +53,7 @@ export default class Column {
     `
 
     this.$target = templateToElement(template)
-    this.$columnTitle = this.$target.querySelector(`.${COLUMN_CLASS.TITLE}`)
+    this.$title = this.$target.querySelector(`.${COLUMN_CLASS.TITLE}`)
     this.$cardCount = this.$target.querySelector(`.${COLUMN_CLASS.CARD_COUNT}`)
     this.$contentContainer = this.$target.querySelector(
       `.${COLUMN_CLASS.CONTENT_CONTAINER}`
@@ -89,6 +92,8 @@ export default class Column {
       'dblclick',
       this.onDoubleClickHandler.bind(this)
     )
+
+    emitter.on(`${EVENT.ADD_CARD}-${this.id}`)
   }
 
   onPointerDownHandler(e) {
@@ -213,18 +218,18 @@ export default class Column {
   }
 
   showColumnEditModal() {
-    this.$columnTitle.classList.add(CLASS_NAME.US_NONE)
+    this.$title.classList.add(CLASS_NAME.US_NONE)
 
-    const modal = new EditColumnModal(this.columnTitle, (editedTitle) => {
-      this.setColumnTitle(editedTitle)
+    const modal = new EditColumnModal(this.title, (editedTitle) => {
+      this.setTitle(editedTitle)
     })
     modal.showModal()
-    this.$columnTitle.classList.remove(CLASS_NAME.US_NONE)
+    this.$title.classList.remove(CLASS_NAME.US_NONE)
   }
 
-  setColumnTitle(editedTitle) {
-    this.columnTitle = editedTitle
-    this.$columnTitle.innerText = this.columnTitle
+  setTitle(editedTitle) {
+    this.title = editedTitle
+    this.$title.innerText = this.title
   }
 
   showCardEditModal(targetCard) {
