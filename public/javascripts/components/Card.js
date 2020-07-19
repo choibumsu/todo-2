@@ -21,17 +21,19 @@ export default class Card {
   setElements() {
     this.template = `
       <div class='card' data-id='${this.id}'>
-        <img class='document-icon' src='/static/images/document.svg') />
-        <div class='content-container'>
-          <div class='content-wrapper'>
-            <div class='${CARD_CLASS.TITLE}'>${this.title}</div>
-            <div class='added-by'>
-              <span>Added by </span>
-              <span class='strong'>${this.username}</span>
+        <div class='card-content'>
+          <img class='document-icon' src='/static/images/document.svg') />
+          <div class='content-container'>
+            <div class='content-wrapper'>
+              <div class='${CARD_CLASS.TITLE}'>${this.title}</div>
+              <div class='added-by'>
+                <span>Added by </span>
+                <span class='strong'>${this.username}</span>
+              </div>
             </div>
+            <img class='${CARD_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' />
           </div>
-          <img class='${CARD_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' />
-          </div>
+        </div>
       </div>
     `
 
