@@ -3,6 +3,7 @@
 .card {
   width: 100%;
   margin-bottom: 8px;
+  cursor: move;
 
   &:last-child {
     margin-bottom: 3px;
@@ -13,6 +14,12 @@
     opacity: 0.5;
   }
 
+  &.copy {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
   .card-content {
     display: flex;
     background-color: $color-white;
@@ -20,7 +27,6 @@
     border-radius: 6px;
     box-shadow: 0 1px 0 rgba(27, 31, 35, 0.04);
     padding: 8px;
-    cursor: move;
 
     &:hover {
       border-color: $color-gray-400;

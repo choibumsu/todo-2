@@ -1,7 +1,6 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS } from '../utils/Constants'
-import CardForm from './CardForm'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -129,12 +128,10 @@ export default class Card {
   // 카드를 복사
   copyTarget(e) {
     this.$copyTarget = this.$target.cloneNode(true)
-    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
-    this.$copyTarget.style.pointerEvents = 'none'
-    this.$copyTarget.style.opacity = '0.8'
-    this.$copyTarget.style.position = 'absolute'
     this.$copyTarget.style.left = `${this.$target.offsetLeft}px`
     this.$copyTarget.style.top = `${this.$target.offsetTop}px`
+    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
+    this.$copyTarget.classList.add(CARD_CLASS.COPY)
 
     this.offsetDiff = {
       left: e.pageX - this.$target.offsetLeft,
@@ -168,11 +165,12 @@ export default class Card {
 
   // pointermove 이벤트 발생시 실행 함수
   moveNodes(e) {
-    const $points = this.setPoints() // 복제된 카드 중앙에 2개 점을 계산
-    this.moveTarget($points) // 2개의 점을 기준으로 카드를 이동
+    const $points = this.setPoints() // 복제된 카드 중앙에 4개 점을 계산
+    this.moveTarget($points) // 4개의 점을 기준으로 카드를 이동
     this.moveCopy(e) // 복제된 카드는 커서를 따라 이동
   }
 
+  // 복제된 카드의 중앙 4개점에 해당하는 dom객체를 반환
   setPoints() {
     const $points = this.pointOffsetDiffs.map((pointOffsetDiff) => {
       return document.elementFromPoint(
@@ -223,7 +221,6 @@ export default class Card {
       )
       return
     }
-
     // target이 더 위에 있으면 insetBefore
     $originCard.parentNode.insertBefore(this.$target, $originCard)
   }

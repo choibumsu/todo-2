@@ -26,6 +26,7 @@ export const CARD_CLASS = {
   TITLE: 'card-title',
   REMOVE_BTN: 'card-remove-btn',
   MOVING: 'moving',
+  COPY: 'copy',
 }
 
 export const EVENT = {
