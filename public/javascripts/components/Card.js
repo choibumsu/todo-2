@@ -143,16 +143,6 @@ export default class Card {
     }
 
     document.body.appendChild(this.$copyTarget)
-
-    /* will be deleted */
-    const div = document.createElement('div')
-    div.style.position = 'absolute'
-    div.style.left = `calc(50% - ${this.getContainerHalfGap()}px)`
-    div.style.top = `calc(50% - ${this.getCardHalfGap()}px)`
-    div.style.width = `${this.getContainerHalfGap() * 2}px`
-    div.style.height = `${this.getCardHalfGap() * 2}px`
-    div.style.backgroundColor = 'red'
-    this.$copyTarget.appendChild(div)
   }
 
   // 카드 이동 효과 토글 함수
