@@ -1,6 +1,7 @@
 import { templateToElement } from '../utils/HtmlGenerator'
+import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/card.scss'
-import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS } from '../utils/Constants'
+import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS, EVENT } from '../utils/Constants'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -24,7 +25,7 @@ export default class Card {
           <img class='document-icon' src='/static/images/document.svg') />
           <div class='content-container'>
             <div class='content-wrapper'>
-              <div class='${CARD_CLASS.TITLE}'>${this.title}</div>
+              <div class='${CARD_CLASS.TITLE}'>${this.title} - ${this.id}</div>
               <div class='added-by'>
                 <span>Added by </span>
                 <span class='strong'>${this.username}</span>
@@ -42,6 +43,9 @@ export default class Card {
 
   // 드래그 시작시 실행 함수
   moveStart(e) {
+    this.originColumnId = this.$target.closest(
+      `.${COLUMN_CLASS.COLUMN}`
+    ).dataset.id
     this.setPointOffset()
     this.copyTarget(e)
     this.toggleMovingStyle()
@@ -232,6 +236,10 @@ export default class Card {
 
   // pointerup 이벤트 발생시 실행되는 함수
   moveStop() {
+    const columnId = +this.$target.closest(`.${COLUMN_CLASS.COLUMN}`).dataset.id
+    emitter.emit(`${EVENT.REMOVE_CARD}-${this.originColumnId}`, this)
+    emitter.emit(`${EVENT.INSERT_CARD}-${columnId}`, this)
+
     this.$copyTarget.remove()
     this.toggleMovingStyle()
 
