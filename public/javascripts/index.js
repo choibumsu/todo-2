@@ -1,13 +1,10 @@
-import { closeModal } from './components/Modal/Modal'
-import { toggleSidebar } from './components/SideBar'
 import Column from './components/Column'
-import DeleteCardModal from './components/Modal/DeleteCardModal'
-import EditCardModal from './components/Modal/EditCardModal'
-import EditColumnModal from './components/Modal/EditColumnModal'
 import './components/Header'
-import './components/LoginForm'
-import './components/SideBarCard'
+import './components/SideBar'
 import '../stylesheets/common/base.scss'
+
+import { fetchTest } from './api/index'
+
 const tempColumns = [
   {
     id: 1,
@@ -68,3 +65,5 @@ const tempColumns = [
 tempColumns.forEach((column) => {
   new Column(column)
 })
+
+fetchTest()
