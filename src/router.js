@@ -5,6 +5,7 @@ const {
   getAllCardsController,
   updateColumnNameController,
   updateCardNameController,
+  createCardController,
   deleteCardController,
 } = require('./controller.js')
 
@@ -27,5 +28,9 @@ router.put('/card', updateCardNameController)
 
 // 카드 데이터 삭제 api
 router.delete('/card', deleteCardController)
+
+router.post('/api/create/card', function (req, res, next) {
+  createCardController(req, res, next)
+})
 
 module.exports = router
