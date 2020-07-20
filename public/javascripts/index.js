@@ -4,6 +4,7 @@ import Column from './components/Column'
 import DeleteCardModal from './components/Modal/DeleteCardModal'
 import EditCardModal from './components/Modal/EditCardModal'
 import EditColumnModal from './components/Modal/EditColumnModal'
+import ActivityCard from './components/ActivityCard'
 import './components/Header'
 import './components/LoginForm'
 import './components/SideBarCard'
@@ -65,6 +66,29 @@ const tempColumns = [
   },
 ]
 
+const tempActivity = [
+  {
+    content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
+    time: new Date(),
+  },
+  {
+    content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
+    time: '30 seconds ago',
+  },
+  {
+    content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
+    time: '30 seconds ago',
+  },
+  {
+    content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
+    time: '30 seconds ago',
+  },
+]
+
 tempColumns.forEach((column) => {
   new Column(column)
+})
+
+tempActivity.forEach((card)=>{
+  new ActivityCard(card)
 })
