@@ -3,7 +3,7 @@ import './components/Header'
 import './components/SideBar'
 import '../stylesheets/common/base.scss'
 
-import { fetchColumn, fetchCard } from './api/index'
+import { fetchColumn, fetchCard, updateColumnName } from './api/index'
 
 async function getColumn() {
   try {
@@ -21,8 +21,6 @@ async function getColumn() {
   } catch (e) {
     console.log(e)
   }
-
-  
 }
 
 getColumn()

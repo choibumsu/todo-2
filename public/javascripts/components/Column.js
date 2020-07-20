@@ -13,7 +13,7 @@ import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
-
+import { updateColumnName } from '../api/index'
 export default class Column {
   constructor({ id, title, cardDatas }) {
     this.$target = ''
@@ -227,6 +227,10 @@ export default class Column {
   }
 
   setTitle(editedTitle) {
+    updateColumnName({
+      title: editedTitle,
+      id: this.id,
+    })
     this.title = editedTitle
     this.$title.innerText = this.title
   }
