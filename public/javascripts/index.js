@@ -3,7 +3,7 @@ import './components/Header'
 import './components/SideBar'
 import '../stylesheets/common/base.scss'
 
-import { fetchTest } from './api/index'
+import { fetchColumn } from './api/index'
 
 const tempColumns = [
   {
@@ -66,4 +66,8 @@ tempColumns.forEach((column) => {
   new Column(column)
 })
 
-fetchTest()
+async function print() {
+  let data = await fetchColumn()
+  console.log(data)
+}
+print()

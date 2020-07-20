@@ -1,7 +1,6 @@
-const { fetchTest } = require('./model')
+const { fetchColumn } = require('./model')
 
-exports.test = async (req, res, next) => {
-  const rows = await fetchTest()
-  console.log(rows)
+exports.column=async (req,res,next)=>{
+  const rows= await fetchColumn()
   res.json(rows)
 }
