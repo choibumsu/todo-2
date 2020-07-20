@@ -8,8 +8,8 @@ exports.fetchTest = async () => {
   try {
     const [rows, fields] = await connection
       .promise()
-      .query('SELECT * FROM test')
-    return rows[0]
+      .query('SELECT * FROM user')
+    return rows
   } catch (err) {
     console.log(err)
     return
