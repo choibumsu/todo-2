@@ -1,15 +1,13 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import { CLASS_NAME, CARD_FORM_CLASS, EVENT } from '../utils/Constants'
+import { CLASS_NAME, CARD_FORM_CLASS } from '../utils/Constants'
 import '../../stylesheets/components/cardForm.scss'
 
 export default class CardForm {
-  constructor(emitter) {
+  constructor() {
     this.$target = ''
     this.$cardTextarea = ''
     this.$addBtn = ''
-    this.$cancelBtn = ''
     this.isActive = false
-    this.emitter = emitter
 
     this.init()
   }
@@ -21,7 +19,7 @@ export default class CardForm {
 
   setElements() {
     const template = `
-      <div class='card-form'>
+      <div class='card-form ${CLASS_NAME.DP_NONE}'>
         <textarea class='${CARD_FORM_CLASS.TEXTAREA}' placeholder='Enter a note' maxlength='500'></textarea>
         <div class='button-row'>
           <div class='btn-wrapper'>
@@ -39,26 +37,18 @@ export default class CardForm {
       `.${CARD_FORM_CLASS.TEXTAREA}`
     )
     this.$addBtn = this.$target.querySelector(`.${CARD_FORM_CLASS.ADD_BTN}`)
-    this.$cancelBtn = this.$target.querySelector(
-      `.${CARD_FORM_CLASS.CANCEL_BTN}`
-    )
   }
 
   bindEvent() {
-    this.$cardTextarea.addEventListener('input', (e) => {
-      this.setActive(e.target.value)
-    })
-
-    this.$cancelBtn.addEventListener('click', (e) => {
-      this.removeCardForm()
-    })
-
-    this.$addBtn.addEventListener('click', (e) => {
-      this.addCard()
-    })
+    this.$cardTextarea.addEventListener('input', this.onInputHandler.bind(this))
   }
 
-  setActive(isActive) {
+  onInputHandler(e) {
+    const isActive = e.target.value !== ''
+    this.updateActive(isActive)
+  }
+
+  updateActive(isActive) {
     this.isActive = isActive
 
     if (this.isActive) {
@@ -69,21 +59,27 @@ export default class CardForm {
     this.$addBtn.classList.add(CLASS_NAME.UNACTIVE)
   }
 
-  removeCardForm() {
-    this.$target.remove()
-  }
-
-  addCard() {
-    if (!this.isActive) {
+  toggleCardForm() {
+    if (this.$target.classList.contains(CLASS_NAME.DP_NONE)) {
+      this.$target.classList.remove(CLASS_NAME.DP_NONE)
       return
     }
+    this.$target.classList.add(CLASS_NAME.DP_NONE)
+  }
 
-    this.emitter.emit(EVENT.ADD_CARD, {
-      cardTitle: this.$cardTextarea.value,
-      username: 'choibumsu',
-    })
+  getTarget() {
+    return this.$target
+  }
 
+  getCardTitle() {
+    if (!this.isActive) {
+      return ''
+    }
+
+    const cardTitle = this.$cardTextarea.value
     this.$cardTextarea.value = ''
-    this.setActive(false)
+    this.updateActive(false)
+
+    return cardTitle
   }
 }

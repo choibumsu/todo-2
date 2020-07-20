@@ -1,228 +1,266 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import EditCardModal from './Modal/EditCardModal'
 import '../../stylesheets/components/card.scss'
-import DeleteCardModal from './Modal/DeleteCardModal'
-import { CARD_CLASS, EVENT, COLUMN_CLASS } from '../utils/Constants'
+import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS } from '../utils/Constants'
 
 export default class Card {
-  constructor(emitter, cardId, cardTitle, username, columnIndex) {
+  constructor({ id, title, username, nextCardId }) {
     this.$target = ''
-    this.emitter = emitter
-    this.id = cardId
-    this.cardTitle = cardTitle
+    this.id = id
+    this.title = title
     this.username = username
-    this.columnIndex = columnIndex
+    this.nextCardId = nextCardId
 
     this.init()
   }
 
   init() {
     this.setElements()
-    this.bindEvent()
   }
 
   setElements() {
-    const template = `
-      <div class='card'>
-        <img class='document-icon' src='/static/images/document.svg') />
-        <div class='content-container'>
-          <div class='content-wrapper'>
-            <div class='title'>${this.cardTitle}</div>
-            <div class='added-by'>
-              <span>Added by </span>
-              <span class='strong'>${this.username}</span>
+    this.template = `
+      <div class='card' data-id='${this.id}'>
+        <div class='card-content'>
+          <img class='document-icon' src='/static/images/document.svg') />
+          <div class='content-container'>
+            <div class='content-wrapper'>
+              <div class='${CARD_CLASS.TITLE}'>${this.title}</div>
+              <div class='added-by'>
+                <span>Added by </span>
+                <span class='strong'>${this.username}</span>
+              </div>
             </div>
+            <img class='${CARD_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' />
           </div>
-          <img class='${CARD_CLASS.REMOVE_BTN}' src='/static/images/remove-btn.svg' />
-          </div>
+        </div>
       </div>
     `
 
-    this.$target = templateToElement(template)
-    this.$removeBtn = this.$target.querySelector(`.${CARD_CLASS.REMOVE_BTN}`)
+    this.$target = templateToElement(this.template)
+    this.$title = this.$target.querySelector(`.${CARD_CLASS.TITLE}`)
+  }
+
+  // 드래그 시작시 실행 함수
+  moveStart(e) {
+    this.setPointOffset()
+    this.copyTarget(e)
+    this.toggleMovingStyle()
+
+    this.moveNodesFunc = this.moveNodes.bind(this)
+    this.moveStopFunc = this.moveStop.bind(this)
+    window.addEventListener('pointermove', this.moveNodesFunc)
+    window.addEventListener('pointerup', this.moveStopFunc)
+  }
+
+  // pointOffsetDiff : 카드 가운데를 기준으로 4개 점을 선택, 점 간 간격은 카드와 컨테이너 간격
+  setPointOffset() {
+    const targetHalfWidth = this.$target.offsetWidth / 2
+    const targetHalfHeight = this.$target.offsetHeight / 2
+    const containerHalfGap = this.getContainerHalfGap()
+    const cardHalfGap = this.getCardHalfGap()
+
+    this.pointOffsetDiffs = [
+      {
+        x: targetHalfWidth - containerHalfGap,
+        y: targetHalfHeight - cardHalfGap,
+      },
+      {
+        x: targetHalfWidth + containerHalfGap,
+        y: targetHalfHeight - cardHalfGap,
+      },
+      {
+        x: targetHalfWidth + containerHalfGap,
+        y: targetHalfHeight + cardHalfGap,
+      },
+      {
+        x: targetHalfWidth - containerHalfGap,
+        y: targetHalfHeight + cardHalfGap,
+      },
+    ]
+  }
+
+  // 카드 컨테이너 사이의 가로 간격을 계산
+  getContainerHalfGap() {
+    const $firstContainer = document.querySelector(
+      `.${COLUMN_CLASS.CONTENT_CONTAINER}`
+    )
+    if (!$firstContainer) return 0
+
+    const $secondColumn = $firstContainer.closest(`.${COLUMN_CLASS.COLUMN}`)
+      .nextElementSibling
+    if (!$secondColumn) return 0
+
+    const $secondContainer = $secondColumn.querySelector(
+      `.${COLUMN_CLASS.CONTENT_CONTAINER}`
+    )
+
+    const columnHalfGap =
+      ($secondContainer.offsetLeft -
+        $firstContainer.offsetLeft -
+        $firstContainer.offsetWidth) /
+      2
+
+    return columnHalfGap
+  }
+
+  // 카드 사이의 세로 간격을 계산
+  getCardHalfGap() {
+    const $containers = Array.from(
+      document.querySelectorAll(`.${COLUMN_CLASS.CONTENT_CONTAINER}`)
+    )
+    const twoCardsContainer = $containers.find(
+      ($container) =>
+        $container.querySelectorAll(`.${CARD_CLASS.CARD}`).length > 1
+    )
+
+    if (!twoCardsContainer) return 0
+
+    const $firstCard = twoCardsContainer.querySelector(`.${CARD_CLASS.CARD}`)
+    const $secondCard = $firstCard.nextElementSibling
+
+    const cardHalfGap =
+      ($secondCard.offsetTop - $firstCard.offsetTop - $firstCard.offsetHeight) /
+      2
+
+    return cardHalfGap
+  }
+
+  // 카드를 복사
+  copyTarget(e) {
+    this.$copyTarget = this.$target.cloneNode(true)
+    this.$copyTarget.style.left = `${this.$target.offsetLeft}px`
+    this.$copyTarget.style.top = `${this.$target.offsetTop}px`
+    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
+    this.$copyTarget.classList.add(CARD_CLASS.COPY)
+
+    this.offsetDiff = {
+      left: e.pageX - this.$target.offsetLeft,
+      top: e.pageY - this.$target.offsetTop,
+    }
+
+    document.body.appendChild(this.$copyTarget)
+
+    /* will be deleted */
+    const div = document.createElement('div')
+    div.style.position = 'absolute'
+    div.style.left = `calc(50% - ${this.getContainerHalfGap()}px)`
+    div.style.top = `calc(50% - ${this.getCardHalfGap()}px)`
+    div.style.width = `${this.getContainerHalfGap() * 2}px`
+    div.style.height = `${this.getCardHalfGap() * 2}px`
+    div.style.backgroundColor = 'red'
+    this.$copyTarget.appendChild(div)
+  }
+
+  // 카드 이동 효과 토글 함수
+  toggleMovingStyle() {
+    if (this.$target.classList.contains(CARD_CLASS.MOVING)) {
+      document.body.classList.remove(CLASS_NAME.US_NONE)
+      this.$target.classList.remove(CARD_CLASS.MOVING)
+      return
+    }
+
+    document.body.classList.add(CLASS_NAME.US_NONE)
+    this.$target.classList.add(CARD_CLASS.MOVING)
+  }
+
+  // pointermove 이벤트 발생시 실행 함수
+  moveNodes(e) {
+    const $points = this.setPoints() // 복제된 카드 중앙에 4개 점을 계산
+    this.moveTarget($points) // 4개의 점을 기준으로 카드를 이동
+    this.moveCopy(e) // 복제된 카드는 커서를 따라 이동
+  }
+
+  // 복제된 카드의 중앙 4개점에 해당하는 dom객체를 반환
+  setPoints() {
+    const $points = this.pointOffsetDiffs.map((pointOffsetDiff) => {
+      return document.elementFromPoint(
+        this.$copyTarget.offsetLeft + pointOffsetDiff.x,
+        this.$copyTarget.offsetTop + pointOffsetDiff.y
+      )
+    })
+
+    return $points
+  }
+
+  moveTarget($points) {
+    if ($points.filter(($point) => !$point).length > 0) return
+
+    // 포인트와 겹치는 DOM 객체 중 카드가 있는지 검사, 있으면 그 카드 기준으로 target을 넣고 함수 종료
+    for (const $point of $points) {
+      const $closestCard = $point.closest(`.${CARD_CLASS.CARD}`)
+      if ($closestCard) {
+        this.insertAtCard($closestCard)
+        return
+      }
+    }
+
+    // 포인트와 겹치는 컨테이너가 있는지 검사, 있으면 컨테이너에 append
+    for (const $point of $points) {
+      const $closestContainer = $point.closest(
+        `.${COLUMN_CLASS.CONTENT_CONTAINER}`
+      )
+      if ($closestContainer) {
+        $closestContainer.appendChild(this.$target)
+        return
+      }
+    }
+  }
+
+  // 가장 가까운 카드와 높이 비교를 하여 앞이나 뒤로 target을 넣음
+  insertAtCard($originCard) {
+    // target 본인은 제외
+    if (+$originCard.dataset.id === this.id) {
+      return
+    }
+
+    // target이 더 밑에 있으면 insertAfter
+    if ($originCard.offsetTop < this.$copyTarget.offsetTop) {
+      $originCard.parentNode.insertBefore(
+        this.$target,
+        $originCard.nextElementSibling
+      )
+      return
+    }
+    // target이 더 위에 있으면 insetBefore
+    $originCard.parentNode.insertBefore(this.$target, $originCard)
+  }
+
+  moveCopy(e) {
+    this.$copyTarget.style.left = `${e.pageX - this.offsetDiff.left}px`
+    this.$copyTarget.style.top = `${e.pageY - this.offsetDiff.top}px`
+  }
+
+  // pointerup 이벤트 발생시 실행되는 함수
+  moveStop() {
+    this.$copyTarget.remove()
+    this.toggleMovingStyle()
+
+    window.removeEventListener('pointermove', this.moveNodesFunc)
+    window.removeEventListener('pointerup', this.moveStopFunc)
   }
 
   getTarget() {
     return this.$target
   }
 
-  bindEvent() {
-    this.$removeBtn.addEventListener('click', () => {
-      this.removeCard()
-    })
-    // this.$target.addEventListener('dblclick', this.editCard.bind(this))
-    // this.$target.ondblclick = (event) => {
-    //   event.stopPropagation()
-    //   this.editCard()
-    // }
-    var clicks = 0
-    var delay = 400
-    this.$target.addEventListener('pointerdown', e2.bind(this))
-
-    function e2(e) {
-      // event.stopPropagation()
-      clicks++
-
-      setTimeout(function () {
-        clicks = 0
-      }, delay)
-
-      if (clicks === 2) {
-        this.editCard()
-        console.log('더블클릭')
-        clicks = 0
-        return
-      } else {
-        this.onDragStartHandler(e)
-        console.log('포인터다운')
-      }
-    }
+  getId() {
+    return this.id
   }
 
-  editCard() {
-    const modal = new EditCardModal(
-      this.cardTitle,
-      function edited(text) {
-        this.cardTitle = text
-        this.render()
-      }.bind(this)
-    )
-    modal.showModal()
+  getTitle() {
+    return this.title
   }
 
-  removeCard() {
-    const modal = new DeleteCardModal(
-      this.cardTitle,
-      function deleted() {
-        this.$target.remove()
-        this.emitter.emit(EVENT.REMOVE_CARD, this.id)
-      }.bind(this)
-    )
-    modal.showModal()
+  setTitle(editedTitle) {
+    this.title = editedTitle
+    this.$title.innerText = this.title
   }
 
-  render() {
-    this.$target.querySelector('.title').innerText = this.cardTitle
+  setNextCardId(nextCardId) {
+    this.nextCardId = nextCardId
   }
 
-  onDragStartHandler(e) {
-    if (
-      e.target.classList.contains(CARD_CLASS.TITLE) ||
-      e.target.classList.contains(CARD_CLASS.REMOVE_BTN)
-    ) {
-      return
-    }
-
-    this.gapWidth = this.$target.offsetWidth / 2
-    this.gapHeight = this.$target.offsetHeight / 2
-    this.$copyTarget = this.$target.cloneNode(true)
-
-    this.$copyTarget.style.position = 'absolute'
-    this.$copyTarget.style.top = `${e.clientY - this.gapHeight}px`
-    this.$copyTarget.style.left = `${e.clientX - this.gapWidth}px`
-    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
-
-    const $columns = Array.from(
-      document.querySelectorAll(`.${COLUMN_CLASS.COLUMN}`)
-    )
-
-    this.columnDatas = $columns.map(($column) => {
-      const $cards = Array.from($column.querySelectorAll(`.${CARD_CLASS.CARD}`))
-      const cardDatas = $cards.map(($card) => {
-        return {
-          $element: $card,
-          centerOffset: $card.offsetTop + $card.offsetHeight / 2,
-        }
-      })
-
-      return {
-        $element: $column,
-        centerOffset: $column.offsetLeft + $column.offsetWidth / 2,
-        cardDatas,
-      }
-    })
-
-    const pointermoveHandler = this.onPointerMoveHandler.bind(this)
-
-    window.addEventListener('pointermove', pointermoveHandler)
-
-    this.$copyTarget.addEventListener('pointerup', (e) => {
-      window.removeEventListener('pointermove', pointermoveHandler)
-
-      if (this.closestCardData === undefined) {
-        this.closestColumnData.$element
-          .querySelector(`.${COLUMN_CLASS.CONTENT_CONTAINER}`)
-          .appendChild(this.$target)
-
-        this.$target.classList.remove(CARD_CLASS.MOVING)
-        this.$copyTarget.remove()
-        return
-      }
-
-      const $closestCard = this.closestCardData.$element
-      if (this.closestCardData.centerOffset < e.clientY) {
-        $closestCard.parentNode.insertBefore(
-          this.$target,
-          $closestCard.nextElementSibling
-        )
-      } else {
-        $closestCard.parentNode.insertBefore(this.$target, $closestCard)
-      }
-
-      this.$target.classList.remove(CARD_CLASS.MOVING)
-      this.$copyTarget.remove()
-    })
-
-    this.$target.classList.add(CARD_CLASS.MOVING)
-    document.body.append(this.$copyTarget)
-  }
-
-  onPointerMoveHandler(e) {
-    this.$copyTarget.style.top = `${e.clientY - this.gapHeight}px`
-    this.$copyTarget.style.left = `${e.clientX - this.gapWidth}px`
-
-    this.findClosestColumn(e)
-  }
-
-  findClosestColumn(e) {
-    ;[this.closestColumnData] = this.columnDatas.reduce(
-      ([closestColumnData, minGap], columnData) => {
-        const gap = Math.abs(columnData.centerOffset - e.clientX)
-
-        if (minGap === -1) {
-          return [columnData, gap]
-        }
-
-        if (gap < minGap) {
-          closestColumnData = columnData
-          minGap = gap
-        }
-
-        return [closestColumnData, minGap]
-      },
-      [, -1]
-    )
-
-    this.findClosestCard(e, this.closestColumnData.cardDatas)
-  }
-
-  findClosestCard(e, cardDatas) {
-    ;[this.closestCardData] = cardDatas.reduce(
-      ([closestCardData, minGap], cardData) => {
-        const gap = Math.abs(cardData.centerOffset - e.clientY)
-
-        if (minGap === -1) {
-          return [cardData, gap]
-        }
-
-        if (gap < minGap) {
-          closestCardData = cardData
-          minGap = gap
-        }
-
-        return [closestCardData, minGap]
-      },
-      [, -1]
-    )
+  removeTarget() {
+    this.$target.remove()
   }
 }

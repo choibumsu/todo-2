@@ -1,30 +1,32 @@
 export const CLASS_NAME = {
   DP_NONE: 'dp-none',
   UNACTIVE: 'unactive',
+  US_NONE: 'us-none',
 }
 
 export const COLUMN_CLASS = {
   CONTAINER: 'column-container',
   COLUMN: 'column',
-  TITLE: 'title',
-  ADD_BTN: 'add-btn',
-  REMOVE_BTN: 'remove-btn',
+  TITLE: 'column-title',
+  ADD_BTN: 'column-add-btn',
+  REMOVE_BTN: 'column-remove-btn',
   CARD_COUNT: 'card-count',
   CARD_FORM_SLOT: 'card-form-slot',
   CONTENT_CONTAINER: 'content-container',
 }
 
 export const CARD_FORM_CLASS = {
-  TEXTAREA: 'card-textarea',
-  ADD_BTN: 'add-btn',
-  CANCEL_BTN: 'cancel-btn',
+  TEXTAREA: 'card-form-textarea',
+  ADD_BTN: 'card-form-add-btn',
+  CANCEL_BTN: 'card-form-cancel-btn',
 }
 
 export const CARD_CLASS = {
   CARD: 'card',
-  TITLE: 'title',
-  REMOVE_BTN: 'remove-btn',
+  TITLE: 'card-title',
+  REMOVE_BTN: 'card-remove-btn',
   MOVING: 'moving',
+  COPY: 'copy',
 }
 
 export const EVENT = {

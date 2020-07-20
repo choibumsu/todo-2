@@ -52,12 +52,13 @@
           margin-right: 8px;
         }
 
-        > .title {
+        > .column-title {
           font: {
             size: 14px;
             weight: 600;
           }
           margin-top: 2px;
+          cursor: pointer;
         }
       }
 
@@ -74,13 +75,13 @@
             filter: saturate(10);
           }
 
-          &.add-btn {
+          &.column-add-btn {
             width: 16px;
             height: 16px;
             margin-right: 13px;
           }
 
-          &.remove-btn {
+          &.column-remove-btn {
             width: 17px;
             height: 17px;
           }
@@ -89,7 +90,7 @@
     }
 
     > .content-container {
-      padding: 3px 0;
+      height: inherit;
       overflow-y: scroll;
     }
   }
