@@ -4,17 +4,21 @@ import {
   CARD_CLASS,
   CARD_FORM_CLASS,
   CLASS_NAME,
+  EVENT,
 } from '../utils/Constants'
+import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/column.scss'
 import CardForm from './CardForm'
 import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
+
 export default class Column {
-  constructor({ columnTitle, cardDatas }) {
+  constructor({ id, title, cardDatas }) {
     this.$target = ''
-    this.columnTitle = columnTitle
+    this.id = id
+    this.title = title
     this.cardList = Array(cardDatas.length)
     this.cardForm = new CardForm()
 
@@ -31,13 +35,13 @@ export default class Column {
 
   setElements() {
     const template = `
-      <section class='${COLUMN_CLASS.COLUMN}'>
+      <section class='${COLUMN_CLASS.COLUMN}' data-id='${this.id}'>
         <div class='title-bar'>
           <div class='title-wrapper'>
             <div class='${COLUMN_CLASS.CARD_COUNT}'>
               ${this.cardList.length}
             </div>
-            <div class='${COLUMN_CLASS.TITLE}'>${this.columnTitle}</div> 
+            <div class='${COLUMN_CLASS.TITLE}'>${this.title}</div> 
           </div>
           <div class='btn-wrapper'>
             <img class='${COLUMN_CLASS.ADD_BTN}' src='/static/images/plus-btn.svg' alt='add-btn' />
@@ -50,7 +54,7 @@ export default class Column {
     `
 
     this.$target = templateToElement(template)
-    this.$columnTitle = this.$target.querySelector(`.${COLUMN_CLASS.TITLE}`)
+    this.$title = this.$target.querySelector(`.${COLUMN_CLASS.TITLE}`)
     this.$cardCount = this.$target.querySelector(`.${COLUMN_CLASS.CARD_COUNT}`)
     this.$contentContainer = this.$target.querySelector(
       `.${COLUMN_CLASS.CONTENT_CONTAINER}`
@@ -89,6 +93,9 @@ export default class Column {
       'dblclick',
       this.onDoubleClickHandler.bind(this)
     )
+
+    emitter.on(`${EVENT.INSERT_CARD}-${this.id}`, this.insertCard.bind(this))
+    emitter.on(`${EVENT.REMOVE_CARD}-${this.id}`, this.removeCard.bind(this))
   }
 
   onPointerDownHandler(e) {
@@ -171,6 +178,7 @@ export default class Column {
 
     const modal = new DeleteCardModal(removedCard.getTitle(), () => {
       this.removeCard(removedCard)
+      removedCard.removeTarget()
     })
     modal.showModal()
   }
@@ -183,8 +191,6 @@ export default class Column {
     this.cardList = this.cardList.filter(
       (card) => card.getId() !== removedCardId
     )
-
-    removedCard.removeTarget()
     this.setCardCount()
   }
 
@@ -207,24 +213,22 @@ export default class Column {
   }
 
   setCardCount() {
-    const newCardCount = this.$target.querySelectorAll(`.${CARD_CLASS.CARD}`)
-      .length
-    this.$cardCount.innerHTML = newCardCount
+    this.$cardCount.innerHTML = this.cardList.length
   }
 
   showColumnEditModal() {
-    this.$columnTitle.classList.add(CLASS_NAME.US_NONE)
+    this.$title.classList.add(CLASS_NAME.US_NONE)
 
-    const modal = new EditColumnModal(this.columnTitle, (editedTitle) => {
-      this.setColumnTitle(editedTitle)
+    const modal = new EditColumnModal(this.title, (editedTitle) => {
+      this.setTitle(editedTitle)
     })
     modal.showModal()
-    this.$columnTitle.classList.remove(CLASS_NAME.US_NONE)
+    this.$title.classList.remove(CLASS_NAME.US_NONE)
   }
 
-  setColumnTitle(editedTitle) {
-    this.columnTitle = editedTitle
-    this.$columnTitle.innerText = this.columnTitle
+  setTitle(editedTitle) {
+    this.title = editedTitle
+    this.$title.innerText = this.title
   }
 
   showCardEditModal(targetCard) {
@@ -243,5 +247,47 @@ export default class Column {
       (card) => card.getId() === +targetCard.dataset.id
     )
     movedCard.moveStart(e)
+  }
+
+  insertCard(insertedCard) {
+    const $insertedCard = insertedCard.getTarget()
+    const $nextCard = $insertedCard.nextElementSibling
+    const $prevCard = $insertedCard.previousElementSibling
+
+    this.updateNextCard(insertedCard, $nextCard)
+    this.updatePrevCard(insertedCard, $prevCard)
+
+    if ($nextCard) {
+      const nextCardIndex = this.cardList.findIndex(
+        (card) => card.getId() === +$nextCard.dataset.id
+      )
+      this.cardList.splice(nextCardIndex + 1, 0, insertedCard)
+    } else if ($prevCard) {
+      const prevCardIndex = this.cardList.findIndex(
+        (card) => card.getId() === +$prevCard.dataset.id
+      )
+      this.cardList.splice(prevCardIndex, 0, insertedCard)
+    } else {
+      this.cardList.push(insertedCard)
+    }
+
+    this.setCardCount()
+  }
+
+  updateNextCard(insertedCard, $nextCard) {
+    if ($nextCard) {
+      insertedCard.setNextCardId(+$nextCard.dataset.id)
+      return
+    }
+    insertedCard.setNextCardId(0)
+  }
+
+  updatePrevCard(insertedCard, $prevCard) {
+    if ($prevCard) {
+      const prevCard = this.cardList.find(
+        (card) => card.getId() === +$prevCard.dataset.id
+      )
+      prevCard.setNextCardId(insertedCard.getId())
+    }
   }
 }
