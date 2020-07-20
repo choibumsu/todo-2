@@ -3,30 +3,11 @@ var express = require('express')
 var path = require('path')
 var logger = require('morgan')
 var router = require('./src/router')
-const mysql = require('mysql')
-
 var app = express()
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
-
-// mysql setup
-const connection = mysql.createConnection({
-  host: '3.34.139.127',
-  user: 'todo-2',
-  password: 'todo',
-  database: 'tododb',
-})
-
-connection.connect()
-
-connection.query('SELECT * from test', (error, rows, fields) => {
-  if (error) throw error
-  console.log('test info is: ', rows)
-})
-
-connection.end()
 
 app.use(logger('dev'))
 app.use(express.json())
