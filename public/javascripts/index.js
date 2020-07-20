@@ -6,8 +6,13 @@ import '../stylesheets/common/base.scss'
 import { fetchColumn, fetchCard } from './api/index'
 
 async function getColumn() {
-  let allColumn = await fetchColumn()
-  let allCard = await fetchCard()
+  try {
+    let allColumn = await fetchColumn()
+    let allCard = await fetchCard()
+  } catch (e) {
+    console.log(e)
+  }
+
   allColumn.forEach((column) => {
     column.cardDatas = []
     allCard.forEach((card) => {
