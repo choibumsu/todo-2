@@ -49,3 +49,15 @@ export const MODAL_CLASS = {
   BIGBOX: 'big-box',
   MODAL_CONTENT: 'modal-content',
 }
+
+export const SIDEBAR_CLASS = {
+  MENU: 'menu',
+  ACTIVITY: 'activity',
+}
+
+export const SIDEBAR_ID = {
+  ACTIVITY_COLUMN: 'activity__column',
+  ACTIVITY_CARD: 'activity__card',
+  CONTENT: 'content',
+  TIME: 'time',
+}
