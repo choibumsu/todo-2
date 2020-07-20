@@ -69,19 +69,7 @@ const tempColumns = [
 const tempActivity = [
   {
     content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
-    time: new Date(),
-  },
-  {
-    content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
-    time: '30 seconds ago',
-  },
-  {
-    content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
-    time: '30 seconds ago',
-  },
-  {
-    content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
-    time: '30 seconds ago',
+    time: new Date("2020.07.20 10:30:00"),
   },
 ]
 

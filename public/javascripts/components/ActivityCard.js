@@ -29,12 +29,13 @@ export default class ActivityCard {
     this.$activityColumn.prepend(this.$target)
   }
 
-  timeForamt(){
+  timeForamt() {
     let timeString = ``
-    let current = new Date()
 
-    
-
+    let oldSecond = this.time.getTime() / 1000
+    let currentSecond = new Date().getTime() / 1000
+    let timediff = currentSecond - oldSecond
+    timeString = `${timediff.toFixed(0)} seconds ago`
     return timeString
   }
 }
