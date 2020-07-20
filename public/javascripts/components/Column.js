@@ -8,12 +8,14 @@ import {
 } from '../utils/Constants'
 import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/column.scss'
+
 import CardForm from './CardForm'
 import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
-import { updateColumnTitle } from '../api/index'
+import { updateColumnTitle, createCardApi } from '../api/index'
+
 export default class Column {
   constructor({ id, title, cardDatas }) {
     this.$target = ''
@@ -141,29 +143,18 @@ export default class Column {
     }
   }
 
-  addCard() {
+  async addCard() {
     const cardTitle = this.cardForm.getCardTitle()
     if (cardTitle === '') return
 
-    // api 호출 후 id 받기
-    // temp getNewId
-    const getNewId = () => {
-      return (
-        Array.from(document.querySelectorAll('.card')).reduce(
-          (maxId, $card) => {
-            const id = +$card.dataset.id
-            if (maxId < id) {
-              maxId = id
-            }
-            return maxId
-          },
-          0
-        ) + 1
-      )
-    }
+    const { id } = await createCardApi({
+      cardTitle,
+      columnId: this.id,
+      userId: 1,
+    })
 
     const cardData = {
-      id: getNewId(),
+      id,
       title: cardTitle,
       username: 'choibumsu',
       nextCardId: this.getNewNextCardId(),
