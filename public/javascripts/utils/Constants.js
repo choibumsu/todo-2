@@ -30,7 +30,7 @@ export const CARD_CLASS = {
 }
 
 export const EVENT = {
-  ADD_CARD: 'add-card',
+  INSERT_CARD: 'insert-card',
   REMOVE_CARD: 'remove-card',
 }
 

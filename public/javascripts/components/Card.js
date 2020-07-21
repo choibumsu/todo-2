@@ -1,6 +1,7 @@
 import { templateToElement } from '../utils/HtmlGenerator'
+import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/card.scss'
-import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS } from '../utils/Constants'
+import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS, EVENT } from '../utils/Constants'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -42,6 +43,9 @@ export default class Card {
 
   // 드래그 시작시 실행 함수
   moveStart(e) {
+    this.originColumnId = this.$target.closest(
+      `.${COLUMN_CLASS.COLUMN}`
+    ).dataset.id
     this.setPointOffset()
     this.copyTarget(e)
     this.toggleMovingStyle()
@@ -139,16 +143,6 @@ export default class Card {
     }
 
     document.body.appendChild(this.$copyTarget)
-
-    /* will be deleted */
-    const div = document.createElement('div')
-    div.style.position = 'absolute'
-    div.style.left = `calc(50% - ${this.getContainerHalfGap()}px)`
-    div.style.top = `calc(50% - ${this.getCardHalfGap()}px)`
-    div.style.width = `${this.getContainerHalfGap() * 2}px`
-    div.style.height = `${this.getCardHalfGap() * 2}px`
-    div.style.backgroundColor = 'red'
-    this.$copyTarget.appendChild(div)
   }
 
   // 카드 이동 효과 토글 함수
@@ -232,6 +226,10 @@ export default class Card {
 
   // pointerup 이벤트 발생시 실행되는 함수
   moveStop() {
+    const columnId = +this.$target.closest(`.${COLUMN_CLASS.COLUMN}`).dataset.id
+    emitter.emit(`${EVENT.REMOVE_CARD}-${this.originColumnId}`, this)
+    emitter.emit(`${EVENT.INSERT_CARD}-${columnId}`, this)
+
     this.$copyTarget.remove()
     this.toggleMovingStyle()
 

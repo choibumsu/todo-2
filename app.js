@@ -3,7 +3,6 @@ var express = require('express')
 var path = require('path')
 var logger = require('morgan')
 var router = require('./src/router')
-
 var app = express()
 
 // view engine setup

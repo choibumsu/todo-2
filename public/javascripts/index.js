@@ -1,18 +1,15 @@
-import { closeModal } from './components/Modal/Modal'
-import { toggleSidebar } from './components/SideBar'
 import Column from './components/Column'
-import DeleteCardModal from './components/Modal/DeleteCardModal'
-import EditCardModal from './components/Modal/EditCardModal'
-import EditColumnModal from './components/Modal/EditColumnModal'
 import ActivityCard from './components/ActivityCard'
 import './components/Header'
-import './components/LoginForm'
-import './components/SideBarCard'
+import './components/SideBar'
 import '../stylesheets/common/base.scss'
+
+import { fetchTest } from './api/index'
+
 const tempColumns = [
   {
     id: 1,
-    columnTitle: 'To Do 📝',
+    title: 'To Do 📝',
     cardDatas: [
       {
         id: 1,
@@ -30,7 +27,7 @@ const tempColumns = [
   },
   {
     id: 2,
-    columnTitle: 'In Progess 🏃‍♂️',
+    title: 'In Progess 🏃‍♂️',
     cardDatas: [
       {
         id: 3,
@@ -54,7 +51,7 @@ const tempColumns = [
   },
   {
     id: 3,
-    columnTitle: 'Done 👏',
+    title: 'Done 👏',
     cardDatas: [
       {
         id: 6,
@@ -77,6 +74,9 @@ tempColumns.forEach((column) => {
   new Column(column)
 })
 
+
 tempActivity.forEach((card)=>{
   new ActivityCard(card)
 })
+
+fetchTest()
