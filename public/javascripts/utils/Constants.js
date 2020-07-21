@@ -2,6 +2,7 @@ export const CLASS_NAME = {
   DP_NONE: 'dp-none',
   UNACTIVE: 'unactive',
   US_NONE: 'us-none',
+  GRABBING: 'grabbing',
 }
 
 export const COLUMN_CLASS = {
