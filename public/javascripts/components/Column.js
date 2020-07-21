@@ -146,8 +146,24 @@ export default class Column {
     if (cardTitle === '') return
 
     // api 호출 후 id 받기
+    // temp getNewId
+    const getNewId = () => {
+      return (
+        Array.from(document.querySelectorAll('.card')).reduce(
+          (maxId, $card) => {
+            const id = +$card.dataset.id
+            if (maxId < id) {
+              maxId = id
+            }
+            return maxId
+          },
+          0
+        ) + 1
+      )
+    }
+
     const cardData = {
-      id: 1,
+      id: getNewId(),
       title: cardTitle,
       username: 'choibumsu',
       nextCardId: this.getNewNextCardId(),
