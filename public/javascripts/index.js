@@ -37,9 +37,7 @@ async function getActivityCard() {
     const allCardActivitys = await fetchActivityCard()
 
     allCardActivitys.forEach((cardActivity) => {
-      if (cardActivity.category == 'card') {
-        new ActivityCard(cardActivity)
-      }
+      new ActivityCard(cardActivity)
     })
   } catch (e) {
     console.log(e)
