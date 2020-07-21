@@ -26,7 +26,11 @@ export default class ActivityCard {
   }
 
   init() {
-    this.content = this.transferHTML(sampleData, CARD_ACTIVITY_TEMPLATE.UPDATED)
+    let template = this.getTemplate(
+      sampleData.category,
+      sampleData.content.action
+    )
+    this.content = this.transferHTML(sampleData, template)
     this.setElements()
   }
 
@@ -63,6 +67,19 @@ export default class ActivityCard {
       else timeString = `${timediff} days ago`
     }
     return timeString
+  }
+
+  getTemplate(category, action) {
+    switch (action) {
+      case 'moved':
+        return CARD_ACTIVITY_TEMPLATE.MOVED
+      case 'added':
+        return CARD_ACTIVITY_TEMPLATE.ADDED
+      case 'updated':
+        return CARD_ACTIVITY_TEMPLATE.UPDATED
+      case 'removed':
+        return CARD_ACTIVITY_TEMPLATE.REMOVED
+    }
   }
 
   transferHTML(data, template) {
