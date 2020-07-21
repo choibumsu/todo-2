@@ -25,3 +25,15 @@ export const fetchCard = async () => {
     throw 'Server Error'
   }
 }
+
+export const updateColumnName = async (data) => {
+  fetch('/column', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .catch((error) => console.error('Error:', error))
+}

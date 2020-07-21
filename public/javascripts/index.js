@@ -16,10 +16,10 @@ async function getColumn() {
       allCards.forEach((card) => {
         if (card.column_id == column.id) {
           column.cardDatas.push({
-            "id":card.id,
-            "nextCardId":card.nextcard_id,
-            "title":card.title,
-            "username":card.name
+            id: card.id,
+            nextCardId: card.nextcard_id,
+            title: card.title,
+            username: card.name,
           })
         }
       })
