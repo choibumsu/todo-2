@@ -1,6 +1,6 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/sidebar.scss'
-import { SIDEBAR_CLASS, SIDEBAR_ID } from '../utils/Constants'
+import { CARD_ACTIVITY_TEMPLATE, SIDEBAR_ID } from '../utils/Constants'
 
 let sampleData = {
   id: 1,
@@ -15,11 +15,6 @@ let sampleData = {
   category: 'card',
 }
 
-// @username action card_title from from_column to to_column
-// 하이라이트(파): @username, card_title
-// 하이라이트(검): from_column, to_column
-let sampleTemplate = `<span class="highlight__blue">@username</span> action<span class="highlight__blue"> card_title</span> from<span class="highlight__black"> from_column</span> to<span class="highlight__black"> to_column</span>`
-
 export default class ActivityCard {
   constructor({ content, time }) {
     this.$target = ''
@@ -30,7 +25,7 @@ export default class ActivityCard {
   }
 
   init() {
-    this.content = this.transferHTML(sampleData, sampleTemplate)
+    this.content = this.transferHTML(sampleData, CARD_ACTIVITY_TEMPLATE.UPDATED)
     this.setElements()
   }
 
@@ -57,10 +52,10 @@ export default class ActivityCard {
   }
 
   transferHTML(data, template) {
-    template = template.replace('username', data.user_name)
+    template = template.replace('$username', data.user_name)
     for (let key in data.content) {
       let value = data.content[key]
-      template = template.replace(key, value)
+      template = template.replace('$' + key, value)
     }
     return template
   }
