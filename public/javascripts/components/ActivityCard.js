@@ -33,7 +33,7 @@ export default class ActivityCard {
     const oldSecond = this.time.getTime() / 1000
     const currentSecond = new Date().getTime() / 1000
     let timediff = parseInt((currentSecond - oldSecond).toFixed(0))
-    var timeString = ''
+    let timeString = ''
     if (timediff < TIME.SECOND) {
       timeString = `${timediff} seconds ago`
     } else if (timediff < TIME.MINUTE_TO_SECOND) {
