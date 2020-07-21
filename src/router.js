@@ -22,6 +22,6 @@ router.get('/card', getAllCardsController)
 router.put('/column', updateColumnNameController)
 
 // 카드 데이터 수정 api
-router.put('/card',updateCardNameController)
+router.put('/card', updateCardNameController)
 
 module.exports = router
