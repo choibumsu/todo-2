@@ -5,6 +5,7 @@ const {
   card,
   updateColumnTitle,
   updateCardTitle,
+  deleteCard,
 } = require('./controller.js')
 
 // render pug
@@ -23,5 +24,8 @@ router.put('/column', updateColumnTitle)
 
 // 카드 데이터 수정 api
 router.put('/card', updateCardTitle)
+
+// 카드 데이터 삭제 api
+router.delete('/card', deleteCard)
 
 module.exports = router

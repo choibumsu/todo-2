@@ -3,7 +3,7 @@ import './components/Header'
 import './components/SideBar'
 import '../stylesheets/common/base.scss'
 
-import { fetchColumn, fetchCard, updateCardTitle } from './api/index'
+import { fetchColumn, fetchCard, deleteCard } from './api/index'
 
 async function getColumn() {
   try {

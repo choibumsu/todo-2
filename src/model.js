@@ -5,12 +5,12 @@ const { DB_CONFIG } = require('../config/secrets')
 const connection = mysql.createConnection(DB_CONFIG)
 
 exports.fetchColumn = async () => {
-  ;[rows, fields] = await connection.promise().query('SELECT * FROM columns')
+  [rows, fields] = await connection.promise().query('SELECT * FROM columns')
   return rows
 }
 
 exports.fetchCard = async () => {
-  ;[rows, fields] = await connection.promise().query('SELECT * FROM card')
+  [rows, fields] = await connection.promise().query('SELECT * FROM card')
   return rows
 }
 
@@ -24,4 +24,8 @@ exports.updateCardTitle = async (title, id) => {
   return await connection
     .promise()
     .query(`UPDATE card SET title='${title}' WHERE id=${id}`)
+}
+
+exports.deleteCard = async (id) => {
+  return await connection.promise().query(`DELETE FROM card WHERE id=${id}`)
 }
