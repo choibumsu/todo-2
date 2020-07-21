@@ -6,30 +6,50 @@ const {
   deleteCard,
 } = require('./model')
 
-exports.column = async (req, res, next) => {
-  const rows = await fetchColumn()
-  res.json(rows)
+exports.getAllColumnsController = async (req, res, next) => {
+  try {
+    const rows = await fetchColumn()
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-exports.card = async (req, res, next) => {
-  const rows = await fetchCard()
-  res.json(rows)
+exports.getAllCardsController = async (req, res, next) => {
+  try {
+    const rows = await fetchCard()
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-exports.updateColumnTitle = async (req, res, next) => {
-  const { title, id } = req.body
-  const rows = await updateColumnTitle(title, id)
-  res.json(rows)
+exports.updateColumnNameController = async (req, res, next) => {
+  try {
+    const { title, id } = req.body
+    const rows = await updateColumnTitle(title, id)
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-exports.updateCardTitle = async (req, res, next) => {
-  const { title, id } = req.body
-  const rows = await updateCardTitle(title, id)
-  res.json(rows)
+exports.updateCardNameController = async (req, res, next) => {
+  try {
+    const { title, id } = req.body
+    const rows = await updateCardTitle(title, id)
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-exports.deleteCard = async (req, res, next) => {
-  const { id } = req.body
-  const rows = await deleteCard(id)
-  res.json(rows)
+exports.deleteCardController = async (req, res, next) => {
+  try {
+    const { id } = req.body
+    const rows = await deleteCard(id)
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
