@@ -56,6 +56,8 @@ exports.deleteCardController = async (req, res, next) => {
 }
 
 exports.createCardController = async (req, res, next) => {
+  // 유저 유효성 검사 : return 401
+
   try {
     const result = await createCard(req.body)
     const newCardId = result[0].insertId
