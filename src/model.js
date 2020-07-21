@@ -60,3 +60,14 @@ exports.moveCard = async ({ cardId, columnId, userId }) => {
     throw err
   }
 }
+
+exports.updateNextCardId = async ({ cardId, nextCardId, userId }) => {
+  try {
+    const query = `UPDATE card SET nex_card_id=${+nextCardId} WHERE id=${+cardId}`
+    await connection.promise().query(query)
+
+    return
+  } catch (err) {
+    throw err
+  }
+}
