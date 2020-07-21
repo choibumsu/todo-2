@@ -160,8 +160,12 @@ textarea:focus {
   font-family: $font-main;
 }
 
-bady {
+body {
   position: relative;
+
+  &.grabbing {
+    cursor: grabbing;
+  }
 }
 
 .dp-none {

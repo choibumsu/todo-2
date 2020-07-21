@@ -44,17 +44,47 @@ export default class Card {
 
   // 드래그 시작시 실행 함수
   moveStart(e) {
+    this.copyTarget(e)
+    this.toggleMovingStyle()
+    this.setPointOffset()
+
     this.originColumnId = this.$target.closest(
       `.${COLUMN_CLASS.COLUMN}`
     ).dataset.id
-    this.setPointOffset()
-    this.copyTarget(e)
-    this.toggleMovingStyle()
-
     this.moveNodesFunc = this.moveNodes.bind(this)
     this.moveStopFunc = this.moveStop.bind(this)
     window.addEventListener('pointermove', this.moveNodesFunc)
     window.addEventListener('pointerup', this.moveStopFunc)
+  }
+
+  // 카드를 복사
+  copyTarget(e) {
+    this.$copyTarget = this.$target.cloneNode(true)
+    this.$copyTarget.style.left = `${this.$target.offsetLeft + 10}px`
+    this.$copyTarget.style.top = `${this.$target.offsetTop - 10}px`
+    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
+    this.$copyTarget.classList.add(CARD_CLASS.COPY)
+
+    this.offsetDiff = {
+      left: e.pageX - this.$target.offsetLeft - 10,
+      top: e.pageY - this.$target.offsetTop + 10,
+    }
+
+    document.body.appendChild(this.$copyTarget)
+  }
+
+  // 카드 이동 효과 토글 함수
+  toggleMovingStyle() {
+    if (this.$target.classList.contains(CARD_CLASS.MOVING)) {
+      document.body.classList.remove(CLASS_NAME.US_NONE)
+      document.body.classList.remove(CLASS_NAME.GRABBING)
+      this.$target.classList.remove(CARD_CLASS.MOVING)
+      return
+    }
+
+    document.body.classList.add(CLASS_NAME.US_NONE)
+    document.body.classList.add(CLASS_NAME.GRABBING)
+    this.$target.classList.add(CARD_CLASS.MOVING)
   }
 
   // pointOffsetDiff : 카드 가운데를 기준으로 4개 점을 선택, 점 간 간격은 카드와 컨테이너 간격
@@ -128,34 +158,6 @@ export default class Card {
       2
 
     return cardHalfGap
-  }
-
-  // 카드를 복사
-  copyTarget(e) {
-    this.$copyTarget = this.$target.cloneNode(true)
-    this.$copyTarget.style.left = `${this.$target.offsetLeft}px`
-    this.$copyTarget.style.top = `${this.$target.offsetTop}px`
-    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
-    this.$copyTarget.classList.add(CARD_CLASS.COPY)
-
-    this.offsetDiff = {
-      left: e.pageX - this.$target.offsetLeft,
-      top: e.pageY - this.$target.offsetTop,
-    }
-
-    document.body.appendChild(this.$copyTarget)
-  }
-
-  // 카드 이동 효과 토글 함수
-  toggleMovingStyle() {
-    if (this.$target.classList.contains(CARD_CLASS.MOVING)) {
-      document.body.classList.remove(CLASS_NAME.US_NONE)
-      this.$target.classList.remove(CARD_CLASS.MOVING)
-      return
-    }
-
-    document.body.classList.add(CLASS_NAME.US_NONE)
-    this.$target.classList.add(CARD_CLASS.MOVING)
   }
 
   // pointermove 이벤트 발생시 실행 함수

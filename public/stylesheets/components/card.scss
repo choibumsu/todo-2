@@ -3,7 +3,10 @@
 .card {
   width: 100%;
   margin-bottom: 8px;
-  cursor: move;
+
+  body:not(.grabbing) & {
+    cursor: move;
+  }
 
   &:last-child {
     margin-bottom: 3px;
