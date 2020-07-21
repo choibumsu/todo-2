@@ -2,7 +2,7 @@ import { templateToElement } from '../utils/HtmlGenerator'
 import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS, EVENT } from '../utils/Constants'
-import { updateCardTitle, deleteCard } from '../api/index'
+import { updateCardTitle, deleteCard, moveCardApi } from '../api/index'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -228,16 +228,33 @@ export default class Card {
   }
 
   // pointerup 이벤트 발생시 실행되는 함수
-  moveStop() {
+  async moveStop() {
     const columnId = +this.$target.closest(`.${COLUMN_CLASS.COLUMN}`).dataset.id
-    emitter.emit(`${EVENT.REMOVE_CARD}-${this.originColumnId}`, this)
-    emitter.emit(`${EVENT.INSERT_CARD}-${columnId}`, this)
 
-    this.$copyTarget.remove()
-    this.toggleMovingStyle()
+    const status = await moveCardApi({
+      cardId: this.id,
+      columnId,
+      userId: 1,
+    })
 
-    window.removeEventListener('pointermove', this.moveNodesFunc)
-    window.removeEventListener('pointerup', this.moveStopFunc)
+    if (status === 200) {
+      emitter.emit(`${EVENT.REMOVE_CARD}-${this.originColumnId}`, this)
+      emitter.emit(`${EVENT.INSERT_CARD}-${columnId}`, this)
+
+      this.$copyTarget.remove()
+      this.toggleMovingStyle()
+
+      window.removeEventListener('pointermove', this.moveNodesFunc)
+      window.removeEventListener('pointerup', this.moveStopFunc)
+
+      return
+    } else if (status === 401) {
+      alert('카드 추가 권한이 없습니다.')
+      return
+    } else if (status === 404) {
+      alert('컬럼이 존재하지 않습니다.')
+      return
+    }
   }
 
   getTarget() {

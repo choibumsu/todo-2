@@ -7,6 +7,7 @@ const {
   updateCardNameController,
   createCardController,
   deleteCardController,
+  moveCardController,
 } = require('./controller.js')
 
 // render pug
@@ -32,6 +33,11 @@ router.delete('/api/card', deleteCardController)
 //카드 추가 api
 router.post('/api/card', function (req, res, next) {
   createCardController(req, res, next)
+})
+
+//카드 추가 api
+router.put('/api/card/move', function (req, res, next) {
+  moveCardController(req, res, next)
 })
 
 module.exports = router

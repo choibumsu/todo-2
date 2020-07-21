@@ -104,3 +104,12 @@ export const createCardApi = async (newCardData) => {
     return [null, response.status]
   }
 }
+
+export const moveCardApi = async (movedCardData) => {
+  const response = await fetch(
+    `${apiUrlBase}/card/move`,
+    METHOD.PUT(movedCardData)
+  )
+
+  return response.status
+}
