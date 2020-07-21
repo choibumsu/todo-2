@@ -68,3 +68,9 @@ export const TIME = {
   MINUTE_TO_SECOND: 3600,
   HOUR_TO_SECOND: 86400,
 }
+export const CARD_ACTIVITY_TEMPLATE = {
+  MOVED: `<span class="highlight__blue">@$username</span> $action<span class="highlight__blue"> $card_title</span> from<span class="highlight__black"> $from_column</span> to<span class="highlight__black"> $to_column</span>`,
+  ADDED: `<span class="highlight__blue">@$username</span> $action<span class="highlight__black"> $card_title</span> to<span class="highlight__black"> $to_column</span>`,
+  UPDATED: `<span class="highlight__blue">@$username</span> $action<span class="highlight__black"> $card_title</span>`,
+  REMOVED: `<span class="highlight__blue">@$username</span> $action<span class="highlight__black"> $card_title</span>`,
+}
