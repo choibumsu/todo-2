@@ -37,6 +37,8 @@ module.exports = { DB_CONFIG }
 npm run dev
 ```
 
+Then, you can access to your server http://localhost:3000
+
 ------
 
 ## 기술 스택
