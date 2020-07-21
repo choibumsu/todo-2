@@ -8,12 +8,14 @@ import {
 } from '../utils/Constants'
 import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/column.scss'
+
 import CardForm from './CardForm'
 import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
-import { updateColumnTitle } from '../api/index'
+import { updateColumnTitle, createCardApi } from '../api/index'
+
 export default class Column {
   constructor({ id, title, cardDatas }) {
     this.$target = ''
@@ -141,39 +143,40 @@ export default class Column {
     }
   }
 
-  addCard() {
+  async addCard() {
     const cardTitle = this.cardForm.getCardTitle()
     if (cardTitle === '') return
 
-    // api 호출 후 id 받기
-    // temp getNewId
-    const getNewId = () => {
-      return (
-        Array.from(document.querySelectorAll('.card')).reduce(
-          (maxId, $card) => {
-            const id = +$card.dataset.id
-            if (maxId < id) {
-              maxId = id
-            }
-            return maxId
-          },
-          0
-        ) + 1
-      )
+    const [data, status] = await createCardApi({
+      cardTitle,
+      columnId: this.id,
+      userId: 1,
+    })
+
+    if (status === 200) {
+      const cardData = {
+        id: data.id,
+        title: cardTitle,
+        username: 'choibumsu',
+        nextCardId: this.getNewNextCardId(),
+      }
+
+      const newCard = new Card(cardData)
+      this.cardList.push(newCard)
+      this.$contentContainer.prepend(newCard.getTarget())
+
+      this.setCardCount()
+      return
+    } else if (status === 401) {
+      alert('카드 추가 권한이 없습니다.')
+      return
+    } else if (status === 404) {
+      alert('컬럼이 존재하지 않습니다.')
+      return
     }
 
-    const cardData = {
-      id: getNewId(),
-      title: cardTitle,
-      username: 'choibumsu',
-      nextCardId: this.getNewNextCardId(),
-    }
-
-    const newCard = new Card(cardData)
-    this.cardList.push(newCard)
-    this.$contentContainer.prepend(newCard.getTarget())
-
-    this.setCardCount()
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
   getNewNextCardId() {

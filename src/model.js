@@ -36,3 +36,16 @@ exports.updateCardTitle = async (title, id) => {
 exports.deleteCard = async (id) => {
   return await connection.promise().query(`DELETE FROM card WHERE id=${id}`)
 }
+
+exports.createCard = async ({ cardTitle, columnId, userId }) => {
+  try {
+    const query = `INSERT INTO card (title, column_id, user_id) VALUES (?, ?, ?)`
+    const result = await connection
+      .promise()
+      .query(query, [cardTitle, columnId, userId])
+
+    return result
+  } catch (err) {
+    throw err
+  }
+}

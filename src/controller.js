@@ -3,6 +3,7 @@ const {
   fetchCard,
   updateColumnTitle,
   updateCardTitle,
+  createCard,
   deleteCard,
 } = require('./model')
 
@@ -51,5 +52,21 @@ exports.deleteCardController = async (req, res, next) => {
     res.json(rows)
   } catch (e) {
     console.log(e)
+  }
+}
+
+exports.createCardController = async (req, res, next) => {
+  // 유저 유효성 검사 : return 401
+
+  try {
+    const result = await createCard(req.body)
+    const newCardId = result[0].insertId
+
+    res.status(200).json({
+      id: newCardId,
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(404).json()
   }
 }
