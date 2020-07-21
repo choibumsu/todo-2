@@ -5,6 +5,7 @@ const {
   updateCardTitle,
   createCard,
   deleteCard,
+  moveCard,
 } = require('./model')
 
 exports.getAllColumnsController = async (req, res, next) => {
@@ -70,6 +71,17 @@ exports.createCardController = async (req, res, next) => {
     res.status(200).json({
       id: newCardId,
     })
+  } catch (err) {
+    console.log(err)
+    res.status(404).json()
+  }
+}
+
+exports.moveCardController = async (req, res, next) => {
+  try {
+    await moveCard(req.body)
+
+    res.status(200).json()
   } catch (err) {
     console.log(err)
     res.status(404).json()

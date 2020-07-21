@@ -17,7 +17,7 @@ exports.fetchCard = async () => {
     .query(
       'SELECT user.name, card.id, card.title, card.next_card_id, card.column_id FROM tododb.user LEFT JOIN tododb.card ON card.user_id=user.id;'
     )
-  console.log(rows)
+
   return rows
 }
 
@@ -45,6 +45,17 @@ exports.createCard = async ({ cardTitle, columnId, userId, nextCardId }) => {
       .query(query, [cardTitle, columnId, userId, nextCardId])
 
     return result
+  } catch (err) {
+    throw err
+  }
+}
+
+exports.moveCard = async ({ cardId, columnId, userId }) => {
+  try {
+    const query = `UPDATE card SET column_id=${+columnId} WHERE id=${+cardId}`
+    await connection.promise().query(query)
+
+    return
   } catch (err) {
     throw err
   }
