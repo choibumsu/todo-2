@@ -32,3 +32,7 @@ exports.updateCardTitle = async (title, id) => {
     .promise()
     .query(`UPDATE card SET title='${title}' WHERE id=${id}`)
 }
+
+exports.deleteCard = async (id) => {
+  return await connection.promise().query(`DELETE FROM card WHERE id=${id}`)
+}

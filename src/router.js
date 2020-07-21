@@ -5,6 +5,7 @@ const {
   getAllCardsController,
   updateColumnNameController,
   updateCardNameController,
+  deleteCardController,
 } = require('./controller.js')
 
 // render pug
@@ -23,5 +24,8 @@ router.put('/column', updateColumnNameController)
 
 // 카드 데이터 수정 api
 router.put('/card', updateCardNameController)
+
+// 카드 데이터 삭제 api
+router.delete('/card', deleteCardController)
 
 module.exports = router

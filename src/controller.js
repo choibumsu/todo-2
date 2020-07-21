@@ -3,6 +3,7 @@ const {
   fetchCard,
   updateColumnTitle,
   updateCardTitle,
+  deleteCard,
 } = require('./model')
 
 exports.getAllColumnsController = async (req, res, next) => {
@@ -37,6 +38,16 @@ exports.updateCardNameController = async (req, res, next) => {
   try {
     const { title, id } = req.body
     const rows = await updateCardTitle(title, id)
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+exports.deleteCardController = async (req, res, next) => {
+  try {
+    const { id } = req.body
+    const rows = await deleteCard(id)
     res.json(rows)
   } catch (e) {
     console.log(e)

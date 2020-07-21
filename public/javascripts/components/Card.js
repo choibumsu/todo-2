@@ -2,7 +2,7 @@ import { templateToElement } from '../utils/HtmlGenerator'
 import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS, EVENT } from '../utils/Constants'
-import { updateCardTitle } from '../api/index'
+import { updateCardTitle, deleteCard } from '../api/index'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -264,6 +264,7 @@ export default class Card {
   }
 
   removeTarget() {
+    deleteCard({ id: this.id })
     this.$target.remove()
   }
 }
