@@ -3,7 +3,7 @@ import './components/Header'
 import './components/SideBar'
 import '../stylesheets/common/base.scss'
 
-import { fetchColumn, fetchCard, updateColumnName } from './api/index'
+import { fetchColumn, fetchCard } from './api/index'
 
 async function getColumn() {
   try {
@@ -15,10 +15,10 @@ async function getColumn() {
       allCards.forEach((card) => {
         if (card.column_id == column.id) {
           column.cardDatas.push({
-            "id":card.id,
-            "nextCardId":card.nextcard_id,
-            "title":card.title,
-            "username":card.name
+            id: card.id,
+            nextCardId: card.nextcard_id,
+            title: card.title,
+            username: card.name,
           })
         }
       })
@@ -30,3 +30,4 @@ async function getColumn() {
 }
 
 getColumn()
+

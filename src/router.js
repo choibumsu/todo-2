@@ -1,6 +1,10 @@
 var express = require('express')
 var router = express.Router()
-const { getAllColumnsController, getAllCardsController } = require('./controller.js')
+const {
+  getAllColumnsController,
+  getAllCardsController,
+  updateColumnNameContoller,
+} = require('./controller.js')
 
 // render pug
 router.get('/', function (req, res, next) {
@@ -14,6 +18,6 @@ router.get('/column', getAllColumnsController)
 router.get('/card', getAllCardsController)
 
 // 컬럼 데이터 수정 api
-router.put('/column', updateColumnName)
+router.put('/column', updateColumnNameContoller)
 
 module.exports = router

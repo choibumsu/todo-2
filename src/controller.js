@@ -18,8 +18,12 @@ exports.getAllCardsController = async (req, res, next) => {
   }
 }
 
-exports.updateColumnName = async (req, res, next) => {
-  const { title, id } = req.body
-  const rows = await updateColumnName(title, id)
-  res.json(rows)
+exports.updateColumnNameContoller = async (req, res, next) => {
+  try {
+    const { title, id } = req.body
+    const rows = await updateColumnName(title, id)
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
