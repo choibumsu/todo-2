@@ -14,6 +14,24 @@ const METHOD = {
       body: JSON.stringify(data),
     }
   },
+  PUT(data) {
+    return {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  },
+  DELETE(data) {
+    return {
+      method: 'DELETE',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  },
 }
 
 export const fetchColumn = async () => {
@@ -46,39 +64,33 @@ export const fetchCard = async () => {
 }
 
 export const updateColumnTitle = async (data) => {
-  fetch(`${apiUrlBase}/column`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((res) => res.json())
-    .catch((error) => console.error('Error:', error))
+  const response = await fetch(`${apiUrlBase}/column`, METHOD.PUT(data))
+  if (response.ok) {
+    const data = await response.json()
+    return [data, response.status]
+  } else {
+    return [null, response.status]
+  }
 }
 
 export const updateCardTitle = async (data) => {
-  fetch(`${apiUrlBase}/card`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((res) => res.json())
-    .catch((error) => console.error('Error:', error))
+  const response = await fetch(`${apiUrlBase}/card`, METHOD.PUT(data))
+  if (response.ok) {
+    const data = await response.json()
+    return [data, response.status]
+  } else {
+    return [null, response.status]
+  }
 }
 
 export const deleteCard = async (data) => {
-  fetch(`${apiUrlBase}/card`, {
-    method: 'DELETE',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((res) => res.json())
-    .catch((error) => console.error('Error:', error))
+  const response = fetch(`${apiUrlBase}/card`, METHOD.DELETE(data))
+  if (response.ok) {
+    const data = await response.json()
+    return [data, response.status]
+  } else {
+    return [null, response.status]
+  }
 }
 
 /** @type {(data: any) => Promise<[any, number]>} */
