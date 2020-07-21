@@ -1,36 +1,23 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/sidebar.scss'
-import { TIME, SIDEBAR_ID } from '../utils/Constants'
-import { CARD_ACTIVITY_TEMPLATE, SIDEBAR_ID } from '../utils/Constants'
-
-let sampleData = {
-  id: 1,
-  content: {
-    action: 'moved',
-    from_column: '작업중',
-    to_column: '작업완료',
-    card_title: 'some card',
-  },
-  created_at: '2020-01-09',
-  user_name: 'jopro',
-  category: 'card',
-}
+import { TIME, SIDEBAR_ID, CARD_ACTIVITY_TEMPLATE } from '../utils/Constants'
 
 export default class ActivityCard {
-  constructor({ content, time }) {
+  constructor(data) {
     this.$target = ''
-    this.content = content
-    this.time = time
+    this.content = ''
+    this.time = new Date(data.created_at)
     this.$activityColumn = ''
+    this.data = data
     this.init()
   }
 
   init() {
     let template = this.getTemplate(
-      sampleData.category,
-      sampleData.content.action
+      this.data.category,
+      this.data.content.action
     )
-    this.content = this.transferHTML(sampleData, template)
+    this.content = this.transferHTML(this.data, template)
     this.setElements()
   }
 
