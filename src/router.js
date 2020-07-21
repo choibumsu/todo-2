@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-const { column, card } = require('./controller.js')
+const { getAllColumnsController, getAllCardsController } = require('./controller.js')
 
 // render pug
 router.get('/', function (req, res, next) {
@@ -8,9 +8,9 @@ router.get('/', function (req, res, next) {
 })
 
 // 컬럼 데이터 조회 api
-router.get('/column', column)
+router.get('/column', getAllColumnsController)
 
 // 카드 데이터 조회 api
-router.get('/card', card)
+router.get('/card', getAllCardsController)
 
 module.exports = router

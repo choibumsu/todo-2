@@ -7,21 +7,26 @@ import { fetchColumn, fetchCard } from './api/index'
 
 async function getColumn() {
   try {
-    let allColumn = await fetchColumn()
-    let allCard = await fetchCard()
+    const allColumns = await fetchColumn()
+    const allCards = await fetchCard()
+
+    allColumns.forEach((column) => {
+      column.cardDatas = []
+      allCards.forEach((card) => {
+        if (card.column_id == column.id) {
+          column.cardDatas.push({
+            "id":card.id,
+            "nextCardId":card.nextcard_id,
+            "title":card.title,
+            "username":card.name
+          })
+        }
+      })
+      new Column(column)
+    })
   } catch (e) {
     console.log(e)
   }
-
-  allColumn.forEach((column) => {
-    column.cardDatas = []
-    allCard.forEach((card) => {
-      if (card.column_id == column.id) {
-        column.cardDatas.push(card)
-      }
-    })
-    new Column(column)
-  })
 }
 
 getColumn()
