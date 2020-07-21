@@ -1,28 +1,44 @@
 const {
   fetchColumn,
   fetchCard,
-  updateColumnTitle,
-  updateCardTitle,
+  updateColumnName,
+  updateCardName,
 } = require('./model')
 
-exports.column = async (req, res, next) => {
-  const rows = await fetchColumn()
-  res.json(rows)
+exports.getAllColumnsController = async (req, res, next) => {
+  try {
+    const rows = await fetchColumn()
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-exports.card = async (req, res, next) => {
-  const rows = await fetchCard()
-  res.json(rows)
+exports.getAllCardsController = async (req, res, next) => {
+  try {
+    const rows = await fetchCard()
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-exports.updateColumnTitle = async (req, res, next) => {
-  const { title, id } = req.body
-  const rows = await updateColumnTitle(title, id)
-  res.json(rows)
+exports.updateColumnNameContoller = async (req, res, next) => {
+  try {
+    const { title, id } = req.body
+    const rows = await updateColumnName(title, id)
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-exports.updateCardTitle = async (req, res, next) => {
-  const { title, id } = req.body
-  const rows = await updateCardTitle(title, id)
-  res.json(rows)
+exports.updateCardNameController = async (req, res, next) => {
+  try {
+    const { title, id } = req.body
+    const rows = await updateCardName(title, id)
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
