@@ -10,18 +10,20 @@ const {
 exports.getAllColumnsController = async (req, res, next) => {
   try {
     const rows = await fetchColumn()
-    res.json(rows)
+    res.status(200).json(rows)
   } catch (e) {
-    console.log(e)
+    console.log(err)
+    res.status(404).json()
   }
 }
 
 exports.getAllCardsController = async (req, res, next) => {
   try {
     const rows = await fetchCard()
-    res.json(rows)
+    res.status(200).json(rows)
   } catch (e) {
-    console.log(e)
+    console.log(err)
+    res.status(404).json()
   }
 }
 
@@ -29,9 +31,10 @@ exports.updateColumnNameController = async (req, res, next) => {
   try {
     const { title, id } = req.body
     const rows = await updateColumnTitle(title, id)
-    res.json(rows)
+    res.status(200).json(rows)
   } catch (e) {
-    console.log(e)
+    console.log(err)
+    res.status(404).json()
   }
 }
 
@@ -39,9 +42,10 @@ exports.updateCardNameController = async (req, res, next) => {
   try {
     const { title, id } = req.body
     const rows = await updateCardTitle(title, id)
-    res.json(rows)
+    res.status(200).json(rows)
   } catch (e) {
-    console.log(e)
+    console.log(err)
+    res.status(404).json()
   }
 }
 
@@ -49,9 +53,10 @@ exports.deleteCardController = async (req, res, next) => {
   try {
     const { id } = req.body
     const rows = await deleteCard(id)
-    res.json(rows)
+    res.status(200).json(rows)
   } catch (e) {
-    console.log(e)
+    console.log(err)
+    res.status(404).json()
   }
 }
 
