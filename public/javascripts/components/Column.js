@@ -147,24 +147,36 @@ export default class Column {
     const cardTitle = this.cardForm.getCardTitle()
     if (cardTitle === '') return
 
-    const { id } = await createCardApi({
+    const [data, status] = await createCardApi({
       cardTitle,
       columnId: this.id,
       userId: 1,
     })
 
-    const cardData = {
-      id,
-      title: cardTitle,
-      username: 'choibumsu',
-      nextCardId: this.getNewNextCardId(),
+    if (status === 200) {
+      const cardData = {
+        id: data.id,
+        title: cardTitle,
+        username: 'choibumsu',
+        nextCardId: this.getNewNextCardId(),
+      }
+
+      const newCard = new Card(cardData)
+      this.cardList.push(newCard)
+      this.$contentContainer.prepend(newCard.getTarget())
+
+      this.setCardCount()
+      return
+    } else if (status === 401) {
+      alert('카드 추가 권한이 없습니다.')
+      return
+    } else if (status === 404) {
+      alert('컬럼이 존재하지 않습니다.')
+      return
     }
 
-    const newCard = new Card(cardData)
-    this.cardList.push(newCard)
-    this.$contentContainer.prepend(newCard.getTarget())
-
-    this.setCardCount()
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
   getNewNextCardId() {

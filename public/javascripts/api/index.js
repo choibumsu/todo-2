@@ -81,14 +81,17 @@ export const deleteCard = async (data) => {
     .catch((error) => console.error('Error:', error))
 }
 
+/** @type {(data: any) => Promise<[any, number]>} */
 export const createCardApi = async (newCardData) => {
   const response = await fetch(
     `${baseUrl}/create/card`,
     METHOD.POST(newCardData)
   )
 
-  // 에러 처리
-
-  const datas = await response.json()
-  return datas
+  if (response.ok) {
+    const data = await response.json()
+    return [data, response.status]
+  } else {
+    return [null, response.status]
+  }
 }
