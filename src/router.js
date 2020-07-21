@@ -15,21 +15,22 @@ router.get('/', function (req, res, next) {
 })
 
 // 컬럼 데이터 조회 api
-router.get('/column', getAllColumnsController)
+router.get('/api/column', getAllColumnsController)
 
 // 카드 데이터 조회 api
-router.get('/card', getAllCardsController)
+router.get('/api/card', getAllCardsController)
 
 // 컬럼 데이터 수정 api
-router.put('/column', updateColumnNameController)
+router.put('/api/column', updateColumnNameController)
 
 // 카드 데이터 수정 api
-router.put('/card', updateCardNameController)
+router.put('/api/card', updateCardNameController)
 
 // 카드 데이터 삭제 api
-router.delete('/card', deleteCardController)
+router.delete('/api/card', deleteCardController)
 
-router.post('/api/create/card', function (req, res, next) {
+//카드 추가 api
+router.post('/api/card', function (req, res, next) {
   createCardController(req, res, next)
 })
 

@@ -17,7 +17,7 @@ async function getColumn() {
         if (card.column_id == column.id) {
           column.cardDatas.push({
             id: card.id,
-            nextCardId: card.nextcard_id,
+            nextCardId: card.next_card_id,
             title: card.title,
             username: card.name,
           })
@@ -35,10 +35,10 @@ getColumn()
 const tempActivity = [
   {
     content: `<span class='highlight'>@nigayo </span><span>moved the column 하는중.</span>`,
-    time: new Date("2020.07.20 10:30:00"),
+    time: new Date('2020.07.20 10:30:00'),
   },
 ]
 
-tempActivity.forEach((card)=>{
+tempActivity.forEach((card) => {
   new ActivityCard(card)
 })

@@ -33,7 +33,7 @@ export default class ActivityCard {
     const oldSecond = this.time.getTime() / 1000
     const currentSecond = new Date().getTime() / 1000
     const timediff = currentSecond - oldSecond
-    timeString = `${timediff.toFixed(0)} seconds ago`
+    const timeString = `${timediff.toFixed(0)} seconds ago`
     return timeString
   }
 }

@@ -15,7 +15,7 @@ exports.fetchCard = async () => {
   const [rows, fields] = await connection
     .promise()
     .query(
-      'SELECT user.name, card.id, card.title, card.nextcard_id, card.column_id FROM tododb.user LEFT JOIN tododb.card ON card.user_id=user.id;'
+      'SELECT user.name, card.id, card.title, card.next_card_id, card.column_id FROM tododb.user LEFT JOIN tododb.card ON card.user_id=user.id;'
     )
   console.log(rows)
   return rows
@@ -37,12 +37,12 @@ exports.deleteCard = async (id) => {
   return await connection.promise().query(`DELETE FROM card WHERE id=${id}`)
 }
 
-exports.createCard = async ({ cardTitle, columnId, userId }) => {
+exports.createCard = async ({ cardTitle, columnId, userId, nextCardId }) => {
   try {
-    const query = `INSERT INTO card (title, column_id, user_id) VALUES (?, ?, ?)`
+    const query = `INSERT INTO card (title, column_id, user_id, next_card_id) VALUES (?, ?, ?, ?)`
     const result = await connection
       .promise()
-      .query(query, [cardTitle, columnId, userId])
+      .query(query, [cardTitle, columnId, userId, nextCardId])
 
     return result
   } catch (err) {
