@@ -63,7 +63,8 @@ exports.moveCard = async ({ cardId, columnId, userId }) => {
 
 exports.updateNextCardId = async ({ cardId, nextCardId, userId }) => {
   try {
-    const query = `UPDATE card SET nex_card_id=${+nextCardId} WHERE id=${+cardId}`
+    console.log(cardId, nextCardId)
+    const query = `UPDATE card SET next_card_id=${+nextCardId} WHERE id=${+cardId}`
     await connection.promise().query(query)
 
     return

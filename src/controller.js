@@ -91,7 +91,7 @@ exports.moveCardController = async (req, res, next) => {
 
 exports.updateNextCardIdController = async (req, res, next) => {
   try {
-    await this.updateNextCardId(req.body)
+    await updateNextCardId(req.body)
 
     res.status(200).json()
   } catch (err) {
