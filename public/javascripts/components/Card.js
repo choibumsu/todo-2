@@ -2,6 +2,7 @@ import { templateToElement } from '../utils/HtmlGenerator'
 import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS, EVENT } from '../utils/Constants'
+import { updateCardTitle } from '../api/index'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -250,6 +251,10 @@ export default class Card {
   }
 
   setTitle(editedTitle) {
+    updateCardTitle({
+      title: editedTitle,
+      id: this.id,
+    })
     this.title = editedTitle
     this.$title.innerText = this.title
   }

@@ -22,8 +22,20 @@ export const fetchCard = async () => {
   return datas
 }
 
-export const updateColumnName = async (data) => {
+export const updateColumnTitle = async (data) => {
   fetch('/column', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .catch((error) => console.error('Error:', error))
+}
+
+export const updateCardTitle = async (data) => {
+  fetch('/card', {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {

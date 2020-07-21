@@ -1,4 +1,9 @@
-const { fetchColumn, fetchCard, updateColumnName } = require('./model')
+const {
+  fetchColumn,
+  fetchCard,
+  updateColumnTitle,
+  updateCardTitle,
+} = require('./model')
 
 exports.column = async (req, res, next) => {
   const rows = await fetchColumn()
@@ -10,8 +15,14 @@ exports.card = async (req, res, next) => {
   res.json(rows)
 }
 
-exports.updateColumnName = async (req, res, next) => {
+exports.updateColumnTitle = async (req, res, next) => {
   const { title, id } = req.body
-  const rows = await updateColumnName(title, id)
+  const rows = await updateColumnTitle(title, id)
+  res.json(rows)
+}
+
+exports.updateCardTitle = async (req, res, next) => {
+  const { title, id } = req.body
+  const rows = await updateCardTitle(title, id)
   res.json(rows)
 }
