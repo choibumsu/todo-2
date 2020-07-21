@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3000/api'
+const apiUrlBase = '/api'
 const METHOD = {
   GET() {
     return {
@@ -17,7 +17,7 @@ const METHOD = {
 }
 
 export const fetchColumn = async () => {
-  const response = await fetch('/column')
+  const response = await fetch(`${apiUrlBase}/column`)
   if (response.status === 200) {
     const datas = await response.json()
     return datas
@@ -32,7 +32,7 @@ export const fetchColumn = async () => {
 }
 
 export const fetchCard = async () => {
-  const response = await fetch('/card')
+  const response = await fetch(`${apiUrlBase}/card`)
   if (response.status === 200) {
     const datas = await response.json()
     return datas
@@ -46,7 +46,7 @@ export const fetchCard = async () => {
 }
 
 export const updateColumnTitle = async (data) => {
-  fetch('/column', {
+  fetch(`${apiUrlBase}/column`, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
@@ -58,7 +58,7 @@ export const updateColumnTitle = async (data) => {
 }
 
 export const updateCardTitle = async (data) => {
-  fetch('/card', {
+  fetch(`${apiUrlBase}/card`, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
@@ -70,7 +70,7 @@ export const updateCardTitle = async (data) => {
 }
 
 export const deleteCard = async (data) => {
-  fetch('/card', {
+  fetch(`${apiUrlBase}/card`, {
     method: 'DELETE',
     body: JSON.stringify(data),
     headers: {
@@ -83,10 +83,7 @@ export const deleteCard = async (data) => {
 
 /** @type {(data: any) => Promise<[any, number]>} */
 export const createCardApi = async (newCardData) => {
-  const response = await fetch(
-    `${baseUrl}/create/card`,
-    METHOD.POST(newCardData)
-  )
+  const response = await fetch(`${apiUrlBase}/card`, METHOD.POST(newCardData))
 
   if (response.ok) {
     const data = await response.json()
