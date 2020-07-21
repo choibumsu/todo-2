@@ -76,5 +76,6 @@ export default class ActivityCard {
       template = template.replace('$' + key, value)
     }
     return template
+    
   }
 }
