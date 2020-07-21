@@ -62,3 +62,9 @@ export const SIDEBAR_ID = {
   CONTENT: 'content',
   TIME: 'time',
 }
+
+export const TIME = {
+  SECOND: 60,
+  MINUTE_TO_SECOND: 3600,
+  HOUR_TO_SECOND: 86400,
+}

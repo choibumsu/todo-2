@@ -1,6 +1,6 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/sidebar.scss'
-import { SIDEBAR_CLASS, SIDEBAR_ID } from '../utils/Constants'
+import { TIME, SIDEBAR_ID } from '../utils/Constants'
 
 export default class ActivityCard {
   constructor({ content, time }) {
@@ -32,8 +32,21 @@ export default class ActivityCard {
   timeForamt() {
     const oldSecond = this.time.getTime() / 1000
     const currentSecond = new Date().getTime() / 1000
-    const timediff = currentSecond - oldSecond
-    const timeString = `${timediff.toFixed(0)} seconds ago`
+    let timediff = parseInt((currentSecond - oldSecond).toFixed(0))
+    var timeString = ''
+    if (timediff < TIME.SECOND) {
+      timeString = `${timediff} seconds ago`
+    } else if (timediff < TIME.MINUTE_TO_SECOND) {
+      timediff = (timediff / TIME.SECOND).toFixed(0)
+      timeString = `${timediff} minutes ago`
+    } else if (timediff < TIME.HOUR_TO_SECOND) {
+      timediff = (timediff / TIME.MINUTE_TO_SECOND).toFixed(0)
+      timeString = `${timediff} hours ago`
+    } else {
+      timediff = (timediff / TIME.HOUR_TO_SECOND).toFixed(0)
+      if (timediff == '1') timeString = `${timediff} day ago`
+      else timeString = `${timediff} days ago`
+    }
     return timeString
   }
 }
