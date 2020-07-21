@@ -4,64 +4,33 @@ import './components/Header'
 import './components/SideBar'
 import '../stylesheets/common/base.scss'
 
-import { fetchTest } from './api/index'
+import { fetchColumn, fetchCard } from './api/index'
 
-const tempColumns = [
-  {
-    id: 1,
-    title: 'To Do 📝',
-    cardDatas: [
-      {
-        id: 1,
-        nextCardId: 0,
-        title: '다이어트 하기',
-        username: 'choibumsu',
-      },
-      {
-        id: 2,
-        nextCardId: 1,
-        title: '드래그&드랍 구현하기',
-        username: 'gijin',
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: 'In Progess 🏃‍♂️',
-    cardDatas: [
-      {
-        id: 3,
-        nextCardId: 0,
-        title: 'To Do List 만들기',
-        username: 'choibumsu',
-      },
-      {
-        id: 4,
-        nextCardId: 3,
-        title: '코딩하기',
-        username: 'bumsu',
-      },
-      {
-        id: 5,
-        nextCardId: 4,
-        title: '더블클릭 이벤트 구현하기',
-        username: 'gijin',
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Done 👏',
-    cardDatas: [
-      {
-        id: 6,
-        nextCardId: 0,
-        title: '점심 식사',
-        username: 'choibumsu',
-      },
-    ],
-  },
-]
+async function getColumn() {
+  try {
+    const allColumns = await fetchColumn()
+    const allCards = await fetchCard()
+
+    allColumns.forEach((column) => {
+      column.cardDatas = []
+      allCards.forEach((card) => {
+        if (card.column_id == column.id) {
+          column.cardDatas.push({
+            "id":card.id,
+            "nextCardId":card.nextcard_id,
+            "title":card.title,
+            "username":card.name
+          })
+        }
+      })
+      new Column(column)
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+getColumn()
 
 const tempActivity = [
   {
@@ -70,13 +39,6 @@ const tempActivity = [
   },
 ]
 
-tempColumns.forEach((column) => {
-  new Column(column)
-})
-
-
 tempActivity.forEach((card)=>{
   new ActivityCard(card)
 })
-
-fetchTest()

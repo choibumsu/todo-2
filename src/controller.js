@@ -1,7 +1,19 @@
-const { fetchTest } = require('./model')
+const { fetchColumn, fetchCard } = require('./model')
 
-exports.test = async (req, res, next) => {
-  const rows = await fetchTest()
-  console.log(rows)
-  res.json(rows)
+exports.getAllColumnsController = async (req, res, next) => {
+  try {
+    const rows = await fetchColumn()
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+exports.getAllCardsController = async (req, res, next) => {
+  try {
+    const rows = await fetchCard()
+    res.json(rows)
+  } catch (e) {
+    console.log(e)
+  }
 }
