@@ -21,6 +21,14 @@ exports.fetchCard = async () => {
   return rows
 }
 
-exports.updateColumnName=async(title,id)=>{
-  return await connection.promise().query(`UPDATE columns SET title='${title}' WHERE id=${id}`)
+exports.updateColumnTitle = async (title, id) => {
+  return await connection
+    .promise()
+    .query(`UPDATE columns SET title='${title}' WHERE id=${id}`)
+}
+
+exports.updateCardTitle = async (title, id) => {
+  return await connection
+    .promise()
+    .query(`UPDATE card SET title='${title}' WHERE id=${id}`)
 }
