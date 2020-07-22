@@ -38,7 +38,12 @@ export default class EditColumnModal extends Modal {
   }
 
   editColumn() {
+    if (this.$editContent.value === '') {
+      this.$editBtn.classList.add(CLASS_NAME.UNACTIVE)
+      return
+    }
     this.editCallback(this.$editContent.value)
+    this.$editBtn.classList.remove(CLASS_NAME.UNACTIVE)
     this.closeModal()
   }
 }

@@ -29,7 +29,6 @@ export default class EditCardModal extends Modal {
 
   updateActive(isActive) {
     this.isActive = isActive
-    console.log(this.isActive)
     if (this.isActive) {
       this.$editBtn.classList.remove(CLASS_NAME.UNACTIVE)
       return
@@ -39,7 +38,12 @@ export default class EditCardModal extends Modal {
   }
 
   editCard() {
+    if (this.$editContent.value === '') {
+      this.$editBtn.classList.add(CLASS_NAME.UNACTIVE)
+      return
+    }
     this.editCallback(this.$editContent.value)
+    this.$editBtn.classList.remove(CLASS_NAME.UNACTIVE)
     this.closeModal()
   }
 }
