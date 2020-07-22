@@ -14,7 +14,7 @@ import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
-import { updateColumnTitle, createCardApi } from '../api/index'
+import { updateColumnTitle, createCardApi, deleteColumnApi } from '../api/index'
 
 export default class Column {
   constructor({ id, title, cardDatas }) {
@@ -120,6 +120,11 @@ export default class Column {
       return
     }
 
+    if (e.target.classList.contains(COLUMN_CLASS.REMOVE_BTN)) {
+      this.removeColumn()
+      return
+    }
+
     if (e.target.classList.contains(CARD_CLASS.REMOVE_BTN)) {
       this.showCardDeleteModal(e)
       return
@@ -147,6 +152,31 @@ export default class Column {
       this.showCardEditModal(targetCard)
       return
     }
+  }
+
+  async removeColumn() {
+    const removeConfirm = confirm('정말 컬럼을 삭제하시겠습니까?')
+
+    if (!removeConfirm) return
+
+    const status = await deleteColumnApi({
+      id: this.id,
+      userId: 1,
+    })
+
+    if (status === 200) {
+      this.$target.remove()
+      return
+    } else if (status === 401) {
+      alert('컬럼 삭제 권한이 없습니다.')
+      return
+    } else if (status === 404) {
+      alert('컬럼이 존재하지 않습니다.')
+      return
+    }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
   async addCard() {
