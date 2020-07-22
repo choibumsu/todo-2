@@ -11,6 +11,17 @@ exports.fetchColumn = async () => {
   return rows
 }
 
+exports.createColumn = async ({ title }) => {
+  try {
+    const query = `INSERT INTO columns (title) VALUES ('${title}')`
+    const result = await connection.promise().query(query)
+
+    return result
+  } catch (err) {
+    throw err
+  }
+}
+
 exports.fetchCard = async () => {
   const [rows, fields] = await connection
     .promise()

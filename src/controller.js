@@ -1,5 +1,6 @@
 const {
   fetchColumn,
+  createColumn,
   fetchCard,
   updateColumnTitle,
   updateCardTitle,
@@ -15,6 +16,22 @@ exports.getAllColumnsController = async (req, res, next) => {
     const rows = await fetchColumn()
     res.status(200).json(rows)
   } catch (e) {
+    console.log(err)
+    res.status(404).json()
+  }
+}
+
+exports.createColumnController = async (req, res, next) => {
+  // 유저 유효성 검사 : return 401
+
+  try {
+    const result = await createColumn(req.body)
+    const newColumnId = result[0].insertId
+
+    res.status(200).json({
+      id: newColumnId,
+    })
+  } catch (err) {
     console.log(err)
     res.status(404).json()
   }
