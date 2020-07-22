@@ -13,7 +13,7 @@ export default class ActivityCard {
   }
 
   init() {
-    let template = this.getTemplate(
+    const template = this.getTemplate(
       this.data.category,
       this.data.content.action
     )
@@ -72,7 +72,7 @@ export default class ActivityCard {
   transferHTML(data, template) {
     template = template.replace('$username', data.user_name)
     for (let key in data.content) {
-      let value = data.content[key]
+      const value = data.content[key]
       template = template.replace('$' + key, value)
     }
     return template
