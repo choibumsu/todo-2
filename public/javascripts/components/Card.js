@@ -64,15 +64,27 @@ export default class Card {
 
   // 카드를 복사
   copyTarget(e) {
+    this.scrollLeft = document.querySelector(
+      `.${COLUMN_CLASS.CONTAINER}`
+    ).scrollLeft
+    this.scrollTop = this.$target.closest(
+      `.${COLUMN_CLASS.CONTENT_CONTAINER}`
+    ).scrollTop
+
+    const defaultGap = 10
     this.$copyTarget = this.$target.cloneNode(true)
-    this.$copyTarget.style.left = `${this.$target.offsetLeft + 10}px`
-    this.$copyTarget.style.top = `${this.$target.offsetTop - 10}px`
+    this.$copyTarget.style.left = `${
+      this.$target.offsetLeft - this.scrollLeft + defaultGap
+    }px`
+    this.$copyTarget.style.top = `${
+      this.$target.offsetTop - this.scrollTop - defaultGap
+    }px`
     this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
     this.$copyTarget.classList.add(CARD_CLASS.COPY)
 
     this.offsetDiff = {
-      left: e.pageX - this.$target.offsetLeft - 10,
-      top: e.pageY - this.$target.offsetTop + 10,
+      left: e.pageX + this.scrollLeft - this.$target.offsetLeft - defaultGap,
+      top: e.pageY + this.scrollTop - this.$target.offsetTop + defaultGap,
     }
 
     document.body.appendChild(this.$copyTarget)
