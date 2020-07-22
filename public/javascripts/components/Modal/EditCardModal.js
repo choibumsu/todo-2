@@ -1,5 +1,5 @@
 import Modal from './Modal'
-import { MODAL_ID, MODAL_CLASS } from '../../utils/Constants'
+import { MODAL_ID, MODAL_CLASS, CLASS_NAME } from '../../utils/Constants'
 
 export default class EditCardModal extends Modal {
   constructor(cardTitle, editCallback) {
@@ -14,10 +14,28 @@ export default class EditCardModal extends Modal {
     this.$editBtn = $modal_box.querySelector(`#${MODAL_ID.EDIT_CARD_BTN}`)
     this.bindEvent()
     this.editCallback = editCallback
+    this.isActive = false
   }
 
   bindEvent() {
-    this.$editBtn.onclick=this.editCard.bind(this)
+    this.$editContent.addEventListener('input', this.onInputHandler.bind(this))
+    this.$editBtn.onclick = this.editCard.bind(this)
+  }
+
+  onInputHandler(e) {
+    const isActive = this.$editContent.value !== ''
+    this.updateActive(isActive)
+  }
+
+  updateActive(isActive) {
+    this.isActive = isActive
+    console.log(this.isActive)
+    if (this.isActive) {
+      this.$editBtn.classList.remove(CLASS_NAME.UNACTIVE)
+      return
+    }
+
+    this.$editBtn.classList.add(CLASS_NAME.UNACTIVE)
   }
 
   editCard() {

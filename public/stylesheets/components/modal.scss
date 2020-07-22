@@ -83,6 +83,7 @@
   }
 
   button {
+    $color-btn-border: #1b1f0f;
     background: $color-green;
     border-radius: 5px;
     height: 32px;
@@ -94,6 +95,11 @@
 
     &#delete-card-button {
       background-color: $color-danger;
+    }
+
+    &.unactive {
+      background-color: $color-light-green;
+      border: 1px solid unquote($color-btn-border + '20');
     }
   }
 }

@@ -1,5 +1,5 @@
 import Modal from './Modal'
-import { MODAL_CLASS, MODAL_ID } from '../../utils/Constants'
+import { MODAL_CLASS, MODAL_ID, CLASS_NAME } from '../../utils/Constants'
 
 export default class EditColumnModal extends Modal {
   constructor(columnTitle, editCallback) {
@@ -14,10 +14,29 @@ export default class EditColumnModal extends Modal {
     this.$editBtn = $modal_box.querySelector(`#${MODAL_ID.EDIT_COLUMN_BTN}`)
     this.bindEvent()
     this.editCallback = editCallback
+    this.isActive = false
   }
   bindEvent() {
-    this.$editBtn.onclick=this.editColumn.bind(this)
+    this.$editContent.addEventListener('input', this.onInputHandler.bind(this))
+    this.$editBtn.onclick = this.editColumn.bind(this)
   }
+
+  onInputHandler(e) {
+    const isActive = this.$editContent.value !== ''
+    this.updateActive(isActive)
+  }
+
+  updateActive(isActive) {
+    this.isActive = isActive
+
+    if (this.isActive) {
+      this.$editBtn.classList.remove(CLASS_NAME.UNACTIVE)
+      return
+    }
+
+    this.$editBtn.classList.add(CLASS_NAME.UNACTIVE)
+  }
+
   editColumn() {
     this.editCallback(this.$editContent.value)
     this.closeModal()
