@@ -3,6 +3,8 @@ export const CLASS_NAME = {
   UNACTIVE: 'unactive',
   US_NONE: 'us-none',
   GRABBING: 'grabbing',
+  MOVING: 'moving',
+  COPY: 'copy',
 }
 
 export const COLUMN_CLASS = {
@@ -31,8 +33,6 @@ export const CARD_CLASS = {
   CARD: 'card',
   TITLE: 'card-title',
   REMOVE_BTN: 'card-remove-btn',
-  MOVING: 'moving',
-  COPY: 'copy',
 }
 
 export const EVENT = {
