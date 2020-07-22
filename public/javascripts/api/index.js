@@ -128,3 +128,12 @@ export const fetchActivityCard = async () => {
     throw 'Server Error'
   }
 }
+
+export const updateNextCardIdApi = async (updatedCardData) => {
+  const response = await fetch(
+    `${apiUrlBase}/card/next_card_id`,
+    METHOD.PUT(updatedCardData)
+  )
+
+  return response.status
+}
