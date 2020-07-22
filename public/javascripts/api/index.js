@@ -49,6 +49,21 @@ export const fetchColumn = async () => {
   }
 }
 
+/** @type {(data: any) => Promise<[any, number]>} */
+export const createColumnApi = async (newColumnData) => {
+  const response = await fetch(
+    `${apiUrlBase}/column`,
+    METHOD.POST(newColumnData)
+  )
+
+  if (response.ok) {
+    const data = await response.json()
+    return [data, response.status]
+  } else {
+    return [null, response.status]
+  }
+}
+
 export const fetchCard = async () => {
   const response = await fetch(`${apiUrlBase}/card`, METHOD.GET())
   if (response.status === 200) {

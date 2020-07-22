@@ -2,6 +2,7 @@ import { templateToElement } from '../utils/HtmlGenerator'
 import { COLUMN_CLASS, COLUMN_FORM_CLASS, CLASS_NAME } from '../utils/Constants'
 import '../../stylesheets/components/columnForm.scss'
 import Column from './Column'
+import { createColumnApi } from '../api/index'
 
 export default class Card {
   constructor() {
@@ -57,7 +58,7 @@ export default class Card {
     this.$submitBtn.classList.remove(CLASS_NAME.UNACTIVE)
   }
 
-  addColumnHandler() {
+  async addColumnHandler() {
     const titleValue = this.$titleInput.value
 
     if (
@@ -67,12 +68,28 @@ export default class Card {
       return
     }
 
-    // 카드 추가 api 호출 후 id 받기
+    const [data, status] = await createColumnApi({
+      title: titleValue,
+    })
 
-    const newColumn = new Column({ id: 1, title: titleValue, cardDatas: [] })
-    this.$target.parentNode.insertBefore(newColumn.getTarget(), this.$target)
+    if (status === 200) {
+      const newColumn = new Column({
+        id: data.id,
+        title: titleValue,
+        cardDatas: [],
+      })
+      this.$target.parentNode.insertBefore(newColumn.getTarget(), this.$target)
 
-    this.$titleInput.value = ''
-    this.setSubmitBtnActiveHandler()
+      this.$titleInput.value = ''
+      this.setSubmitBtnActiveHandler()
+
+      return
+    } else if (status === 401) {
+      alert('컬럼 추가 권한이 없습니다.')
+      return
+    }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 }
