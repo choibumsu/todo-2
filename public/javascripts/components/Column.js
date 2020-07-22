@@ -93,7 +93,7 @@ export default class Column {
     const $columnContainer = document.querySelector(
       `.${COLUMN_CLASS.CONTAINER}`
     )
-    $columnContainer.appendChild(this.$target)
+    $columnContainer.prepend(this.$target)
   }
 
   bindEvent() {
