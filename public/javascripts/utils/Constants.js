@@ -80,3 +80,7 @@ export const CARD_ACTIVITY_TEMPLATE = {
   UPDATED: `<span class="highlight blue">@$username</span> $action<span class="highlight black"> $card_title</span>`,
   REMOVED: `<span class="highlight blue">@$username</span> $action<span class="highlight black"> $card_title</span>`,
 }
+
+export const COLUMN_ACTIVITY_TEMPLATE = {
+  UPDATED: `<span class="highlight blue">@$username</span> $action the column<span class="highlight black"> $from_column_title</span> to<span class="highlight black"> $to_column_title</span>`,
+}

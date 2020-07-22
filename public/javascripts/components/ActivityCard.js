@@ -1,6 +1,11 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/sidebar.scss'
-import { TIME, SIDEBAR_ID, CARD_ACTIVITY_TEMPLATE } from '../utils/Constants'
+import {
+  TIME,
+  SIDEBAR_ID,
+  CARD_ACTIVITY_TEMPLATE,
+  COLUMN_ACTIVITY_TEMPLATE,
+} from '../utils/Constants'
 
 export default class ActivityCard {
   constructor(data) {
@@ -57,15 +62,24 @@ export default class ActivityCard {
   }
 
   getTemplate(category, action) {
-    switch (action) {
-      case 'moved':
-        return CARD_ACTIVITY_TEMPLATE.MOVED
-      case 'added':
-        return CARD_ACTIVITY_TEMPLATE.ADDED
-      case 'updated':
-        return CARD_ACTIVITY_TEMPLATE.UPDATED
-      case 'removed':
-        return CARD_ACTIVITY_TEMPLATE.REMOVED
+    if (category === 'card') {
+      switch (action) {
+        case 'moved':
+          return CARD_ACTIVITY_TEMPLATE.MOVED
+        case 'added':
+          return CARD_ACTIVITY_TEMPLATE.ADDED
+        case 'updated':
+          return CARD_ACTIVITY_TEMPLATE.UPDATED
+        case 'removed':
+          return CARD_ACTIVITY_TEMPLATE.REMOVED
+      }
+    } else if (category === 'column') {
+      switch (action) {
+        case 'updated':
+          return COLUMN_ACTIVITY_TEMPLATE.UPDATED
+        default:
+          return
+      }
     }
   }
 
@@ -75,6 +89,7 @@ export default class ActivityCard {
       const value = data.content[key]
       template = template.replace('$' + key, value)
     }
+
     return template
   }
 }
