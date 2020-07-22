@@ -2,7 +2,12 @@ import { templateToElement } from '../utils/HtmlGenerator'
 import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/card.scss'
 import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS, EVENT } from '../utils/Constants'
-import { updateCardTitle, deleteCard, moveCardApi } from '../api/index'
+import {
+  updateCardTitle,
+  deleteCard,
+  moveCardApi,
+  updateNextCardIdApi,
+} from '../api/index'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -255,6 +260,9 @@ export default class Card {
       alert('컬럼이 존재하지 않습니다.')
       return
     }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
   getTarget() {
@@ -278,8 +286,27 @@ export default class Card {
     this.$title.innerText = this.title
   }
 
-  setNextCardId(nextCardId) {
+  async setNextCardId(nextCardId) {
     this.nextCardId = nextCardId
+
+    const status = await updateNextCardIdApi({
+      nextCardId: this.nextCardId,
+      cardId: this.id,
+      userId: 1,
+    })
+
+    if (status === 200) {
+      return
+    } else if (status === 401) {
+      alert('카드 추가 권한이 없습니다.')
+      return
+    } else if (status === 404) {
+      alert('카드가 존재하지 않습니다.')
+      return
+    }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
   removeTarget() {
