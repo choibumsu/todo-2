@@ -64,6 +64,16 @@ export const createColumnApi = async (newColumnData) => {
   }
 }
 
+/** @type {(data: any) => Promise<[any, number]>} */
+export const deleteColumnApi = async (removedColumnData) => {
+  const response = await fetch(
+    `${apiUrlBase}/column`,
+    METHOD.DELETE(removedColumnData)
+  )
+
+  return response.status
+}
+
 export const fetchCard = async () => {
   const response = await fetch(`${apiUrlBase}/card`, METHOD.GET())
   if (response.status === 200) {
