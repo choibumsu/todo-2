@@ -75,10 +75,14 @@ export default class ActivityCard {
       }
     } else if (category === 'column') {
       switch (action) {
+        case 'moved':
+          return COLUMN_ACTIVITY_TEMPLATE.MOVED
+        case 'added':
+          return COLUMN_ACTIVITY_TEMPLATE.ADDED
         case 'updated':
           return COLUMN_ACTIVITY_TEMPLATE.UPDATED
-        default:
-          return
+        case 'removed':
+          return COLUMN_ACTIVITY_TEMPLATE.REMOVED
       }
     }
   }

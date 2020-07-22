@@ -82,5 +82,8 @@ export const CARD_ACTIVITY_TEMPLATE = {
 }
 
 export const COLUMN_ACTIVITY_TEMPLATE = {
+  MOVED: `<span class="highlight blue">@$username</span> $action the column<span class="highlight black"> $column_title</span>`,
+  ADDED: `<span class="highlight blue">@$username</span> $action the column<span class="highlight black"> $column_title</span>`,
+  REMOVED: `<span class="highlight blue">@$username</span> $action the column<span class="highlight black"> $column_title</span>`,
   UPDATED: `<span class="highlight blue">@$username</span> $action the column<span class="highlight black"> $from_column_title</span> to<span class="highlight black"> $to_column_title</span>`,
 }
