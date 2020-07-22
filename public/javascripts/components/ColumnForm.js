@@ -14,7 +14,6 @@ export default class ColumnForm {
   init() {
     this.setElements()
     this.bindEvent()
-    this.render()
   }
 
   setElements() {
@@ -40,13 +39,6 @@ export default class ColumnForm {
       this.setSubmitBtnActiveHandler.bind(this)
     )
     this.$submitBtn.addEventListener('click', this.addColumnHandler.bind(this))
-  }
-
-  render() {
-    const $columnContainer = document.querySelector(
-      `.${COLUMN_CLASS.CONTAINER}`
-    )
-    $columnContainer.appendChild(this.$target)
   }
 
   setSubmitBtnActiveHandler() {
@@ -91,5 +83,9 @@ export default class ColumnForm {
 
     // unexcepted error
     alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
+  }
+
+  getTarget() {
+    return this.$target
   }
 }

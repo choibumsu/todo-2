@@ -7,8 +7,12 @@ export const CLASS_NAME = {
   COPY: 'copy',
 }
 
+export const BOARD_CLASS = {
+  BOARD: 'board',
+}
+
 export const COLUMN_CLASS = {
-  CONTAINER: 'column-container',
+  CONTAINER: 'board',
   COLUMN: 'column',
   TITLE: 'column-title',
   ADD_BTN: 'column-add-btn',

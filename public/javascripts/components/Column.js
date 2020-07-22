@@ -36,7 +36,6 @@ export default class Column {
     this.setElements()
     this.setCardList(cardDatas)
     this.setCardForm()
-    this.render()
     this.bindEvent()
   }
 
@@ -87,13 +86,6 @@ export default class Column {
       `.${COLUMN_CLASS.CARD_FORM_SLOT}`
     )
     $cardFormSlot.appendChild(this.cardForm.getTarget())
-  }
-
-  render() {
-    const $columnContainer = document.querySelector(
-      `.${COLUMN_CLASS.CONTAINER}`
-    )
-    $columnContainer.prepend(this.$target)
   }
 
   bindEvent() {
