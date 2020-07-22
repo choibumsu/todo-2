@@ -28,7 +28,7 @@ router.post('/api/column', createColumnController)
 // 컬럼 데이터 수정 api
 router.put('/api/column', updateColumnNameController)
 
-// 컬럼 데이터 수정 api
+// 컬럼 데이터 삭제 api
 router.delete('/api/column', deleteColumnController)
 
 // 카드 데이터 조회 api
