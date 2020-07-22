@@ -16,6 +16,11 @@ export const COLUMN_CLASS = {
   CONTENT_CONTAINER: 'content-container',
 }
 
+export const COLUMN_FORM_CLASS = {
+  TITLE_INPUT: 'column-title-input',
+  SUBMIT_BTN: 'submit-btn',
+}
+
 export const CARD_FORM_CLASS = {
   TEXTAREA: 'card-form-textarea',
   ADD_BTN: 'card-form-add-btn',
@@ -68,6 +73,7 @@ export const TIME = {
   MINUTE_TO_SECOND: 3600,
   HOUR_TO_SECOND: 86400,
 }
+
 export const CARD_ACTIVITY_TEMPLATE = {
   MOVED: `<span class="highlight blue">@$username</span> $action<span class="highlight blue"> $card_title</span> from<span class="highlight black"> $from_column</span> to<span class="highlight black"> $to_column</span>`,
   ADDED: `<span class="highlight blue">@$username</span> $action<span class="highlight black"> $card_title</span> to<span class="highlight black"> $to_column</span>`,

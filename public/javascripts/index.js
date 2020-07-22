@@ -1,4 +1,5 @@
 import Column from './components/Column'
+import ColumnForm from './components/ColumnForm'
 import ActivityCard from './components/ActivityCard'
 import './components/Header'
 import './components/SideBar'
@@ -30,6 +31,8 @@ async function getColumn() {
 
     new Column(column)
   })
+
+  new ColumnForm()
 }
 
 async function getActivityCard() {

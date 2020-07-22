@@ -319,4 +319,8 @@ export default class Column {
       prevCard.setNextCardId(insertedCard.getId())
     }
   }
+
+  getTarget() {
+    return this.$target
+  }
 }

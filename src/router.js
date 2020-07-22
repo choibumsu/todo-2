@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 const {
   getAllColumnsController,
+  createColumnController,
   getAllCardsController,
   updateColumnNameController,
   updateCardNameController,
@@ -20,11 +21,14 @@ router.get('/', function (req, res, next) {
 // 컬럼 데이터 조회 api
 router.get('/api/column', getAllColumnsController)
 
-// 카드 데이터 조회 api
-router.get('/api/card', getAllCardsController)
+// 컬럼 데이터 추가 api
+router.post('/api/column', createColumnController)
 
 // 컬럼 데이터 수정 api
 router.put('/api/column', updateColumnNameController)
+
+// 카드 데이터 조회 api
+router.get('/api/card', getAllCardsController)
 
 // 카드 데이터 수정 api
 router.put('/api/card', updateCardNameController)
@@ -33,21 +37,15 @@ router.put('/api/card', updateCardNameController)
 router.delete('/api/card', deleteCardController)
 
 // 카드 추가 api
-router.post('/api/card', function (req, res, next) {
-  createCardController(req, res, next)
-})
+router.post('/api/card', createCardController)
 
 // 카드 이동 api
-router.put('/api/card/move', function (req, res, next) {
-  moveCardController(req, res, next)
-})
+router.put('/api/card/move', moveCardController)
+
+// 카드 next_card_id set api
+router.put('/api/card/next_card_id', updateNextCardIdController)
 
 //액티비티 테이블 조회 api
 router.get('/api/activity', getAllActivityController)
-
-// 카드 next_card_id set api
-router.put('/api/card/next_card_id', function (req, res, next) {
-  updateNextCardIdController(req, res, next)
-})
 
 module.exports = router
