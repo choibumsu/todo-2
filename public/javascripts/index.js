@@ -4,7 +4,7 @@ import './components/Header'
 import './components/SideBar'
 import '../stylesheets/common/base.scss'
 
-import { fetchColumn, fetchCard } from './api/index'
+import { fetchColumn, fetchCard, fetchActivityCard } from './api/index'
 
 async function getColumn() {
   try {
@@ -30,23 +30,19 @@ async function getColumn() {
   }
 }
 
+async function getActivityCard() {
+  try {
+    const allCardActivitys = await fetchActivityCard()
+
+    allCardActivitys.forEach((cardActivity) => {
+      if (cardActivity.category == 'card') {
+        new ActivityCard(cardActivity)
+      }
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 getColumn()
-
-const tempActivity = [
-  {
-    id: 1,
-    content: {
-      action: 'updated',
-      from_column: '작업중',
-      to_column: '작업완료',
-      card_title: 'some card',
-    },
-    created_at: '2020-01-09',
-    user_name: 'jopro',
-    category: 'card',
-  },
-]
-
-tempActivity.forEach((card) => {
-  new ActivityCard(card)
-})
+getActivityCard()
