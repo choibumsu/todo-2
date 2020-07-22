@@ -4,7 +4,7 @@ import '../../stylesheets/components/columnForm.scss'
 import Column from './Column'
 import { createColumnApi } from '../api/index'
 
-export default class Card {
+export default class ColumnForm {
   constructor() {
     this.$target = ''
 
