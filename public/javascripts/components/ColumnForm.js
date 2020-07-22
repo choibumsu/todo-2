@@ -1,5 +1,5 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import { COLUMN_CLASS, COLUMN_FORM_CLASS } from '../utils/Constants'
+import { COLUMN_CLASS, COLUMN_FORM_CLASS, CLASS_NAME } from '../utils/Constants'
 import '../../stylesheets/components/columnForm.scss'
 
 export default class Card {
@@ -11,6 +11,7 @@ export default class Card {
 
   init() {
     this.setElements()
+    this.bindEvent()
     this.render()
   }
 
@@ -18,11 +19,24 @@ export default class Card {
     this.template = `
       <div class='column-form'>
         <input type='text' class='${COLUMN_FORM_CLASS.TITLE_INPUT}' placeholder='Enter a column title'>
-        <div class='${COLUMN_FORM_CLASS.SUBMIT_BTN}'>Add Column</div>
+        <div class='${COLUMN_FORM_CLASS.SUBMIT_BTN} ${CLASS_NAME.UNACTIVE}'>Add Column</div>
       </div>
     `
 
     this.$target = templateToElement(this.template)
+    this.$titleInput = this.$target.querySelector(
+      `.${COLUMN_FORM_CLASS.TITLE_INPUT}`
+    )
+    this.$submitBtn = this.$target.querySelector(
+      `.${COLUMN_FORM_CLASS.SUBMIT_BTN}`
+    )
+  }
+
+  bindEvent() {
+    this.$titleInput.addEventListener(
+      'input',
+      this.setSubmitBtnActive.bind(this)
+    )
   }
 
   render() {
@@ -30,5 +44,14 @@ export default class Card {
       `.${COLUMN_CLASS.CONTAINER}`
     )
     $columnContainer.appendChild(this.$target)
+  }
+
+  setSubmitBtnActive() {
+    if (this.$titleInput.value === '') {
+      this.$submitBtn.classList.add(CLASS_NAME.UNACTIVE)
+      return
+    }
+
+    this.$submitBtn.classList.remove(CLASS_NAME.UNACTIVE)
   }
 }

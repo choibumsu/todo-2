@@ -23,8 +23,12 @@
     align-items: center;
     height: 40px;
     color: $color-white;
-    background-color: $color-light-green;
+    background-color: $color-green;
     border-radius: 4px;
     cursor: pointer;
+
+    &.unactive {
+      background-color: $color-light-green;
+    }
   }
 }
