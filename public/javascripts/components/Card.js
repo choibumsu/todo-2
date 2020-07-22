@@ -1,7 +1,15 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import emitter from '../utils/EventEmitter'
-import '../../stylesheets/components/card.scss'
+import {
+  copyDragElement,
+  dragElement,
+  toggleMovingStyle,
+  getContainerHalfGap,
+  getCardHalfGap,
+} from '../utils/DragDrop'
 import { CARD_CLASS, CLASS_NAME, COLUMN_CLASS, EVENT } from '../utils/Constants'
+import '../../stylesheets/components/card.scss'
+
 import {
   updateCardTitle,
   deleteCard,
@@ -50,7 +58,7 @@ export default class Card {
   // 드래그 시작시 실행 함수
   moveStart(e) {
     this.copyTarget(e)
-    this.toggleMovingStyle()
+    toggleMovingStyle(this.$target)
     this.setPointOffset()
 
     this.originColumnId = this.$target.closest(
@@ -64,52 +72,32 @@ export default class Card {
 
   // 카드를 복사
   copyTarget(e) {
-    this.scrollLeft = document.querySelector(
-      `.${COLUMN_CLASS.CONTAINER}`
-    ).scrollLeft
-    this.scrollTop = this.$target.closest(
-      `.${COLUMN_CLASS.CONTENT_CONTAINER}`
-    ).scrollTop
+    const scrollLeft = document.querySelector(`.${COLUMN_CLASS.CONTAINER}`)
+      .scrollLeft
+    const scrollTop = this.$target.closest(`.${COLUMN_CLASS.CONTENT_CONTAINER}`)
+      .scrollTop
 
-    const defaultGap = 10
-    this.$copyTarget = this.$target.cloneNode(true)
-    this.$copyTarget.style.left = `${
-      this.$target.offsetLeft - this.scrollLeft + defaultGap
-    }px`
-    this.$copyTarget.style.top = `${
-      this.$target.offsetTop - this.scrollTop - defaultGap
-    }px`
-    this.$copyTarget.style.width = `${this.$target.offsetWidth}px`
-    this.$copyTarget.classList.add(CARD_CLASS.COPY)
-
-    this.offsetDiff = {
-      left: e.pageX + this.scrollLeft - this.$target.offsetLeft - defaultGap,
-      top: e.pageY + this.scrollTop - this.$target.offsetTop + defaultGap,
+    const scrollOffset = {
+      left: scrollLeft,
+      top: scrollTop,
     }
+
+    ;[this.$copyTarget, this.offsetDiff] = copyDragElement(
+      e,
+      this.$target,
+      scrollOffset,
+      10
+    )
 
     document.body.appendChild(this.$copyTarget)
-  }
-
-  // 카드 이동 효과 토글 함수
-  toggleMovingStyle() {
-    if (this.$target.classList.contains(CARD_CLASS.MOVING)) {
-      document.body.classList.remove(CLASS_NAME.US_NONE)
-      document.body.classList.remove(CLASS_NAME.GRABBING)
-      this.$target.classList.remove(CARD_CLASS.MOVING)
-      return
-    }
-
-    document.body.classList.add(CLASS_NAME.US_NONE)
-    document.body.classList.add(CLASS_NAME.GRABBING)
-    this.$target.classList.add(CARD_CLASS.MOVING)
   }
 
   // pointOffsetDiff : 카드 가운데를 기준으로 4개 점을 선택, 점 간 간격은 카드와 컨테이너 간격
   setPointOffset() {
     const targetHalfWidth = this.$target.offsetWidth / 2
     const targetHalfHeight = this.$target.offsetHeight / 2
-    const containerHalfGap = this.getContainerHalfGap()
-    const cardHalfGap = this.getCardHalfGap()
+    const containerHalfGap = getContainerHalfGap()
+    const cardHalfGap = getCardHalfGap()
 
     this.pointOffsetDiffs = [
       {
@@ -131,57 +119,11 @@ export default class Card {
     ]
   }
 
-  // 카드 컨테이너 사이의 가로 간격을 계산
-  getContainerHalfGap() {
-    const $firstContainer = document.querySelector(
-      `.${COLUMN_CLASS.CONTENT_CONTAINER}`
-    )
-    if (!$firstContainer) return 0
-
-    const $secondColumn = $firstContainer.closest(`.${COLUMN_CLASS.COLUMN}`)
-      .nextElementSibling
-    if (!$secondColumn) return 0
-
-    const $secondContainer = $secondColumn.querySelector(
-      `.${COLUMN_CLASS.CONTENT_CONTAINER}`
-    )
-
-    const columnHalfGap =
-      ($secondContainer.offsetLeft -
-        $firstContainer.offsetLeft -
-        $firstContainer.offsetWidth) /
-      2
-
-    return columnHalfGap
-  }
-
-  // 카드 사이의 세로 간격을 계산
-  getCardHalfGap() {
-    const $containers = Array.from(
-      document.querySelectorAll(`.${COLUMN_CLASS.CONTENT_CONTAINER}`)
-    )
-    const twoCardsContainer = $containers.find(
-      ($container) =>
-        $container.querySelectorAll(`.${CARD_CLASS.CARD}`).length > 1
-    )
-
-    if (!twoCardsContainer) return 0
-
-    const $firstCard = twoCardsContainer.querySelector(`.${CARD_CLASS.CARD}`)
-    const $secondCard = $firstCard.nextElementSibling
-
-    const cardHalfGap =
-      ($secondCard.offsetTop - $firstCard.offsetTop - $firstCard.offsetHeight) /
-      2
-
-    return cardHalfGap
-  }
-
   // pointermove 이벤트 발생시 실행 함수
   moveNodes(e) {
     const $points = this.setPoints() // 복제된 카드 중앙에 4개 점을 계산
     this.moveTarget($points) // 4개의 점을 기준으로 카드를 이동
-    this.moveCopy(e) // 복제된 카드는 커서를 따라 이동
+    dragElement(e, this.$copyTarget, this.offsetDiff)
   }
 
   // 복제된 카드의 중앙 4개점에 해당하는 dom객체를 반환
@@ -239,11 +181,6 @@ export default class Card {
     $originCard.parentNode.insertBefore(this.$target, $originCard)
   }
 
-  moveCopy(e) {
-    this.$copyTarget.style.left = `${e.pageX - this.offsetDiff.left}px`
-    this.$copyTarget.style.top = `${e.pageY - this.offsetDiff.top}px`
-  }
-
   // pointerup 이벤트 발생시 실행되는 함수
   async moveStop() {
     const columnId = +this.$target.closest(`.${COLUMN_CLASS.COLUMN}`).dataset.id
@@ -259,7 +196,7 @@ export default class Card {
       emitter.emit(`${EVENT.INSERT_CARD}-${columnId}`, this)
 
       this.$copyTarget.remove()
-      this.toggleMovingStyle()
+      toggleMovingStyle(this.$target)
 
       window.removeEventListener('pointermove', this.moveNodesFunc)
       window.removeEventListener('pointerup', this.moveStopFunc)
