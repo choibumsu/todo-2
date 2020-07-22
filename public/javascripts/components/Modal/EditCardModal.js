@@ -20,13 +20,6 @@ export default class EditCardModal extends Modal {
   bindEvent() {
     this.$editContent.addEventListener('input', this.onInputHandler.bind(this))
     this.$editBtn.onclick = this.editCard.bind(this)
-    window.addEventListener('keydown', this.keyCloseModal.bind(this))
-  }
-
-  keyCloseModal(e) {
-    if (e.key === 'Esc' || e.key === 'Escape') {
-      this.$modalBox.classList.add(CLASS_NAME.DP_NONE)
-    }
   }
 
   onInputHandler(e) {
