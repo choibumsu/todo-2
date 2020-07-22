@@ -1,6 +1,7 @@
 const {
   fetchColumn,
   createColumn,
+  deleteColumn,
   fetchCard,
   updateColumnTitle,
   updateCardTitle,
@@ -32,6 +33,17 @@ exports.createColumnController = async (req, res, next) => {
       id: newColumnId,
     })
   } catch (err) {
+    console.log(err)
+    res.status(404).json()
+  }
+}
+
+exports.deleteColumnController = async (req, res, next) => {
+  try {
+    await deleteColumn(req.body)
+
+    res.status(200).json()
+  } catch (e) {
     console.log(err)
     res.status(404).json()
   }

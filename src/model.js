@@ -22,6 +22,15 @@ exports.createColumn = async ({ title }) => {
   }
 }
 
+exports.deleteColumn = async ({ id, userId }) => {
+  try {
+    const query = `DELETE FROM columns WHERE id=${id}`
+    await connection.promise().query(query)
+  } catch (err) {
+    throw err
+  }
+}
+
 exports.fetchCard = async () => {
   const [rows, fields] = await connection
     .promise()
