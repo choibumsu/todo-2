@@ -21,7 +21,7 @@ export default class Column {
     this.$target = ''
     this.id = id
     this.title = title
-    this.cardList = Array(cardDatas.length)
+    this.cardList = Array(Object.keys(cardDatas).length)
     this.cardForm = new CardForm()
 
     this.init(cardDatas)
@@ -64,11 +64,17 @@ export default class Column {
   }
 
   setCardList(cardDatas) {
-    this.cardList = cardDatas.map((cardData) => {
-      const card = new Card(cardData)
+    this.cardList = []
+
+    let [cardData, nextCardId] = [cardDatas[0], 0]
+    while (cardData !== undefined) {
+      const card = new Card({ nextCardId, ...cardData })
+
+      this.cardList.push(card)
       this.$contentContainer.prepend(card.getTarget())
-      return card
-    })
+      nextCardId = cardData.id
+      cardData = cardDatas[cardData.id]
+    }
   }
 
   setCardForm() {

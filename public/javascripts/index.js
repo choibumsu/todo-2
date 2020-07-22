@@ -7,27 +7,29 @@ import '../stylesheets/common/base.scss'
 import { fetchColumn, fetchCard } from './api/index'
 
 async function getColumn() {
-  try {
-    const allColumns = await fetchColumn()
-    const allCards = await fetchCard()
+  const allColumns = await fetchColumn()
+  let allCards = await fetchCard()
 
-    allColumns.forEach((column) => {
-      column.cardDatas = []
-      allCards.forEach((card) => {
-        if (card.column_id == column.id) {
-          column.cardDatas.push({
+  allColumns.forEach((column) => {
+    ;[column.cardDatas, allCards] = allCards.reduce(
+      ([cardDatas, newAllCards], card) => {
+        if (card.column_id === column.id) {
+          cardDatas[card.next_card_id] = {
             id: card.id,
-            nextCardId: card.next_card_id,
             title: card.title,
             username: card.name,
-          })
+          }
+        } else {
+          newAllCards.push(card)
         }
-      })
-      new Column(column)
-    })
-  } catch (e) {
-    console.log(e)
-  }
+
+        return [cardDatas, newAllCards]
+      },
+      [{}, []]
+    )
+
+    new Column(column)
+  })
 }
 
 getColumn()
