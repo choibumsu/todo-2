@@ -4,7 +4,8 @@
   display: flex;
   flex-direction: column;
   align-self: flex-start;
-  width: $width-column;
+  min-width: $width-column;
+  max-width: $width-column;
   border: 1px dashed $color-gray-500;
   border-radius: 6px;
   padding: 16px;
