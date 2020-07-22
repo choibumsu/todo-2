@@ -7,6 +7,11 @@ import {
   EVENT,
 } from '../utils/Constants'
 import emitter from '../utils/EventEmitter'
+import {
+  copyDragElement,
+  dragElement,
+  toggleMovingStyle,
+} from '../utils/DragDrop'
 import '../../stylesheets/components/column.scss'
 
 import CardForm from './CardForm'
@@ -109,8 +114,14 @@ export default class Column {
   onPointerDownHandler(e) {
     const targetCard = e.target.closest(`.${CARD_CLASS.CARD}`)
     if (targetCard) {
-      this.dragStart(e, targetCard)
+      this.dragCardStart(e, targetCard)
       return
+    }
+
+    const targetColumnId = +e.target.closest(`.${COLUMN_CLASS.COLUMN}`).dataset
+      .id
+    if (targetColumnId === this.id) {
+      this.dragColumnStart(e)
     }
   }
 
@@ -303,7 +314,7 @@ export default class Column {
     modal.showModal()
   }
 
-  dragStart(e, targetCard) {
+  dragCardStart(e, targetCard) {
     const movedCard = this.cardList.find(
       (card) => card.getId() === +targetCard.dataset.id
     )
@@ -350,6 +361,71 @@ export default class Column {
       )
       prevCard.setNextCardId(insertedCard.getId())
     }
+  }
+
+  dragColumnStart(e) {
+    this.copyTarget(e)
+    toggleMovingStyle(this.$target)
+
+    this.moveNodesFunc = this.moveNodes.bind(this)
+    this.moveStopFunc = this.moveStop.bind(this)
+    window.addEventListener('pointermove', this.moveNodesFunc)
+    window.addEventListener('pointerup', this.moveStopFunc)
+  }
+
+  copyTarget(e) {
+    const scrollLeft = document.querySelector(`.${COLUMN_CLASS.CONTAINER}`)
+      .scrollLeft
+
+    const scrollOffset = {
+      left: scrollLeft,
+      top: 0,
+    }
+
+    ;[this.$copyTarget, this.offsetDiff] = copyDragElement(
+      e,
+      this.$target,
+      scrollOffset,
+      10
+    )
+
+    document.body.appendChild(this.$copyTarget)
+  }
+
+  moveNodes(e) {
+    this.moveTarget()
+    dragElement(e, this.$copyTarget, this.offsetDiff)
+  }
+
+  moveTarget() {
+    const centerOffsetLeft =
+      this.$copyTarget.offsetLeft + this.$copyTarget.offsetWidth / 2
+
+    const $nextColumn = this.$target.nextElementSibling
+    if ($nextColumn && centerOffsetLeft > $nextColumn.offsetLeft) {
+      this.$target.parentNode.insertBefore(
+        this.$target,
+        $nextColumn.nextElementSibling
+      )
+      return
+    }
+
+    const $prevColumn = this.$target.previousElementSibling
+    if (
+      $prevColumn &&
+      centerOffsetLeft < $prevColumn.offsetLeft + $prevColumn.offsetWidth
+    ) {
+      this.$target.parentNode.insertBefore(this.$target, $prevColumn)
+      return
+    }
+  }
+
+  async moveStop() {
+    this.$copyTarget.remove()
+    toggleMovingStyle(this.$target)
+
+    window.removeEventListener('pointermove', this.moveNodesFunc)
+    window.removeEventListener('pointerup', this.moveStopFunc)
   }
 
   getTarget() {
