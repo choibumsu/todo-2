@@ -61,6 +61,13 @@ exports.moveCard = async ({ cardId, columnId, userId }) => {
   }
 }
 
+exports.fetchActivity = async () => {
+  const [rows, fields] = await connection
+    .promise()
+    .query('SELECT * FROM activity')
+  return rows
+}
+
 exports.updateNextCardId = async ({ cardId, nextCardId, userId }) => {
   try {
     console.log(cardId, nextCardId)

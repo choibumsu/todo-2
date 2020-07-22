@@ -35,7 +35,7 @@ const METHOD = {
 }
 
 export const fetchColumn = async () => {
-  const response = await fetch(`${apiUrlBase}/column`)
+  const response = await fetch(`${apiUrlBase}/column`, METHOD.GET())
   if (response.status === 200) {
     const datas = await response.json()
     return datas
@@ -50,7 +50,7 @@ export const fetchColumn = async () => {
 }
 
 export const fetchCard = async () => {
-  const response = await fetch(`${apiUrlBase}/card`)
+  const response = await fetch(`${apiUrlBase}/card`, METHOD.GET())
   if (response.status === 200) {
     const datas = await response.json()
     return datas
@@ -112,6 +112,21 @@ export const moveCardApi = async (movedCardData) => {
   )
 
   return response.status
+}
+
+export const fetchActivityCard = async () => {
+  const response = await fetch(`${apiUrlBase}/activity`, METHOD.GET())
+  if (response.status === 200) {
+    const datas = await response.json()
+    return datas
+  }
+
+  if (response.status === 404) {
+    throw 'Column Not Found'
+  }
+  if (response.status >= 500) {
+    throw 'Server Error'
+  }
 }
 
 export const updateNextCardIdApi = async (updatedCardData) => {

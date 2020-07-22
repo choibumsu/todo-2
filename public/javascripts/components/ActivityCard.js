@@ -1,17 +1,23 @@
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/sidebar.scss'
-import { TIME, SIDEBAR_ID } from '../utils/Constants'
+import { TIME, SIDEBAR_ID, CARD_ACTIVITY_TEMPLATE } from '../utils/Constants'
 
 export default class ActivityCard {
-  constructor({ content, time }) {
+  constructor(data) {
     this.$target = ''
-    this.content = content
-    this.time = time
+    this.content = ''
+    this.time = new Date(data.created_at)
     this.$activityColumn = ''
+    this.data = data
     this.init()
   }
 
   init() {
+    const template = this.getTemplate(
+      this.data.category,
+      this.data.content.action
+    )
+    this.content = this.transferHTML(this.data, template)
     this.setElements()
   }
 
@@ -48,5 +54,27 @@ export default class ActivityCard {
       else timeString = `${timediff} days ago`
     }
     return timeString
+  }
+
+  getTemplate(category, action) {
+    switch (action) {
+      case 'moved':
+        return CARD_ACTIVITY_TEMPLATE.MOVED
+      case 'added':
+        return CARD_ACTIVITY_TEMPLATE.ADDED
+      case 'updated':
+        return CARD_ACTIVITY_TEMPLATE.UPDATED
+      case 'removed':
+        return CARD_ACTIVITY_TEMPLATE.REMOVED
+    }
+  }
+
+  transferHTML(data, template) {
+    template = template.replace('$username', data.user_name)
+    for (let key in data.content) {
+      const value = data.content[key]
+      template = template.replace('$' + key, value)
+    }
+    return template
   }
 }

@@ -8,6 +8,7 @@ const {
   createCardController,
   deleteCardController,
   moveCardController,
+  getAllActivityController,
   updateNextCardIdController,
 } = require('./controller.js')
 
@@ -40,6 +41,9 @@ router.post('/api/card', function (req, res, next) {
 router.put('/api/card/move', function (req, res, next) {
   moveCardController(req, res, next)
 })
+
+//액티비티 테이블 조회 api
+router.get('/api/activity', getAllActivityController)
 
 // 카드 next_card_id set api
 router.put('/api/card/next_card_id', function (req, res, next) {
