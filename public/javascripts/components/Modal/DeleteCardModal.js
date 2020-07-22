@@ -1,5 +1,5 @@
 import Modal from './Modal'
-import { MODAL_ID, MODAL_CLASS } from '../../utils/Constants'
+import { MODAL_ID, MODAL_CLASS,CLASS_NAME } from '../../utils/Constants'
 
 export default class DeleteCardModal extends Modal {
   constructor(cardTitle, deleteCallback) {
@@ -11,14 +11,23 @@ export default class DeleteCardModal extends Modal {
       `.${MODAL_CLASS.MODAL_CONTENT} > textarea`
     )
     this.$deleteContent.value = cardTitle
-    this.$deleteBtn=$modal_box.querySelector(`#${MODAL_ID.DELETE_CARD_BTN}`)
+    this.$deleteBtn = $modal_box.querySelector(`#${MODAL_ID.DELETE_CARD_BTN}`)
     this.bindEvent()
     this.deleteCallback = deleteCallback
   }
-  bindEvent(){
-    this.$deleteBtn.onclick=this.deleteCard.bind(this)
+
+  bindEvent() {
+    this.$deleteBtn.onclick = this.deleteCard.bind(this)
+    window.addEventListener('keydown', this.keyCloseModal.bind(this))
   }
-  deleteCard(){
+
+  keyCloseModal(e) {
+    if (e.key === 'Esc' || e.key === 'Escape') {
+      this.$modalBox.classList.add(CLASS_NAME.DP_NONE)
+    }
+  }
+
+  deleteCard() {
     this.deleteCallback()
     this.closeModal()
   }
