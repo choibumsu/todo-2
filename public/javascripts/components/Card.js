@@ -15,7 +15,9 @@ import {
   deleteCard,
   moveCardApi,
   updateNextCardIdApi,
+  createActivityAPI,
 } from '../api/index'
+import ActivityCard from './ActivityCard'
 
 export default class Card {
   constructor({ id, title, username, nextCardId }) {
@@ -61,9 +63,11 @@ export default class Card {
     toggleMovingStyle(this.$target)
     this.setPointOffset()
 
-    this.originColumnId = this.$target.closest(
-      `.${COLUMN_CLASS.COLUMN}`
-    ).dataset.id
+    const $originColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
+    this.originColumnId = this.originColumn.dataset.id
+    this.originColumnTitle = this.originColumn.querySelector(
+      `.${COLUMN_CLASS.TITLE}`
+    ).innerText
     this.moveNodesFunc = this.moveNodes.bind(this)
     this.moveStopFunc = this.moveStop.bind(this)
     window.addEventListener('pointermove', this.moveNodesFunc)
@@ -183,13 +187,31 @@ export default class Card {
 
   // pointerup 이벤트 발생시 실행되는 함수
   async moveStop() {
-    const columnId = +this.$target.closest(`.${COLUMN_CLASS.COLUMN}`).dataset.id
+    const $targetColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
+    const targetColumnTitle = $targetColumn.querySelector(
+      `.${COLUMN_CLASS.TITLE}`
+    ).innerText
+
+    const columnId = targetColumn.dataset.id
 
     const status = await moveCardApi({
       cardId: this.id,
       columnId,
       userId: 1,
     })
+
+    let Data = {
+      content: {
+        action: 'moved',
+        from_column: this.originColumnTitle,
+        to_column: targetColumnTitle,
+        card_title: this.title,
+      },
+      user_name: this.username,
+      category: 'card',
+    }
+    new ActivityCard(Data)
+    await createActivityAPI(Data)
 
     if (status === 200) {
       emitter.emit(`${EVENT.REMOVE_CARD}-${this.originColumnId}`, this)
