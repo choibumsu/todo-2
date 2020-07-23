@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
 })
 
 // 로그인 여부 검사 api
-router.get('api/auth', getUserController)
+router.get('/api/auth', getUserController)
 
 // 컬럼 데이터 조회 api
 router.get('/api/column', getAllColumnsController)
