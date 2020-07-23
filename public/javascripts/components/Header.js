@@ -2,6 +2,7 @@ import '../../stylesheets/components/header.scss'
 
 import { CLASS_NAME, HEADER_CLASS, SIDEBAR_CLASS } from '../utils/Constants'
 import { templateToElement } from '../utils/HtmlGenerator'
+import { logoutApi } from '../api/index'
 
 export default class Header {
   constructor({ name }) {
@@ -43,7 +44,34 @@ export default class Header {
   }
 
   bindEvent() {
-    this.$menuBtn.addEventListener('click', this.toggleMenu)
+    this.$target.addEventListener('click', this.onClickHandler.bind(this))
+  }
+
+  onClickHandler(e) {
+    if (e.target.classList.contains(HEADER_CLASS.LOGOUT_BTN)) {
+      this.deleteAuth()
+      return
+    }
+
+    if (e.target.classList.container(HEADER_CLASS.MENU)) {
+      this.toggleMenu()
+      return
+    }
+  }
+
+  async deleteAuth() {
+    const status = await logoutApi()
+
+    if (status === 200) {
+      window.location.reload()
+      return
+    } else if (status === 404) {
+      alert('로그인 정보가 유효하지 않습니다.')
+      return
+    }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
   toggleMenu() {
