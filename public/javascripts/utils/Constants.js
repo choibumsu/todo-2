@@ -7,6 +7,11 @@ export const CLASS_NAME = {
   COPY: 'copy',
 }
 
+export const LOGIN_FORM_CLASS = {
+  USERNAME_INPUT: 'username-input',
+  LOGIN_BTN: 'login-form-login-btn',
+}
+
 export const BOARD_CLASS = {
   BOARD: 'board',
 }

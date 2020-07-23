@@ -1,4 +1,4 @@
-import { CLASS_NAME } from '../utils/Constants'
+import { CLASS_NAME, LOGIN_FORM_CLASS } from '../utils/Constants'
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/loginForm.scss'
 
@@ -56,18 +56,49 @@ export default class LoginForm {
       <div id='login-page'>
         <div class='login-container'>
           <div class='title'>Welcome</div>
-          <input type='text' placeholder='Username' />
-          <div class='login-btn ${CLASS_NAME.UNACTIVE}'>Login</div>
+          <input type='text' placeholder='Username' class='${LOGIN_FORM_CLASS.USERNAME_INPUT}'/>
+          <div class='${LOGIN_FORM_CLASS.LOGIN_BTN} ${CLASS_NAME.UNACTIVE}'>Login</div>
         </div>
       </div>
     `
 
     this.$target = templateToElement(template)
+    this.$usernameInput = this.$target.querySelector(
+      `.${LOGIN_FORM_CLASS.USERNAME_INPUT}`
+    )
+    this.$loginBtn = this.$target.querySelector(
+      `.${LOGIN_FORM_CLASS.LOGIN_BTN}`
+    )
   }
 
   render() {
     document.body.appendChild(this.$target)
   }
 
-  bindEvent() {}
+  bindEvent() {
+    this.$usernameInput.addEventListener(
+      'input',
+      this.setActiveLoginBtn.bind(this)
+    )
+
+    this.$loginBtn.addEventListener('click', this.sendLoginRequest.bind(this))
+  }
+
+  setActiveLoginBtn() {
+    const isActive = this.$usernameInput.value !== ''
+
+    if (isActive) {
+      this.$loginBtn.classList.remove(CLASS_NAME.UNACTIVE)
+      return
+    }
+
+    this.$loginBtn.classList.add(CLASS_NAME.UNACTIVE)
+  }
+
+  sendLoginRequest() {
+    if (this.$loginBtn.classList.contains(CLASS_NAME.UNACTIVE)) return
+
+    const username = this.$usernameInput.value
+    if (username === '') return
+  }
 }
