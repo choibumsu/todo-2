@@ -101,6 +101,9 @@ export default class LoginForm {
     const username = this.$usernameInput.value
     if (username === '') return
 
-    loginApi(username)
+    loginApi(username).then((result)=>{
+      location.reload()
+    })
+
   }
 }
