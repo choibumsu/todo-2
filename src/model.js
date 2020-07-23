@@ -20,7 +20,7 @@ exports.createUser = async (username) => {
   try {
     const query = `INSERT INTO user (name) VALUES ('${username}')`
     const result = await connection.promise().query(query)
-    console.log(result)
+
     return result
   } catch (err) {
     throw err

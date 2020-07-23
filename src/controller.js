@@ -18,7 +18,7 @@ const {
 
 exports.getUserController = async (req, res, next) => {
   try {
-    const username =  req.session.username
+    const username = req.session.username
     if (!username) {
       res.status(404).json({
         result: false,
@@ -43,10 +43,17 @@ exports.getUserController = async (req, res, next) => {
 
 exports.loginContoller = async (req, res, next) => {
   try {
-    const rows = await getUser(req.body.username)
-    if (!rows.length) await createUser(req.body.username)
-    req.session.username = req.body.username
-    res.status(200).json(rows)
+    const username = req.body.username
+
+    const users = await getUser(username)
+    if (!users.length) {
+      await createUser(username)
+    }
+
+    req.session.username = username
+    res.status(200).json({
+      username,
+    })
   } catch (err) {
     console.log(err)
     res.status(404).json()

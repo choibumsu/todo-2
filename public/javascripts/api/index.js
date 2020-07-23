@@ -46,10 +46,14 @@ export const checkAuthApi = async () => {
 }
 
 export const loginApi = async (username) => {
-  const response = await fetch(
-    `${apiUrlBase}/login`,
-    METHOD.POST({username})
-  )
+  const response = await fetch(`${apiUrlBase}/login`, METHOD.POST({ username }))
+
+  if (response.ok) {
+    const data = await response.json()
+    return [data, response.status]
+  } else {
+    return [null, response.status]
+  }
 }
 
 export const fetchColumn = async () => {

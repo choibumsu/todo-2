@@ -95,15 +95,29 @@ export default class LoginForm {
     this.$loginBtn.classList.add(CLASS_NAME.UNACTIVE)
   }
 
-  sendLoginRequest() {
+  async sendLoginRequest() {
     if (this.$loginBtn.classList.contains(CLASS_NAME.UNACTIVE)) return
 
     const username = this.$usernameInput.value
     if (username === '') return
 
-    loginApi(username).then((result)=>{
-      location.reload()
-    })
+    const [data, status] = await loginApi(username)
 
+    if (status === 200) {
+      new Board(data)
+      this.getActivityCard()
+      this.removeTarget()
+      return
+    } else if (status === 404) {
+      alert('사용자 인증이 실패하였습니다.')
+      return
+    }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
+  }
+
+  removeTarget() {
+    this.$target.remove()
   }
 }
