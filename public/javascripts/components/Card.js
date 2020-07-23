@@ -64,8 +64,8 @@ export default class Card {
     this.setPointOffset()
 
     const $originColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
-    this.originColumnId = this.originColumn.dataset.id
-    this.originColumnTitle = this.originColumn.querySelector(
+    this.originColumnId = $originColumn.dataset.id
+    this.originColumnTitle = $originColumn.querySelector(
       `.${COLUMN_CLASS.TITLE}`
     ).innerText
     this.moveNodesFunc = this.moveNodes.bind(this)
@@ -192,7 +192,7 @@ export default class Card {
       `.${COLUMN_CLASS.TITLE}`
     ).innerText
 
-    const columnId = targetColumn.dataset.id
+    const columnId = $targetColumn.dataset.id
 
     const status = await moveCardApi({
       cardId: this.id,

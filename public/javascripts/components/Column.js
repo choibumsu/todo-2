@@ -19,13 +19,19 @@ import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
-import { updateColumnTitle, createCardApi, deleteColumnApi } from '../api/index'
+import {
+  updateColumnTitle,
+  createCardApi,
+  deleteColumnApi,
+  updatePrevColumnIdApi,
+} from '../api/index'
 
 export default class Column {
-  constructor({ id, title, cardDatas }) {
+  constructor({ id, title, cardDatas, prevColumnId }) {
     this.$target = ''
     this.id = id
     this.title = title
+    this.prevColumnId = +prevColumnId
     this.cardList = Array(Object.keys(cardDatas).length)
     this.cardForm = new CardForm()
 
@@ -36,7 +42,6 @@ export default class Column {
     this.setElements()
     this.setCardList(cardDatas)
     this.setCardForm()
-    this.render()
     this.bindEvent()
   }
 
@@ -89,13 +94,6 @@ export default class Column {
     $cardFormSlot.appendChild(this.cardForm.getTarget())
   }
 
-  render() {
-    const $columnContainer = document.querySelector(
-      `.${COLUMN_CLASS.CONTAINER}`
-    )
-    $columnContainer.appendChild(this.$target)
-  }
-
   bindEvent() {
     this.$target.addEventListener(
       'pointerdown',
@@ -122,17 +120,13 @@ export default class Column {
       .id
     if (targetColumnId === this.id) {
       this.dragColumnStart(e)
+      return
     }
   }
 
   onClickHandler(e) {
     if (e.target.classList.contains(COLUMN_CLASS.ADD_BTN)) {
       this.cardForm.toggleCardForm()
-      return
-    }
-
-    if (e.target.classList.contains(COLUMN_CLASS.REMOVE_BTN)) {
-      this.removeColumn()
       return
     }
 
@@ -163,31 +157,6 @@ export default class Column {
       this.showCardEditModal(targetCard)
       return
     }
-  }
-
-  async removeColumn() {
-    const removeConfirm = confirm('정말 컬럼을 삭제하시겠습니까?')
-
-    if (!removeConfirm) return
-
-    const status = await deleteColumnApi({
-      id: this.id,
-      userId: 1,
-    })
-
-    if (status === 200) {
-      this.$target.remove()
-      return
-    } else if (status === 401) {
-      alert('컬럼 삭제 권한이 없습니다.')
-      return
-    } else if (status === 404) {
-      alert('컬럼이 존재하지 않습니다.')
-      return
-    }
-
-    // unexcepted error
-    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
   async addCard() {
@@ -367,6 +336,11 @@ export default class Column {
     this.copyTarget(e)
     toggleMovingStyle(this.$target)
 
+    const $nextColumn = this.$target.nextElementSibling
+    if ($nextColumn) {
+      this.originNextColumnId = +$nextColumn.dataset.id
+    }
+
     this.moveNodesFunc = this.moveNodes.bind(this)
     this.moveStopFunc = this.moveStop.bind(this)
     window.addEventListener('pointermove', this.moveNodesFunc)
@@ -424,11 +398,70 @@ export default class Column {
     this.$copyTarget.remove()
     toggleMovingStyle(this.$target)
 
+    if (this.originNextColumnId) {
+      emitter.emit(`${EVENT.DISAPPEAR_COLUMN}`, {
+        originColumnId: this.originNextColumnId,
+        newPrevColumnId: this.prevColumnId,
+      })
+    }
+    emitter.emit(`${EVENT.APPEAR_COLUMN}`, this.id)
+
     window.removeEventListener('pointermove', this.moveNodesFunc)
     window.removeEventListener('pointerup', this.moveStopFunc)
   }
 
   getTarget() {
     return this.$target
+  }
+
+  async removeTarget() {
+    const status = await deleteColumnApi({
+      id: this.id,
+      userId: 1,
+    })
+
+    if (status === 200) {
+      this.$target.remove()
+      return
+    } else if (status === 401) {
+      alert('컬럼 삭제 권한이 없습니다.')
+      return
+    } else if (status === 404) {
+      alert('컬럼이 존재하지 않습니다.')
+      return
+    }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
+  }
+
+  getId() {
+    return this.id
+  }
+
+  getPrevColumnId() {
+    return this.prevColumnId
+  }
+
+  async setPrevColumnId(prevColumnId) {
+    this.prevColumnId = prevColumnId
+
+    const status = await updatePrevColumnIdApi({
+      prevColumnId: this.prevColumnId,
+      columnId: this.id,
+    })
+
+    if (status === 200) {
+      return
+    } else if (status === 401) {
+      alert('카드 추가 권한이 없습니다.')
+      return
+    } else if (status === 404) {
+      alert('카드가 존재하지 않습니다.')
+      return
+    }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 }

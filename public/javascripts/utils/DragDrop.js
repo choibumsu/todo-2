@@ -43,7 +43,8 @@ export const getContainerHalfGap = () => {
 
   const $secondColumn = $firstContainer.closest(`.${COLUMN_CLASS.COLUMN}`)
     .nextElementSibling
-  if (!$secondColumn) return 0
+  if (!$secondColumn || !$secondColumn.classList.contains(COLUMN_CLASS.COLUMN))
+    return 0
 
   const $secondContainer = $secondColumn.querySelector(
     `.${COLUMN_CLASS.CONTENT_CONTAINER}`

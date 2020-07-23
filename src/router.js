@@ -4,6 +4,7 @@ const {
   getAllColumnsController,
   createColumnController,
   deleteColumnController,
+  updatePrevColumnIdController,
   getAllCardsController,
   updateColumnNameController,
   updateCardNameController,
@@ -31,6 +32,9 @@ router.put('/api/column', updateColumnNameController)
 
 // 컬럼 데이터 삭제 api
 router.delete('/api/column', deleteColumnController)
+
+// 컬럼 prev_column_id set api
+router.put('/api/column/prev_column_id', updatePrevColumnIdController)
 
 // 카드 데이터 조회 api
 router.get('/api/card', getAllCardsController)

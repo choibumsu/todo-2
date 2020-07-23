@@ -74,6 +74,15 @@ export const deleteColumnApi = async (removedColumnData) => {
   return response.status
 }
 
+export const updatePrevColumnIdApi = async (updatedColumnData) => {
+  const response = await fetch(
+    `${apiUrlBase}/column/prev_column_id`,
+    METHOD.PUT(updatedColumnData)
+  )
+
+  return response.status
+}
+
 export const fetchCard = async () => {
   const response = await fetch(`${apiUrlBase}/card`, METHOD.GET())
   if (response.status === 200) {

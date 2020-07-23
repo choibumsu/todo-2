@@ -7,8 +7,12 @@ export const CLASS_NAME = {
   COPY: 'copy',
 }
 
+export const BOARD_CLASS = {
+  BOARD: 'board',
+}
+
 export const COLUMN_CLASS = {
-  CONTAINER: 'column-container',
+  CONTAINER: 'board',
   COLUMN: 'column',
   TITLE: 'column-title',
   ADD_BTN: 'column-add-btn',
@@ -20,7 +24,7 @@ export const COLUMN_CLASS = {
 
 export const COLUMN_FORM_CLASS = {
   TITLE_INPUT: 'column-title-input',
-  SUBMIT_BTN: 'submit-btn',
+  SUBMIT_BTN: 'column-form-submit-btn',
 }
 
 export const CARD_FORM_CLASS = {
@@ -36,6 +40,8 @@ export const CARD_CLASS = {
 }
 
 export const EVENT = {
+  APPEAR_COLUMN: 'appear-column',
+  DISAPPEAR_COLUMN: 'disappear-column',
   INSERT_CARD: 'insert-card',
   REMOVE_CARD: 'remove-card',
 }
