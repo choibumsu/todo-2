@@ -34,6 +34,28 @@ const METHOD = {
   },
 }
 
+export const checkAuthApi = async () => {
+  const response = await fetch(`${apiUrlBase}/auth`, METHOD.GET())
+
+  if (response.ok) {
+    const data = await response.json()
+    return [data, response.status]
+  } else {
+    return [null, response.status]
+  }
+}
+
+export const loginApi = async (username) => {
+  const response = await fetch(`${apiUrlBase}/login`, METHOD.POST({ username }))
+
+  if (response.ok) {
+    const data = await response.json()
+    return [data, response.status]
+  } else {
+    return [null, response.status]
+  }
+}
+
 export const fetchColumn = async () => {
   const response = await fetch(`${apiUrlBase}/column`, METHOD.GET())
   if (response.status === 200) {

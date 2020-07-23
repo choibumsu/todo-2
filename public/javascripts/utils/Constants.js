@@ -7,6 +7,22 @@ export const CLASS_NAME = {
   COPY: 'copy',
 }
 
+export const HEADER_CLASS = {
+  USERNAME: 'header-username',
+  LOGOUT_BTN: 'logout-btn',
+  MENU: 'header-menu',
+}
+
+export const SIDEBAR_CLASS = {
+  SIDEBAR: 'sidebar',
+  MENU: 'sidebar-menu',
+}
+
+export const LOGIN_FORM_CLASS = {
+  USERNAME_INPUT: 'username-input',
+  LOGIN_BTN: 'login-form-login-btn',
+}
+
 export const BOARD_CLASS = {
   BOARD: 'board',
 }
@@ -61,11 +77,6 @@ export const MODAL_CLASS = {
   CLOSE: 'close',
   BIGBOX: 'big-box',
   MODAL_CONTENT: 'modal-content',
-}
-
-export const SIDEBAR_CLASS = {
-  MENU: 'menu',
-  ACTIVITY: 'activity',
 }
 
 export const SIDEBAR_ID = {

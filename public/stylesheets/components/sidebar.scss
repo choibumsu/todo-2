@@ -1,6 +1,6 @@
 @import '../common/definitions';
 
-#sidebar {
+.sidebar {
   height: calc(100vh - 60px);
   display: flex;
   position: absolute;
@@ -18,6 +18,22 @@
     left: $border-line;
     right: $border-line;
   }
+
+  .menu,
+  .activity {
+    display: flex;
+    align-items: center;
+    background-color: $color-gray-200;
+    border-bottom: solid 0.5px $color-gray-300;
+    width: 100%;
+    padding: 7px;
+    font-size: 18px;
+
+    img {
+      margin-right: 10px;
+      height: 18px;
+    }
+  }
 }
 
 @keyframes show-sidebar {
@@ -26,50 +42,5 @@
   }
   100% {
     transform: translateX(0);
-  }
-}
-
-.menu,
-.activity {
-  display: flex;
-  align-items: center;
-  background-color: $color-gray-200;
-  border-bottom: solid 0.5px $color-gray-300;
-  width: 100%;
-  padding: 7px;
-  font-size: 18px;
-
-  img {
-    margin-right: 10px;
-    height: 18px;
-  }
-}
-
-#activity__card {
-  padding: 16px;
-  background-color: $color-white;
-  border-bottom: solid 1px$color-gray-300;
-  min-height: 50px;
-
-  .content {
-    font-size: 17px;
-  }
-
-  .highlight {
-    font-weight: 600;
-
-    &.blue {
-      color: $color-blue;
-    }
-
-    &.black {
-      color: $color-black;
-    }
-  }
-
-  .time {
-    margin-top: 8px;
-    color: $color-gray-700;
-    font-size: 13px;
   }
 }
