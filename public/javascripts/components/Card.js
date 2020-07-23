@@ -215,7 +215,7 @@ export default class Card {
     createActivityAPI(Data).then((result) => {
       new ActivityCard(Data)
     })
-    
+
     if (status === 200) {
       emitter.emit(`${EVENT.REMOVE_CARD}-${this.originColumnId}`, this)
       emitter.emit(`${EVENT.INSERT_CARD}-${columnId}`, this)
@@ -252,6 +252,19 @@ export default class Card {
   }
 
   setTitle(editedTitle) {
+    let Data = {
+      content: {
+        action: 'updated',
+        card_title: editedTitle,
+      },
+      user_name: this.username,
+      category: 'card',
+      created_at: new Date(),
+    }
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+
     updateCardTitle({
       title: editedTitle,
       id: this.id,
