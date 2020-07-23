@@ -1,9 +1,25 @@
-var createError = require('http-errors')
-var express = require('express')
-var path = require('path')
-var logger = require('morgan')
-var router = require('./src/router')
-var app = express()
+const express = require('express')
+const createError = require('http-errors')
+const path = require('path')
+const logger = require('morgan')
+const router = require('./src/router')
+const session = require('express-session')
+const MySQLStore = require('express-mysql-session')(session)
+const { DB_CONFIG, SESSION_CONFIG } = require('./config/secrets')
+
+const app = express()
+
+var sessionStore = new MySQLStore({ port: 3306, ...DB_CONFIG })
+
+app.use(
+  session({
+    key: 'user',
+    secret: SESSION_CONFIG,
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+  })
+)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -19,17 +35,6 @@ app.use('/static', express.static(__dirname + '/public'))
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
-})
-
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-  // render the error page
-  res.status(err.status || 500)
-  res.render()
 })
 
 module.exports = app
