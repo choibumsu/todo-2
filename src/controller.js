@@ -1,5 +1,6 @@
 const {
   getUser,
+  createUser,
   fetchColumn,
   createColumn,
   deleteColumn,
@@ -17,7 +18,7 @@ const {
 
 exports.getUserController = async (req, res, next) => {
   try {
-    const username = 'choibum' //req.session.username
+    const username =  req.session.username
     if (!username) {
       res.status(404).json({
         result: false,
@@ -37,6 +38,18 @@ exports.getUserController = async (req, res, next) => {
   } catch (err) {
     console.log(err)
     res.status(500).json()
+  }
+}
+
+exports.loginContoller = async (req, res, next) => {
+  try {
+    const rows = await getUser(req.body.username)
+    if (!rows.length) await createUser(req.body.username)
+    req.session.username = req.body.username
+    res.status(200).json(rows)
+  } catch (err) {
+    console.log(err)
+    res.status(404).json()
   }
 }
 

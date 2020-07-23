@@ -15,6 +15,7 @@ const {
   getAllActivityController,
   updateNextCardIdController,
   createActivityController,
+  loginContoller,
 } = require('./controller.js')
 
 // render pug
@@ -24,6 +25,9 @@ router.get('/', (req, res, next) => {
 
 // 로그인 여부 검사 api
 router.get('/api/auth', getUserController)
+
+// 로그인 api
+router.post('/api/login', loginContoller)
 
 // 컬럼 데이터 조회 api
 router.get('/api/column', getAllColumnsController)

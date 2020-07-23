@@ -45,6 +45,13 @@ export const checkAuthApi = async () => {
   }
 }
 
+export const loginApi = async (username) => {
+  const response = await fetch(
+    `${apiUrlBase}/login`,
+    METHOD.POST({username})
+  )
+}
+
 export const fetchColumn = async () => {
   const response = await fetch(`${apiUrlBase}/column`, METHOD.GET())
   if (response.status === 200) {

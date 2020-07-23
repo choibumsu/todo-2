@@ -4,7 +4,7 @@ import '../../stylesheets/components/loginForm.scss'
 
 import Board from './Board'
 import ActivityCard from './ActivityCard'
-import { fetchActivityCard, checkAuthApi } from '../api/index'
+import { fetchActivityCard, checkAuthApi, loginApi } from '../api/index'
 
 export default class LoginForm {
   constructor() {
@@ -100,5 +100,7 @@ export default class LoginForm {
 
     const username = this.$usernameInput.value
     if (username === '') return
+
+    loginApi(username)
   }
 }

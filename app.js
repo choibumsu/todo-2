@@ -14,7 +14,7 @@ var sessionStore = new MySQLStore({ port: 3306, ...DB_CONFIG })
 app.use(
   session({
     key: 'user',
-    secret: SESSION_CONFIG,
+    secret: SESSION_CONFIG.KEY,
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
