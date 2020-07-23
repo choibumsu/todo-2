@@ -300,7 +300,7 @@ export default class Column {
       createActivityAPI(Data).then((result) => {
         new ActivityCard(Data)
       })
-      
+
       this.setTitle(editedTitle)
     })
     modal.showModal()
@@ -472,6 +472,20 @@ export default class Column {
   }
 
   async removeTarget() {
+    let Data = {
+      content: {
+        action: 'removed',
+        column_title: this.title,
+      },
+      user_name: "nohgijin",
+      category: 'column',
+      created_at: new Date(),
+    }
+
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+
     const status = await deleteColumnApi({
       id: this.id,
       userId: 1,
