@@ -14,11 +14,11 @@ import ColumnForm from './ColumnForm'
 import { fetchColumn, fetchCard, createColumnApi } from '../api/index'
 
 export default class Board {
-  constructor({ username }) {
+  constructor({ name }) {
     this.$target = ''
     this.columnList = []
     this.columnForm = new ColumnForm()
-    this.username = username
+    this.username = name
 
     this.init()
   }

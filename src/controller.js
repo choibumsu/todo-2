@@ -52,7 +52,7 @@ exports.loginContoller = async (req, res, next) => {
 
     req.session.username = username
     res.status(200).json({
-      username,
+      name: username,
     })
   } catch (err) {
     console.log(err)

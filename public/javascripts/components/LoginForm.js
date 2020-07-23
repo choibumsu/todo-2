@@ -2,6 +2,7 @@ import { CLASS_NAME, LOGIN_FORM_CLASS } from '../utils/Constants'
 import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/loginForm.scss'
 
+import Header from './Header'
 import Board from './Board'
 import ActivityCard from './ActivityCard'
 import { fetchActivityCard, checkAuthApi, loginApi } from '../api/index'
@@ -27,6 +28,7 @@ export default class LoginForm {
     const [data, status] = await checkAuthApi()
 
     if (data) {
+      new Header(data)
       new Board(data)
       this.getActivityCard()
 
@@ -111,6 +113,7 @@ export default class LoginForm {
     const [data, status] = await loginApi(username)
 
     if (status === 200) {
+      new Header(data)
       new Board(data)
       this.getActivityCard()
       this.removeTarget()
