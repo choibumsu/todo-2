@@ -16,8 +16,11 @@ export default class EditColumnModal extends Modal {
     this.editCallback = editCallback
     this.isActive = false
   }
+
   bindEvent() {
+    this.bindEnterEvent = this.enterKeyDown.bind(this)
     this.$editContent.addEventListener('input', this.onInputHandler.bind(this))
+    this.$editContent.addEventListener('keydown', this.bindEnterEvent)
     this.$editBtn.onclick = this.editColumn.bind(this)
   }
 
@@ -26,11 +29,18 @@ export default class EditColumnModal extends Modal {
     this.updateActive(isActive)
   }
 
+  enterKeyDown(e) {
+    if (e.keyCode == 13) {
+      this.editColumn()
+    }
+  }
+
   updateActive(isActive) {
     this.isActive = isActive
 
     if (this.isActive) {
       this.$editBtn.classList.remove(CLASS_NAME.UNACTIVE)
+      this.$editContent.removeEventListener('keydown', this.bindEnterEvent)
       return
     }
 
