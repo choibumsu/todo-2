@@ -24,7 +24,10 @@ import {
   createCardApi,
   deleteColumnApi,
   updatePrevColumnIdApi,
+  createActivityAPI,
 } from '../api/index'
+import ActivityCard from './ActivityCard'
+// import { create } from 'core-js/fn/object'
 
 export default class Column {
   constructor({ id, title, cardDatas, prevColumnId }) {
@@ -172,7 +175,6 @@ export default class Column {
   async addCard() {
     const cardTitle = this.cardForm.getCardTitle()
     if (cardTitle === '') return
-
     const nextCardId = this.getNewNextCardId()
     const [data, status] = await createCardApi({
       cardTitle,
@@ -188,6 +190,21 @@ export default class Column {
         username: 'choibumsu',
         nextCardId,
       }
+
+      let Data = {
+        content: {
+          action: 'added',
+          to_column: this.title,
+          card_title: cardTitle,
+        },
+        created_at: new Date(),
+        user_name: cardData.username,
+        category: 'card',
+      }
+
+      createActivityAPI(Data).then((result) => {
+        new ActivityCard(Data)
+      })
 
       const newCard = new Card(cardData)
       this.cardList.push(newCard)
