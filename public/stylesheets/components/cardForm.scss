@@ -6,6 +6,7 @@
     top: 8px;
     bottom: 11px;
   }
+  pointer-events: none;
 
   .card-form-textarea {
     min-width: 100%;
@@ -17,6 +18,7 @@
     padding: 8px 12px;
     margin-bottom: 8px;
     resize: vertical;
+    pointer-events: all;
   }
 
   .button-row {
@@ -55,6 +57,7 @@
         box-shadow: 0 1px 0 unquote($color-btn-border + '20'),
           inset 0 1px 0 hsla(0, 0%, 100%, 0.03);
         cursor: pointer;
+        pointer-events: all;
 
         &.card-form-add-btn {
           background-color: $color-green;
@@ -63,6 +66,7 @@
           &.unactive {
             background-color: $color-light-green;
             border: 1px solid unquote($color-btn-border + '20');
+            cursor: unset;
           }
         }
 

@@ -14,6 +14,7 @@ export const BOARD_CLASS = {
 export const COLUMN_CLASS = {
   CONTAINER: 'board',
   COLUMN: 'column',
+  TITLE_BAR: 'title-bar',
   TITLE: 'column-title',
   ADD_BTN: 'column-add-btn',
   REMOVE_BTN: 'column-remove-btn',
