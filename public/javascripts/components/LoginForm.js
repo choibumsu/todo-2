@@ -80,7 +80,8 @@ export default class LoginForm {
       'input',
       this.setActiveLoginBtn.bind(this)
     )
-
+    this.bindEnterEvent = this.enterKeyDown.bind(this)
+    this.$usernameInput.addEventListener('keydown', this.bindEnterEvent)
     this.$loginBtn.addEventListener('click', this.sendLoginRequest.bind(this))
   }
 
@@ -95,15 +96,22 @@ export default class LoginForm {
     this.$loginBtn.classList.add(CLASS_NAME.UNACTIVE)
   }
 
+  enterKeyDown(e) {
+    if (e.keyCode == 13) {
+      this.sendLoginRequest()
+    }
+  }
+
   sendLoginRequest() {
     if (this.$loginBtn.classList.contains(CLASS_NAME.UNACTIVE)) return
 
     const username = this.$usernameInput.value
     if (username === '') return
 
-    loginApi(username).then((result)=>{
+    loginApi(username).then((result) => {
       location.reload()
     })
 
+    this.$usernameInput.removeEventListener('keydown', this.bindEnterEvent)
   }
 }
