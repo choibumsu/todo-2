@@ -8,10 +8,15 @@ import {
 import { templateToElement } from '../utils/HtmlGenerator'
 import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/board.scss'
-
 import Column from './Column'
 import ColumnForm from './ColumnForm'
-import { fetchColumn, fetchCard, createColumnApi } from '../api/index'
+import {
+  fetchColumn,
+  fetchCard,
+  createColumnApi,
+  createActivityAPI,
+} from '../api/index'
+import ActivityCard from './ActivityCard'
 
 export default class Board {
   constructor() {
@@ -125,6 +130,20 @@ export default class Board {
     if (isActive && titleValue === '') {
       return
     }
+
+    let Data = {
+      content: {
+        action: 'added',
+        column_title: titleValue,
+      },
+      created_at: new Date(),
+      user_name: 'nohgijin',
+      category: 'column',
+    }
+
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
 
     const [data, status] = await createColumnApi({
       title: titleValue,
