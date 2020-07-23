@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 const {
+  getUserController,
   getAllColumnsController,
   createColumnController,
   deleteColumnController,
@@ -17,9 +18,12 @@ const {
 } = require('./controller.js')
 
 // render pug
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   res.render('index')
 })
+
+// 로그인 여부 검사 api
+router.get('api/auth', getUserController)
 
 // 컬럼 데이터 조회 api
 router.get('/api/column', getAllColumnsController)

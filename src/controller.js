@@ -1,4 +1,5 @@
 const {
+  getUser,
   fetchColumn,
   createColumn,
   deleteColumn,
@@ -13,6 +14,28 @@ const {
   updateNextCardId,
   createActivity,
 } = require('./model')
+
+exports.getUserController = async (req, res, next) => {
+  const username = 'choibumsu' //req.session.username
+
+  if (!username) {
+    res.status(404).json({
+      result: false,
+    })
+    return
+  }
+
+  const user = await getUser(username)
+
+  if (user.length === 0) {
+    res.status(404).json({
+      result: false,
+    })
+    return
+  }
+
+  res.status(200).json(user[0])
+}
 
 exports.getAllColumnsController = async (req, res, next) => {
   try {

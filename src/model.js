@@ -4,6 +4,18 @@ const { DB_CONFIG } = require('../config/secrets')
 // mysql setup
 const connection = mysql.createConnection(DB_CONFIG)
 
+exports.getUser = async (username) => {
+  try {
+    const [rows, fields] = await connection
+      .promise()
+      .query(`SELECT * FROM user WHERE name='${username}'`)
+
+    return rows
+  } catch (err) {
+    throw err
+  }
+}
+
 exports.fetchColumn = async () => {
   const [rows, fields] = await connection
     .promise()
