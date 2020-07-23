@@ -3,9 +3,9 @@ import { templateToElement } from '../utils/HtmlGenerator'
 import '../../stylesheets/components/loginForm.scss'
 
 import Header from './Header'
+import SideBar from './SideBar'
 import Board from './Board'
-import ActivityCard from './ActivityCard'
-import { fetchActivityCard, checkAuthApi, loginApi } from '../api/index'
+import { checkAuthApi, loginApi } from '../api/index'
 
 export default class LoginForm {
   constructor() {
@@ -29,8 +29,8 @@ export default class LoginForm {
 
     if (data) {
       new Header(data)
+      new SideBar()
       new Board(data)
-      this.getActivityCard()
 
       return true
     } else if (status === 404) {
@@ -39,18 +39,6 @@ export default class LoginForm {
 
     alert('에러가 발생하였습니다.')
     return false
-  }
-
-  async getActivityCard() {
-    try {
-      const allCardActivitys = await fetchActivityCard()
-
-      allCardActivitys.forEach((cardActivity) => {
-        new ActivityCard(cardActivity)
-      })
-    } catch (e) {
-      console.log(e)
-    }
   }
 
   setElements() {
@@ -114,8 +102,9 @@ export default class LoginForm {
 
     if (status === 200) {
       new Header(data)
+      new SideBar()
       new Board(data)
-      this.getActivityCard()
+
       this.removeTarget()
       return
     } else if (status === 404) {

@@ -1,5 +1,5 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import '../../stylesheets/components/sidebar.scss'
+import '../../stylesheets/components/activityCard.scss'
 import {
   TIME,
   SIDEBAR_ID,
