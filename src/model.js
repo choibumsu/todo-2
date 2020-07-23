@@ -77,7 +77,7 @@ exports.createCard = async ({ cardTitle, columnId, userId, nextCardId }) => {
       nextCardId = null
     }
 
-    const query = `INSERT INTO card (title, column_id, user_id, next_card_id) VALUES (${cardTitle}, ${columnId}, ${userId}, ${nextCardId})`
+    const query = `INSERT INTO card (title, column_id, user_id, next_card_id) VALUES ('${cardTitle}', ${columnId}, ${userId}, ${nextCardId})`
     const result = await connection.promise().query(query)
 
     return result
