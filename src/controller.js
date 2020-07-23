@@ -2,7 +2,7 @@ const {
   fetchColumn,
   createColumn,
   deleteColumn,
-  updateNextColumnId,
+  updatePrevColumnId,
   fetchCard,
   updateColumnTitle,
   updateCardTitle,
@@ -51,9 +51,9 @@ exports.deleteColumnController = async (req, res, next) => {
   }
 }
 
-exports.updateNextColumnIdController = async (req, res, next) => {
+exports.updatePrevColumnIdController = async (req, res, next) => {
   try {
-    await updateNextColumnId(req.body)
+    await updatePrevColumnId(req.body)
 
     res.status(200).json()
   } catch (err) {

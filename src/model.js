@@ -11,9 +11,9 @@ exports.fetchColumn = async () => {
   return rows
 }
 
-exports.createColumn = async ({ title, nextColumnId }) => {
+exports.createColumn = async ({ title, prevColumnId }) => {
   try {
-    const query = `INSERT INTO columns (title, next_column_id) VALUES ('${title}', ${nextColumnId})`
+    const query = `INSERT INTO columns (title, prev_column_id) VALUES ('${title}', ${prevColumnId})`
     const result = await connection.promise().query(query)
 
     return result
@@ -31,9 +31,12 @@ exports.deleteColumn = async ({ id, userId }) => {
   }
 }
 
-exports.updateNextColumnId = async ({ columnId, nextColumnId }) => {
+exports.updatePrevColumnId = async ({ columnId, prevColumnId }) => {
   try {
-    const query = `UPDATE columns SET next_column_id=${+nextColumnId} WHERE id=${+columnId}`
+    if (prevColumnId === 0) {
+      prevColumnId = null
+    }
+    const query = `UPDATE columns SET prev_column_id=${prevColumnId} WHERE id=${+columnId}`
     await connection.promise().query(query)
 
     return
