@@ -27,7 +27,6 @@ import {
   createActivityAPI,
 } from '../api/index'
 import ActivityCard from './ActivityCard'
-// import { create } from 'core-js/fn/object'
 
 export default class Column {
   constructor({ id, title, cardDatas, prevColumnId }) {
@@ -291,6 +290,22 @@ export default class Column {
   }
 
   setTitle(editedTitle) {
+    console.log(this)
+    let Data = {
+      content: {
+        action: 'updated',
+        from_column_title: this.title,
+        to_column_title: editedTitle,
+      },
+      user_name: 'nohgijin',
+      category: 'column',
+      created_at: new Date(),
+    }
+    console.log(Data)
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+
     updateColumnTitle({
       title: editedTitle,
       id: this.id,
