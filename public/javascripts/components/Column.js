@@ -453,6 +453,20 @@ export default class Column {
   }
 
   async moveStop() {
+    let Data = {
+      content: {
+        action: 'moved',
+        column_title: this.title,
+      },
+      user_name: 'nohgijin',
+      category: 'column',
+      created_at: new Date(),
+    }
+
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+
     this.$copyTarget.remove()
     toggleMovingStyle(this.$target)
     if (this.originNextColumnId) {
@@ -477,7 +491,7 @@ export default class Column {
         action: 'removed',
         column_title: this.title,
       },
-      user_name: "nohgijin",
+      user_name: 'nohgijin',
       category: 'column',
       created_at: new Date(),
     }
