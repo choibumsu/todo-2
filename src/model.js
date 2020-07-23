@@ -31,6 +31,17 @@ exports.deleteColumn = async ({ id, userId }) => {
   }
 }
 
+exports.updateNextColumnId = async ({ columnId, nextColumnId }) => {
+  try {
+    const query = `UPDATE columns SET next_column_id=${+nextColumnId} WHERE id=${+columnId}`
+    await connection.promise().query(query)
+
+    return
+  } catch (err) {
+    throw err
+  }
+}
+
 exports.fetchCard = async () => {
   const [rows, fields] = await connection
     .promise()
@@ -59,10 +70,12 @@ exports.deleteCard = async (id) => {
 
 exports.createCard = async ({ cardTitle, columnId, userId, nextCardId }) => {
   try {
-    const query = `INSERT INTO card (title, column_id, user_id, next_card_id) VALUES (?, ?, ?, ?)`
-    const result = await connection
-      .promise()
-      .query(query, [cardTitle, columnId, userId, nextCardId])
+    if (nextCardId === 0) {
+      nextCardId = null
+    }
+
+    const query = `INSERT INTO card (title, column_id, user_id, next_card_id) VALUES (${cardTitle}, ${columnId}, ${userId}, ${nextCardId})`
+    const result = await connection.promise().query(query)
 
     return result
   } catch (err) {

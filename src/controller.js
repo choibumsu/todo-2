@@ -2,6 +2,7 @@ const {
   fetchColumn,
   createColumn,
   deleteColumn,
+  updateNextColumnId,
   fetchCard,
   updateColumnTitle,
   updateCardTitle,
@@ -17,7 +18,7 @@ exports.getAllColumnsController = async (req, res, next) => {
   try {
     const rows = await fetchColumn()
     res.status(200).json(rows)
-  } catch (e) {
+  } catch (err) {
     console.log(err)
     res.status(404).json()
   }
@@ -44,7 +45,18 @@ exports.deleteColumnController = async (req, res, next) => {
     await deleteColumn(req.body)
 
     res.status(200).json()
-  } catch (e) {
+  } catch (err) {
+    console.log(err)
+    res.status(404).json()
+  }
+}
+
+exports.updateNextColumnIdController = async (req, res, next) => {
+  try {
+    await updateNextColumnId(req.body)
+
+    res.status(200).json()
+  } catch (err) {
     console.log(err)
     res.status(404).json()
   }
@@ -54,7 +66,7 @@ exports.getAllCardsController = async (req, res, next) => {
   try {
     const rows = await fetchCard()
     res.status(200).json(rows)
-  } catch (e) {
+  } catch (err) {
     console.log(err)
     res.status(404).json()
   }
@@ -65,7 +77,7 @@ exports.updateColumnNameController = async (req, res, next) => {
     const { title, id } = req.body
     const rows = await updateColumnTitle(title, id)
     res.status(200).json(rows)
-  } catch (e) {
+  } catch (err) {
     console.log(err)
     res.status(404).json()
   }
@@ -76,7 +88,7 @@ exports.updateCardNameController = async (req, res, next) => {
     const { title, id } = req.body
     const rows = await updateCardTitle(title, id)
     res.status(200).json(rows)
-  } catch (e) {
+  } catch (err) {
     console.log(err)
     res.status(404).json()
   }
@@ -87,7 +99,7 @@ exports.deleteCardController = async (req, res, next) => {
     const { id } = req.body
     const rows = await deleteCard(id)
     res.status(200).json(rows)
-  } catch (e) {
+  } catch (err) {
     console.log(err)
     res.status(404).json()
   }
@@ -139,7 +151,7 @@ exports.getAllActivityController = async (req, res, next) => {
       row.created_at = date
     })
     res.status(200).json(rows)
-  } catch (e) {
+  } catch (err) {
     console.log(err)
   }
 }
