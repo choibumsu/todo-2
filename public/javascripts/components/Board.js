@@ -48,9 +48,6 @@ export default class Board {
     let allColumns = await fetchColumn()
 
     const formattedColumns = allColumns.reduce((formattedColumns, column) => {
-      if (column.prev_column_id === null) {
-        column.prev_column_id = 0
-      }
       formattedColumns[column.prev_column_id] = {
         id: column.id,
         title: column.title,
@@ -69,10 +66,6 @@ export default class Board {
     while (columnData !== undefined) {
       ;[columnData.cardDatas, allCards] = allCards.reduce(
         ([cardDatas, newAllCards], card) => {
-          if (card.next_card_id === null) {
-            card.next_card_id = 0
-          }
-
           if (card.column_id === columnData.id) {
             cardDatas[card.next_card_id] = {
               id: card.id,
@@ -168,7 +161,7 @@ export default class Board {
     const lastColumn = this.columnForm.getTarget().previousElementSibling
     if (lastColumn) return lastColumn.dataset.id
 
-    return null
+    return 0
   }
 
   removeColumn(e) {
@@ -213,7 +206,7 @@ export default class Board {
       appearedColumn.setPrevColumnId(+$prevColumn.dataset.id)
       return
     }
-    appearedColumn.setPrevColumnId(null)
+    appearedColumn.setPrevColumnId(0)
   }
 
   disappearColumn({ originColumnId, newPrevColumnId }) {
