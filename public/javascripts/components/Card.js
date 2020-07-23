@@ -209,10 +209,13 @@ export default class Card {
       },
       user_name: this.username,
       category: 'card',
+      created_at: new Date(),
     }
-    new ActivityCard(Data)
-    await createActivityAPI(Data)
 
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+    
     if (status === 200) {
       emitter.emit(`${EVENT.REMOVE_CARD}-${this.originColumnId}`, this)
       emitter.emit(`${EVENT.INSERT_CARD}-${columnId}`, this)
@@ -281,6 +284,20 @@ export default class Card {
   }
 
   removeTarget() {
+    let Data = {
+      content: {
+        action: 'removed',
+        card_title: this.title,
+      },
+      user_name: this.username,
+      category: 'card',
+      created_at: new Date(),
+    }
+
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+
     deleteCard({ id: this.id })
     this.$target.remove()
   }

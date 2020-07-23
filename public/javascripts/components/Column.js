@@ -180,7 +180,7 @@ export default class Column {
         username: 'choibumsu',
         nextCardId,
       }
-      
+
       let Data = {
         content: {
           action: 'added',
@@ -192,8 +192,9 @@ export default class Column {
         category: 'card',
       }
 
-      new ActivityCard(Data)
-      await createActivityAPI(Data)
+      createActivityAPI(Data).then((result) => {
+        new ActivityCard(Data)
+      })
 
       const newCard = new Card(cardData)
       this.cardList.push(newCard)
