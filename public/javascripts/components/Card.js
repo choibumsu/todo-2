@@ -55,7 +55,7 @@ export default class Card {
     this.toggleMovingStyle()
     this.setPointOffset()
 
-    this.originColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
+    const $originColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
     this.originColumnId = this.originColumn.dataset.id
     this.originColumnTitle = this.originColumn.querySelector(
       `.${COLUMN_CLASS.TITLE}`
@@ -250,8 +250,8 @@ export default class Card {
 
   // pointerup 이벤트 발생시 실행되는 함수
   async moveStop() {
-    const targetColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
-    const targetColumnTitle = targetColumn.querySelector(
+    const $targetColumn = this.$target.closest(`.${COLUMN_CLASS.COLUMN}`)
+    const targetColumnTitle = $targetColumn.querySelector(
       `.${COLUMN_CLASS.TITLE}`
     ).innerText
 
@@ -270,7 +270,6 @@ export default class Card {
         to_column: targetColumnTitle,
         card_title: this.title,
       },
-      created_at: new Date(),
       user_name: this.username,
       category: 'card',
     }

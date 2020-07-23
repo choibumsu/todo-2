@@ -11,8 +11,7 @@ export default class ActivityCard {
   constructor(data) {
     this.$target = ''
     this.content = ''
-    let time = new Date(data.created_at)
-    this.time = time
+    this.time = new Date(data.created_at)
     this.$activityColumn = ''
     this.data = data
     this.init()
