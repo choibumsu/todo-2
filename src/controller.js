@@ -10,6 +10,7 @@ const {
   moveCard,
   fetchActivity,
   updateNextCardId,
+  createActivity,
 } = require('./model')
 
 exports.getAllColumnsController = async (req, res, next) => {
@@ -134,6 +135,17 @@ exports.updateNextCardIdController = async (req, res, next) => {
 
     res.status(200).json()
   } catch (err) {
+    res.status(404).json()
+  }
+}
+
+exports.createActivityController = async (req, res, next) => {
+  try {
+    await createActivity(req.body)
+
+    res.status(200).json()
+  } catch (err) {
+    console.log(err)
     res.status(404).json()
   }
 }

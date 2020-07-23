@@ -11,7 +11,10 @@ export default class ActivityCard {
   constructor(data) {
     this.$target = ''
     this.content = ''
-    this.time = new Date(data.created_at)
+    let time = new Date(data.created_at)
+    // UTC to GTC
+    time.setHours(time.getHours()+9)
+    this.time = time
     this.$activityColumn = ''
     this.data = data
     this.init()

@@ -12,6 +12,7 @@ const {
   moveCardController,
   getAllActivityController,
   updateNextCardIdController,
+  createActivityController,
 } = require('./controller.js')
 
 // render pug
@@ -51,5 +52,8 @@ router.put('/api/card/next_card_id', updateNextCardIdController)
 
 //액티비티 테이블 조회 api
 router.get('/api/activity', getAllActivityController)
+
+//액티비티 추가 api
+router.post('/api/activity', createActivityController)
 
 module.exports = router
