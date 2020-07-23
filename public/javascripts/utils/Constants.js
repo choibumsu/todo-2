@@ -40,6 +40,8 @@ export const CARD_CLASS = {
 }
 
 export const EVENT = {
+  APPEAR_COLUMN: 'appear-column',
+  DISAPPEAR_COLUMN: 'disappear-column',
   INSERT_CARD: 'insert-card',
   REMOVE_CARD: 'remove-card',
 }

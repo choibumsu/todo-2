@@ -74,9 +74,9 @@ export const deleteColumnApi = async (removedColumnData) => {
   return response.status
 }
 
-export const updateNextColumnIdApi = async (updatedColumnData) => {
+export const updatePrevColumnIdApi = async (updatedColumnData) => {
   const response = await fetch(
-    `${apiUrlBase}/column/next_column_id`,
+    `${apiUrlBase}/column/prev_column_id`,
     METHOD.PUT(updatedColumnData)
   )
 

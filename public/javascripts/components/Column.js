@@ -23,15 +23,15 @@ import {
   updateColumnTitle,
   createCardApi,
   deleteColumnApi,
-  updateNextColumnIdApi,
+  updatePrevColumnIdApi,
 } from '../api/index'
 
 export default class Column {
-  constructor({ id, title, cardDatas, nextColumnId }) {
+  constructor({ id, title, cardDatas, prevColumnId }) {
     this.$target = ''
     this.id = id
     this.title = title
-    this.nextColumnId = +nextColumnId
+    this.prevColumnId = +prevColumnId
     this.cardList = Array(Object.keys(cardDatas).length)
     this.cardForm = new CardForm()
 
@@ -120,6 +120,7 @@ export default class Column {
       .id
     if (targetColumnId === this.id) {
       this.dragColumnStart(e)
+      return
     }
   }
 
@@ -335,6 +336,11 @@ export default class Column {
     this.copyTarget(e)
     toggleMovingStyle(this.$target)
 
+    const $nextColumn = this.$target.nextElementSibling
+    if ($nextColumn) {
+      this.originNextColumnId = +$nextColumn.dataset.id
+    }
+
     this.moveNodesFunc = this.moveNodes.bind(this)
     this.moveStopFunc = this.moveStop.bind(this)
     window.addEventListener('pointermove', this.moveNodesFunc)
@@ -392,6 +398,14 @@ export default class Column {
     this.$copyTarget.remove()
     toggleMovingStyle(this.$target)
 
+    if (this.originNextColumnId) {
+      emitter.emit(`${EVENT.DISAPPEAR_COLUMN}`, {
+        originColumnId: this.originNextColumnId,
+        newPrevColumnId: this.prevColumnId,
+      })
+    }
+    emitter.emit(`${EVENT.APPEAR_COLUMN}`, this.id)
+
     window.removeEventListener('pointermove', this.moveNodesFunc)
     window.removeEventListener('pointerup', this.moveStopFunc)
   }
@@ -425,16 +439,15 @@ export default class Column {
     return this.id
   }
 
-  getNextColumnId() {
-    return this.nextColumnId
+  getPrevColumnId() {
+    return this.prevColumnId
   }
 
-  async setNextColumnId(nextColumnId) {
-    this.nextColumnId = nextColumnId
-    console.log(this)
+  async setPrevColumnId(prevColumnId) {
+    this.prevColumnId = prevColumnId
 
-    const status = await updateNextColumnIdApi({
-      nextColumnId: this.nextColumnId,
+    const status = await updatePrevColumnIdApi({
+      prevColumnId: this.prevColumnId,
       columnId: this.id,
     })
 

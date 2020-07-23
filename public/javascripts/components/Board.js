@@ -3,8 +3,10 @@ import {
   BOARD_CLASS,
   COLUMN_FORM_CLASS,
   COLUMN_CLASS,
+  EVENT,
 } from '../utils/Constants'
 import { templateToElement } from '../utils/HtmlGenerator'
+import emitter from '../utils/EventEmitter'
 import '../../stylesheets/components/board.scss'
 
 import Column from './Column'
@@ -46,10 +48,10 @@ export default class Board {
     let allColumns = await fetchColumn()
 
     const formattedColumns = allColumns.reduce((formattedColumns, column) => {
-      if (column.next_column_id === null) {
-        column.next_column_id = 0
+      if (column.prev_column_id === null) {
+        column.prev_column_id = 0
       }
-      formattedColumns[column.next_column_id] = {
+      formattedColumns[column.prev_column_id] = {
         id: column.id,
         title: column.title,
       }
@@ -62,7 +64,7 @@ export default class Board {
 
   async formatCards(formattedColumns) {
     let allCards = await fetchCard()
-    let [columnData, nextColumnId] = [formattedColumns[0], 0]
+    let [columnData, prevColumnId] = [formattedColumns[0], 0]
 
     while (columnData !== undefined) {
       ;[columnData.cardDatas, allCards] = allCards.reduce(
@@ -86,12 +88,12 @@ export default class Board {
         [{}, []]
       )
 
-      const column = new Column({ nextColumnId, ...columnData })
+      const column = new Column({ prevColumnId, ...columnData })
       this.columnList.push(column)
       this.$target.appendChild(column.getTarget())
 
-      nextColumnId = columnData.id
-      columnData = formattedColumns[nextColumnId]
+      prevColumnId = columnData.id
+      columnData = formattedColumns[prevColumnId]
     }
   }
 
@@ -105,6 +107,9 @@ export default class Board {
 
   bindEvent() {
     this.$target.addEventListener('click', this.onClickHandler.bind(this))
+
+    emitter.on(`${EVENT.APPEAR_COLUMN}`, this.appearColumn.bind(this))
+    emitter.on(`${EVENT.DISAPPEAR_COLUMN}`, this.disappearColumn.bind(this))
   }
 
   onClickHandler(e) {
@@ -121,7 +126,7 @@ export default class Board {
   async addColumn() {
     const titleValue = this.columnForm.getTitleValue()
     const isActive = this.columnForm.getIsActive()
-    const nextColumnId = this.getNewNextColumnId()
+    const prevColumnId = this.getNewPrevColumnId()
 
     if (isActive && titleValue === '') {
       return
@@ -129,14 +134,14 @@ export default class Board {
 
     const [data, status] = await createColumnApi({
       title: titleValue,
-      nextColumnId,
+      prevColumnId,
     })
 
     if (status === 200) {
       const newColumn = new Column({
         id: data.id,
         title: titleValue,
-        nextColumnId,
+        prevColumnId,
         cardDatas: [],
       })
 
@@ -159,7 +164,7 @@ export default class Board {
     alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
-  getNewNextColumnId() {
+  getNewPrevColumnId() {
     const lastColumn = this.columnForm.getTarget().previousElementSibling
     if (lastColumn) return lastColumn.dataset.id
 
@@ -173,20 +178,49 @@ export default class Board {
       (column) => column.id === removedColumnId
     )
 
+    this.removePrevColumnId(removedColumn)
     removedColumn.removeTarget()
-    this.removeNextColumnId(removedColumn)
   }
 
-  removeNextColumnId(removedColumn) {
-    console.log(removedColumn.getId())
-    const nextColumn = this.columnList.find(
-      (column) => column.getNextColumnId() === removedColumn.getId()
+  removePrevColumnId(removedColumn) {
+    const prevColumn = this.columnList.find(
+      (column) => column.getPrevColumnId() === removedColumn.getId()
     )
-    console.log(nextColumn)
 
-    if (nextColumn) {
-      nextColumn.setNextColumnId(removedColumn.getNextColumnId())
+    if (prevColumn) {
+      prevColumn.setPrevColumnId(removedColumn.getPrevColumnId())
       return
     }
+  }
+
+  appearColumn(columnId) {
+    const appearedColumn = this.columnList.find(
+      (column) => column.getId() === columnId
+    )
+
+    const $nextColumn = appearedColumn.getTarget().nextElementSibling
+
+    if ($nextColumn && $nextColumn.classList.contains(COLUMN_CLASS.COLUMN)) {
+      const nextColumn = this.columnList.find(
+        (column) => column.getId() === +$nextColumn.dataset.id
+      )
+      nextColumn.setPrevColumnId(appearedColumn.getId())
+    }
+
+    const $prevColumn = appearedColumn.getTarget().previousElementSibling
+
+    if ($prevColumn) {
+      appearedColumn.setPrevColumnId(+$prevColumn.dataset.id)
+      return
+    }
+    appearedColumn.setPrevColumnId(null)
+  }
+
+  disappearColumn({ originColumnId, newPrevColumnId }) {
+    const originColumn = this.columnList.find(
+      (column) => column.getId() === originColumnId
+    )
+
+    originColumn.setPrevColumnId(newPrevColumnId)
   }
 }
