@@ -48,7 +48,7 @@ export default class Column {
   setElements() {
     const template = `
       <section class='${COLUMN_CLASS.COLUMN}' data-id='${this.id}'>
-        <div class='title-bar'>
+        <div class='${COLUMN_CLASS.TITLE_BAR}'>
           <div class='title-wrapper'>
             <div class='${COLUMN_CLASS.CARD_COUNT}'>
               ${this.cardList.length}
@@ -110,6 +110,16 @@ export default class Column {
   }
 
   onPointerDownHandler(e) {
+    const targetTitleBar = e.target.closest(`.${COLUMN_CLASS.TITLE_BAR}`)
+    if (targetTitleBar) return
+
+    const targetCardFormSlot = e.target.closest(
+      `.${COLUMN_CLASS.CARD_FORM_SLOT}`
+    )
+    if (targetCardFormSlot) return
+
+    if (e.target.classList.contains(CARD_CLASS.REMOVE_BTN)) return
+
     const targetCard = e.target.closest(`.${CARD_CLASS.CARD}`)
     if (targetCard) {
       this.dragCardStart(e, targetCard)

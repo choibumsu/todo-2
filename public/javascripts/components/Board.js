@@ -48,6 +48,7 @@ export default class Board {
     let allColumns = await fetchColumn()
 
     const formattedColumns = allColumns.reduce((formattedColumns, column) => {
+      if (column.prev_column_id === null) column.prev_column_id = 0
       formattedColumns[column.prev_column_id] = {
         id: column.id,
         title: column.title,
