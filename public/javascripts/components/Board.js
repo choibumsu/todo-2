@@ -110,6 +110,11 @@ export default class Board {
   onClickHandler(e) {
     if (e.target.classList.contains(COLUMN_FORM_CLASS.SUBMIT_BTN)) {
       this.addColumn()
+      return
+    }
+
+    if (e.target.classList.contains(COLUMN_CLASS.REMOVE_BTN)) {
+      this.removeColumn(e)
     }
   }
 
@@ -156,5 +161,15 @@ export default class Board {
     if (lastColumn) return lastColumn.dataset.id
 
     return null
+  }
+
+  removeColumn(e) {
+    const removedColumnId = +e.target.closest(`.${COLUMN_CLASS.COLUMN}`).dataset
+      .id
+    const removedColumn = this.columnList.find(
+      (column) => column.id === removedColumnId
+    )
+
+    removedColumn.removeTarget()
   }
 }
