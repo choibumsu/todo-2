@@ -11,9 +11,9 @@ exports.fetchColumn = async () => {
   return rows
 }
 
-exports.createColumn = async ({ title }) => {
+exports.createColumn = async ({ title, nextColumnId }) => {
   try {
-    const query = `INSERT INTO columns (title) VALUES ('${title}')`
+    const query = `INSERT INTO columns (title, next_column_id) VALUES ('${title}', ${nextColumnId})`
     const result = await connection.promise().query(query)
 
     return result

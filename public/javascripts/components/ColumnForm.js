@@ -1,12 +1,11 @@
 import { templateToElement } from '../utils/HtmlGenerator'
-import { COLUMN_CLASS, COLUMN_FORM_CLASS, CLASS_NAME } from '../utils/Constants'
+import { COLUMN_FORM_CLASS, CLASS_NAME } from '../utils/Constants'
 import '../../stylesheets/components/columnForm.scss'
-import Column from './Column'
-import { createColumnApi } from '../api/index'
 
 export default class ColumnForm {
   constructor() {
     this.$target = ''
+    this.isActive = false
 
     this.init()
   }
@@ -38,54 +37,38 @@ export default class ColumnForm {
       'input',
       this.setSubmitBtnActiveHandler.bind(this)
     )
-    this.$submitBtn.addEventListener('click', this.addColumnHandler.bind(this))
   }
 
   setSubmitBtnActiveHandler() {
-    if (this.$titleInput.value === '') {
-      this.$submitBtn.classList.add(CLASS_NAME.UNACTIVE)
-      return
-    }
-
-    this.$submitBtn.classList.remove(CLASS_NAME.UNACTIVE)
+    const isActive = this.$titleInput.value !== ''
+    this.updateActive(isActive)
   }
 
-  async addColumnHandler() {
-    const titleValue = this.$titleInput.value
+  updateActive(isActive) {
+    this.isActive = isActive
 
-    if (
-      this.$submitBtn.classList.contains(CLASS_NAME.UNACTIVE) ||
-      titleValue === ''
-    ) {
+    if (this.isActive) {
+      this.$submitBtn.classList.remove(CLASS_NAME.UNACTIVE)
       return
     }
 
-    const [data, status] = await createColumnApi({
-      title: titleValue,
-    })
-
-    if (status === 200) {
-      const newColumn = new Column({
-        id: data.id,
-        title: titleValue,
-        cardDatas: [],
-      })
-      this.$target.parentNode.insertBefore(newColumn.getTarget(), this.$target)
-
-      this.$titleInput.value = ''
-      this.setSubmitBtnActiveHandler()
-
-      return
-    } else if (status === 401) {
-      alert('컬럼 추가 권한이 없습니다.')
-      return
-    }
-
-    // unexcepted error
-    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
+    this.$submitBtn.classList.add(CLASS_NAME.UNACTIVE)
   }
 
   getTarget() {
     return this.$target
+  }
+
+  getTitleValue() {
+    return this.$titleInput.value
+  }
+
+  getIsActive() {
+    return this.isActive
+  }
+
+  setDefault() {
+    this.$titleInput = ''
+    this.updateActive(false)
   }
 }

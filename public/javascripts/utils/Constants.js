@@ -24,7 +24,7 @@ export const COLUMN_CLASS = {
 
 export const COLUMN_FORM_CLASS = {
   TITLE_INPUT: 'column-title-input',
-  SUBMIT_BTN: 'submit-btn',
+  SUBMIT_BTN: 'column-form-submit-btn',
 }
 
 export const CARD_FORM_CLASS = {
