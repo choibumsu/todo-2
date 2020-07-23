@@ -12,8 +12,6 @@ export default class ActivityCard {
     this.$target = ''
     this.content = ''
     let time = new Date(data.created_at)
-    // UTC to GTC
-    time.setHours(time.getHours()+9)
     this.time = time
     this.$activityColumn = ''
     this.data = data
