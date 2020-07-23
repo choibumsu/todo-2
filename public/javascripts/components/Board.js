@@ -14,7 +14,7 @@ import ColumnForm from './ColumnForm'
 import { fetchColumn, fetchCard, createColumnApi } from '../api/index'
 
 export default class Board {
-  constructor() {
+  constructor(user) {
     this.$target = ''
     this.columnList = []
     this.columnForm = new ColumnForm()
