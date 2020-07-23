@@ -68,7 +68,7 @@ export default class ColumnForm {
   }
 
   setDefault() {
-    this.$titleInput = ''
+    this.$titleInput.value = ''
     this.updateActive(false)
   }
 }
