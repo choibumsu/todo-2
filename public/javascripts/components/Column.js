@@ -27,7 +27,6 @@ import {
   createActivityAPI,
 } from '../api/index'
 import ActivityCard from './ActivityCard'
-// import { create } from 'core-js/fn/object'
 
 export default class Column {
   constructor({ id, title, cardDatas, prevColumnId }) {
@@ -114,6 +113,7 @@ export default class Column {
 
   onPointerDownHandler(e) {
     const targetTitleBar = e.target.closest(`.${COLUMN_CLASS.TITLE_BAR}`)
+
     if (targetTitleBar) return
 
     const targetCardFormSlot = e.target.closest(
@@ -161,11 +161,12 @@ export default class Column {
 
   onDoubleClickHandler(e) {
     if (e.target.classList.contains(COLUMN_CLASS.TITLE)) {
-      this.showColumnEditModal()
+      this.showColumnEditModal(this.originColumnTitle)
       return
     }
 
     const targetCard = e.target.closest(`.${CARD_CLASS.CARD}`)
+
     if (targetCard) {
       this.showCardEditModal(targetCard)
       return
@@ -284,6 +285,22 @@ export default class Column {
     this.$title.classList.add(CLASS_NAME.US_NONE)
 
     const modal = new EditColumnModal(this.title, (editedTitle) => {
+      const originColumnTitle = this.$title.innerText
+      let Data = {
+        content: {
+          action: 'updated',
+          from_column_title: originColumnTitle,
+          to_column_title: editedTitle,
+        },
+        user_name: this.username,
+        category: 'column',
+        created_at: new Date(),
+      }
+
+      createActivityAPI(Data).then((result) => {
+        new ActivityCard(Data)
+      })
+
       this.setTitle(editedTitle)
     })
     modal.showModal()
@@ -291,6 +308,20 @@ export default class Column {
   }
 
   setTitle(editedTitle) {
+    let Data = {
+      content: {
+        action: 'updated',
+        from_column_title: this.title,
+        to_column_title: editedTitle,
+      },
+      user_name: 'nohgijin',
+      category: 'column',
+      created_at: new Date(),
+    }
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+
     updateColumnTitle({
       title: editedTitle,
       id: this.id,
@@ -422,9 +453,22 @@ export default class Column {
   }
 
   async moveStop() {
+    let Data = {
+      content: {
+        action: 'moved',
+        column_title: this.title,
+      },
+      user_name: 'nohgijin',
+      category: 'column',
+      created_at: new Date(),
+    }
+
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+
     this.$copyTarget.remove()
     toggleMovingStyle(this.$target)
-
     if (this.originNextColumnId) {
       emitter.emit(`${EVENT.DISAPPEAR_COLUMN}`, {
         originColumnId: this.originNextColumnId,
@@ -442,6 +486,20 @@ export default class Column {
   }
 
   async removeTarget() {
+    let Data = {
+      content: {
+        action: 'removed',
+        column_title: this.title,
+      },
+      user_name: 'nohgijin',
+      category: 'column',
+      created_at: new Date(),
+    }
+
+    createActivityAPI(Data).then((result) => {
+      new ActivityCard(Data)
+    })
+
     const status = await deleteColumnApi({
       id: this.id,
       userId: 1,
