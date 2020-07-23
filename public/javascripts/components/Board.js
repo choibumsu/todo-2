@@ -144,7 +144,6 @@ export default class Board {
         this.columnForm.getTarget()
       )
       this.columnList.push(newColumn)
-      console.log(this.columnList)
 
       this.columnForm.setDefault()
 
