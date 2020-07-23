@@ -15,6 +15,7 @@ const {
   updateNextCardId,
   createActivity,
 } = require('./model')
+const { json } = require('express')
 
 exports.getUserController = async (req, res, next) => {
   try {
@@ -57,6 +58,19 @@ exports.loginContoller = async (req, res, next) => {
   } catch (err) {
     console.log(err)
     res.status(404).json()
+  }
+}
+
+exports.logoutContoller = async (req, res, next) => {
+  try {
+    req.session.destroy(function () {
+      req.session
+    })
+
+    res.status(200).json()
+  } catch (err) {
+    console.log(err)
+    res.status(401).json()
   }
 }
 

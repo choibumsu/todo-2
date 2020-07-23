@@ -16,6 +16,7 @@ const {
   updateNextCardIdController,
   createActivityController,
   loginContoller,
+  logoutContoller,
 } = require('./controller.js')
 
 // render pug
@@ -28,6 +29,9 @@ router.get('/api/auth', getUserController)
 
 // 로그인 api
 router.post('/api/login', loginContoller)
+
+// 로그아웃 api
+router.get('/api/logout', logoutContoller)
 
 // 컬럼 데이터 조회 api
 router.get('/api/column', getAllColumnsController)
