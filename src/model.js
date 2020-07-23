@@ -33,9 +33,6 @@ exports.deleteColumn = async ({ id, userId }) => {
 
 exports.updatePrevColumnId = async ({ columnId, prevColumnId }) => {
   try {
-    if (prevColumnId === 0) {
-      prevColumnId = null
-    }
     const query = `UPDATE columns SET prev_column_id=${prevColumnId} WHERE id=${+columnId}`
     await connection.promise().query(query)
 
@@ -73,11 +70,7 @@ exports.deleteCard = async (id) => {
 
 exports.createCard = async ({ cardTitle, columnId, userId, nextCardId }) => {
   try {
-    if (nextCardId === 0) {
-      nextCardId = null
-    }
-
-    const query = `INSERT INTO card (title, column_id, user_id, next_card_id) VALUES ('${cardTitle}', ${columnId}, ${userId}, ${nextCardId})`
+    const query = `INSERT INTO card (title, column_id, user_id, next_card_id) VALUES ('${cardTitle}', ${+columnId}, ${+userId}, ${+nextCardId})`
     const result = await connection.promise().query(query)
 
     return result
@@ -115,12 +108,7 @@ exports.updateNextCardId = async ({ cardId, nextCardId, userId }) => {
   }
 }
 
-exports.createActivity = async ({
-  content,
-  created_at,
-  user_name,
-  category,
-}) => {
+exports.createActivity = async ({ content, user_name, category }) => {
   try {
     const query = `INSERT INTO activity (content, user_name, category) VALUES ('${JSON.stringify(
       content

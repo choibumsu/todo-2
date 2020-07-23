@@ -172,7 +172,7 @@ export const updateNextCardIdApi = async (updatedCardData) => {
   return response.status
 }
 
-export const createActivityAPI=async(createActivityData)=>{
+export const createActivityAPI = async (createActivityData) => {
   const response = await fetch(
     `${apiUrlBase}/activity`,
     METHOD.POST(createActivityData)
