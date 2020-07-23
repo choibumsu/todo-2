@@ -17,7 +17,7 @@ const {
 
 exports.getUserController = async (req, res, next) => {
   try {
-    const username = 'choibumsu' //req.session.username
+    const username = 'choibum' //req.session.username
     if (!username) {
       res.status(404).json({
         result: false,
