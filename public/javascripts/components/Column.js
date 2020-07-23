@@ -19,13 +19,19 @@ import Card from './Card'
 import EditColumnModal from './Modal/EditColumnModal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
-import { updateColumnTitle, createCardApi, deleteColumnApi } from '../api/index'
+import {
+  updateColumnTitle,
+  createCardApi,
+  deleteColumnApi,
+  updateNextColumnIdApi,
+} from '../api/index'
 
 export default class Column {
-  constructor({ id, title, cardDatas }) {
+  constructor({ id, title, cardDatas, nextColumnId }) {
     this.$target = ''
     this.id = id
     this.title = title
+    this.nextColumnId = +nextColumnId
     this.cardList = Array(Object.keys(cardDatas).length)
     this.cardForm = new CardForm()
 
@@ -408,6 +414,37 @@ export default class Column {
       return
     } else if (status === 404) {
       alert('컬럼이 존재하지 않습니다.')
+      return
+    }
+
+    // unexcepted error
+    alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
+  }
+
+  getId() {
+    return this.id
+  }
+
+  getNextColumnId() {
+    return this.nextColumnId
+  }
+
+  async setNextColumnId(nextColumnId) {
+    this.nextColumnId = nextColumnId
+    console.log(this)
+
+    const status = await updateNextColumnIdApi({
+      nextColumnId: this.nextColumnId,
+      columnId: this.id,
+    })
+
+    if (status === 200) {
+      return
+    } else if (status === 401) {
+      alert('카드 추가 권한이 없습니다.')
+      return
+    } else if (status === 404) {
+      alert('카드가 존재하지 않습니다.')
       return
     }
 

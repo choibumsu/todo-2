@@ -86,7 +86,7 @@ export default class Board {
         [{}, []]
       )
 
-      const column = new Column(columnData)
+      const column = new Column({ nextColumnId, ...columnData })
       this.columnList.push(column)
       this.$target.appendChild(column.getTarget())
 
@@ -136,6 +136,7 @@ export default class Board {
       const newColumn = new Column({
         id: data.id,
         title: titleValue,
+        nextColumnId,
         cardDatas: [],
       })
 
@@ -143,6 +144,8 @@ export default class Board {
         newColumn.getTarget(),
         this.columnForm.getTarget()
       )
+      this.columnList.push(newColumn)
+      console.log(this.columnList)
 
       this.columnForm.setDefault()
 
@@ -171,5 +174,19 @@ export default class Board {
     )
 
     removedColumn.removeTarget()
+    this.removeNextColumnId(removedColumn)
+  }
+
+  removeNextColumnId(removedColumn) {
+    console.log(removedColumn.getId())
+    const nextColumn = this.columnList.find(
+      (column) => column.getNextColumnId() === removedColumn.getId()
+    )
+    console.log(nextColumn)
+
+    if (nextColumn) {
+      nextColumn.setNextColumnId(removedColumn.getNextColumnId())
+      return
+    }
   }
 }
