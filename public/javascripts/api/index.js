@@ -56,6 +56,12 @@ export const loginApi = async (username) => {
   }
 }
 
+export const logoutApi = async () => {
+  const response = await fetch(`${apiUrlBase}/logout`, METHOD.GET())
+
+  return response.status
+}
+
 export const fetchColumn = async () => {
   const response = await fetch(`${apiUrlBase}/column`, METHOD.GET())
   if (response.status === 200) {
