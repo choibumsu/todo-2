@@ -177,18 +177,21 @@ export default class Column {
     const cardTitle = this.cardForm.getCardTitle()
     if (cardTitle === '') return
     const nextCardId = this.getNewNextCardId()
+    const userId = localStorage.getItem('userId')
+
     const [data, status] = await createCardApi({
       cardTitle,
       nextCardId,
       columnId: this.id,
-      userId: 1,
+      userId,
     })
 
     if (status === 200) {
+      const username = localStorage.getItem('username')
       const cardData = {
         id: data.id,
         title: cardTitle,
-        username: 'choibumsu',
+        username,
         nextCardId,
       }
 
