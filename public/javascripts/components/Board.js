@@ -131,18 +131,19 @@ export default class Board {
       return
     }
 
-    let Data = {
+    const username = localStorage.getItem('username')
+    const activityData = {
       content: {
         action: 'added',
         column_title: titleValue,
       },
       created_at: new Date(),
-      user_name: 'nohgijin',
+      user_name: username,
       category: 'column',
     }
 
-    createActivityAPI(Data).then((result) => {
-      new ActivityCard(Data)
+    createActivityAPI(activityData).then((result) => {
+      new ActivityCard(activityData)
     })
 
     const [data, status] = await createColumnApi({

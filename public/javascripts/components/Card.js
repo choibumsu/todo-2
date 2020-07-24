@@ -200,20 +200,21 @@ export default class Card {
       userId: 1,
     })
 
-    let Data = {
+    const username = localStorage.getItem('username')
+    const activityData = {
       content: {
         action: 'moved',
         from_column: this.originColumnTitle,
         to_column: targetColumnTitle,
         card_title: this.title,
       },
-      user_name: this.username,
+      user_name: username,
       category: 'card',
       created_at: new Date(),
     }
 
-    createActivityAPI(Data).then((result) => {
-      new ActivityCard(Data)
+    createActivityAPI(activityData).then((result) => {
+      new ActivityCard(activityData)
     })
 
     if (status === 200) {
@@ -252,17 +253,19 @@ export default class Card {
   }
 
   setTitle(editedTitle) {
-    let Data = {
+    const username = localStorage.getItem('username')
+    const activityData = {
       content: {
         action: 'updated',
         card_title: editedTitle,
       },
-      user_name: this.username,
+      user_name: username,
       category: 'card',
       created_at: new Date(),
     }
-    createActivityAPI(Data).then((result) => {
-      new ActivityCard(Data)
+
+    createActivityAPI(activityData).then((result) => {
+      new ActivityCard(activityData)
     })
 
     updateCardTitle({
@@ -297,18 +300,19 @@ export default class Card {
   }
 
   removeTarget() {
-    let Data = {
+    const username = localStorage.getItem('username')
+    const activityData = {
       content: {
         action: 'removed',
         card_title: this.title,
       },
-      user_name: this.username,
+      user_name: username,
       category: 'card',
       created_at: new Date(),
     }
 
-    createActivityAPI(Data).then((result) => {
-      new ActivityCard(Data)
+    createActivityAPI(activityData).then((result) => {
+      new ActivityCard(activityData)
     })
 
     deleteCard({ id: this.id })
