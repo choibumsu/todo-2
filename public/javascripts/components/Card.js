@@ -275,7 +275,7 @@ export default class Card {
     updateCardTitle({
       title: editedTitle,
       id: this.id,
-      username,
+      username: this.username,
     })
     this.title = editedTitle
     this.$title.innerText = this.title
@@ -304,7 +304,7 @@ export default class Card {
     alert('에러가 발생하였습니다. 잠시 후 다시 시도해주세요.')
   }
 
-  removeTarget() {
+  async removeTarget() {
     const username = localStorage.getItem('username')
     const activityData = {
       content: {
@@ -320,7 +320,16 @@ export default class Card {
       new ActivityCard(activityData)
     })
 
-    deleteCard({ id: this.id })
-    this.$target.remove()
+    const [data, status] = await deleteCard({
+      id: this.id,
+      username: this.username,
+    })
+
+    if (status === 200) {
+      this.$target.remove()
+      return
+    }
+
+    alert('삭제 권한이 없습니다.')
   }
 }

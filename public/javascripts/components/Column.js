@@ -244,6 +244,9 @@ export default class Column {
       (card) => card.getId() === removedCardId
     )
 
+    const username = localStorage.getItem('username')
+    if (username !== removedCard.getUsername()) return
+
     const modal = new DeleteCardModal(removedCard.getTitle(), () => {
       this.removeCard(removedCard)
       removedCard.removeTarget()

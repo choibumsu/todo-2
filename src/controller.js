@@ -163,7 +163,14 @@ exports.updateCardNameController = async (req, res, next) => {
 
 exports.deleteCardController = async (req, res, next) => {
   try {
-    const { id } = req.body
+    const { id, username } = req.body
+    const sessionUsername = req.session.username
+
+    if (!sessionUsername || sessionUsername !== username) {
+      res.status(401).json()
+      return
+    }
+
     const rows = await deleteCard(id)
     res.status(200).json(rows)
   } catch (err) {
