@@ -63,6 +63,8 @@ export default class Header {
     const status = await logoutApi()
 
     if (status === 200) {
+      localStorage.removeItem('username')
+      localStorage.removeItem('userId')
       window.location.reload()
       return
     } else if (status === 404) {
