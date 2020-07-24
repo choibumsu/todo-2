@@ -244,6 +244,9 @@ export default class Column {
       (card) => card.getId() === removedCardId
     )
 
+    const username = localStorage.getItem('username')
+    if (username !== removedCard.getUsername()) return
+
     const modal = new DeleteCardModal(removedCard.getTitle(), () => {
       this.removeCard(removedCard)
       removedCard.removeTarget()
@@ -322,6 +325,9 @@ export default class Column {
     const editedCard = this.cardList.find(
       (card) => card.getId() === +targetCard.dataset.id
     )
+
+    const username = localStorage.getItem('username')
+    if (editedCard.getUsername() !== username) return
 
     const modal = new EditCardModal(editedCard.getTitle(), (editedTitle) => {
       editedCard.setTitle(editedTitle)
