@@ -53,7 +53,7 @@ export default class Header {
       return
     }
 
-    if (e.target.classList.container(HEADER_CLASS.MENU)) {
+    if (e.target.classList.contains(HEADER_CLASS.MENU)) {
       this.toggleMenu()
       return
     }
