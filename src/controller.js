@@ -206,11 +206,11 @@ exports.updateNextCardIdController = async (req, res, next) => {
 exports.getAllActivityController = async (req, res, next) => {
   try {
     const rows = await fetchActivity()
-    // rows.forEach((row) => {
-    //   let date = new Date(row.created_at)
-    //   date.setHours(date.getHours() + 9)
-    //   row.created_at = date
-    // })
+    rows.forEach((row) => {
+      let date = new Date(row.created_at)
+      date.setHours(date.getHours() + 9)
+      row.created_at = date
+    })
     res.status(200).json(rows)
   } catch (err) {
     console.log(err)
