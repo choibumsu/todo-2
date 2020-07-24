@@ -195,7 +195,7 @@ export default class Column {
         nextCardId,
       }
 
-      let Data = {
+      const activityData = {
         content: {
           action: 'added',
           to_column: this.title,
@@ -206,8 +206,8 @@ export default class Column {
         category: 'card',
       }
 
-      createActivityAPI(Data).then((result) => {
-        new ActivityCard(Data)
+      createActivityAPI(activityData).then((result) => {
+        new ActivityCard(activityData)
       })
 
       const newCard = new Card(cardData)
@@ -288,22 +288,6 @@ export default class Column {
     this.$title.classList.add(CLASS_NAME.US_NONE)
 
     const modal = new EditColumnModal(this.title, (editedTitle) => {
-      const originColumnTitle = this.$title.innerText
-      let Data = {
-        content: {
-          action: 'updated',
-          from_column_title: originColumnTitle,
-          to_column_title: editedTitle,
-        },
-        user_name: this.username,
-        category: 'column',
-        created_at: new Date(),
-      }
-
-      createActivityAPI(Data).then((result) => {
-        new ActivityCard(Data)
-      })
-
       this.setTitle(editedTitle)
     })
     modal.showModal()
@@ -311,18 +295,19 @@ export default class Column {
   }
 
   setTitle(editedTitle) {
-    let Data = {
+    const username = localStorage.getItem('username')
+    const activityData = {
       content: {
         action: 'updated',
         from_column_title: this.title,
         to_column_title: editedTitle,
       },
-      user_name: 'nohgijin',
+      user_name: username,
       category: 'column',
       created_at: new Date(),
     }
-    createActivityAPI(Data).then((result) => {
-      new ActivityCard(Data)
+    createActivityAPI(activityData).then((result) => {
+      new ActivityCard(activityData)
     })
 
     updateColumnTitle({
@@ -456,18 +441,19 @@ export default class Column {
   }
 
   async moveStop() {
-    let Data = {
+    const username = localStorage.getItem('username')
+    const activityData = {
       content: {
         action: 'moved',
         column_title: this.title,
       },
-      user_name: 'nohgijin',
+      user_name: username,
       category: 'column',
       created_at: new Date(),
     }
 
-    createActivityAPI(Data).then((result) => {
-      new ActivityCard(Data)
+    createActivityAPI(activityData).then((result) => {
+      new ActivityCard(activityData)
     })
 
     this.$copyTarget.remove()
@@ -489,18 +475,19 @@ export default class Column {
   }
 
   async removeTarget() {
-    let Data = {
+    const username = localStorage.getItem('username')
+    const activityData = {
       content: {
         action: 'removed',
         column_title: this.title,
       },
-      user_name: 'nohgijin',
+      user_name: username,
       category: 'column',
       created_at: new Date(),
     }
 
-    createActivityAPI(Data).then((result) => {
-      new ActivityCard(Data)
+    createActivityAPI(activityData).then((result) => {
+      new ActivityCard(activityData)
     })
 
     const status = await deleteColumnApi({
