@@ -145,8 +145,15 @@ exports.updateColumnNameController = async (req, res, next) => {
 
 exports.updateCardNameController = async (req, res, next) => {
   try {
-    const { title, id } = req.body
-    const rows = await updateCardTitle(title, id)
+    const { title, id, username } = req.body
+    const sessionUsername = req.session.username
+
+    if (!sessionUsername || sessionUsername !== username) {
+      res.status(401).json()
+      return
+    }
+
+    const rows = await updateCardTitle(title, id, username)
     res.status(200).json(rows)
   } catch (err) {
     console.log(err)

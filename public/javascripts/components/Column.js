@@ -323,6 +323,9 @@ export default class Column {
       (card) => card.getId() === +targetCard.dataset.id
     )
 
+    const username = localStorage.getItem('username')
+    if (editedCard.getUsername() !== username) return
+
     const modal = new EditCardModal(editedCard.getTitle(), (editedTitle) => {
       editedCard.setTitle(editedTitle)
     })

@@ -248,6 +248,10 @@ export default class Card {
     return this.id
   }
 
+  getUsername() {
+    return this.username
+  }
+
   getTitle() {
     return this.title
   }
@@ -271,6 +275,7 @@ export default class Card {
     updateCardTitle({
       title: editedTitle,
       id: this.id,
+      username,
     })
     this.title = editedTitle
     this.$title.innerText = this.title
