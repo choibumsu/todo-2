@@ -102,8 +102,11 @@ export default class LoginForm {
     if (username === '') return
 
     const [data, status] = await loginApi(username)
-
+    
     if (status === 200) {
+      localStorage.setItem('username', data.name)
+      localStorage.setItem('userId', data.id)
+      
       new Header(data)
       new SideBar()
       new Board()
