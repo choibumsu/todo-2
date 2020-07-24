@@ -19,11 +19,10 @@ import {
 import ActivityCard from './ActivityCard'
 
 export default class Board {
-  constructor({ name }) {
+  constructor() {
     this.$target = ''
     this.columnList = []
     this.columnForm = new ColumnForm()
-    this.username = name
 
     this.init()
   }

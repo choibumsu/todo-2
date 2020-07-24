@@ -28,9 +28,12 @@ export default class LoginForm {
     const [data, status] = await checkAuthApi()
 
     if (data) {
+      localStorage.setItem('username', data.name)
+      localStorage.setItem('userId', data.id)
+
       new Header(data)
       new SideBar()
-      new Board(data)
+      new Board()
 
       return true
     } else if (status === 404) {
@@ -103,7 +106,7 @@ export default class LoginForm {
     if (status === 200) {
       new Header(data)
       new SideBar()
-      new Board(data)
+      new Board()
 
       this.removeTarget()
       return
